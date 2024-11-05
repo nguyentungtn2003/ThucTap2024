@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Đăng Nhập</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang bán vé phim</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         * {
@@ -669,51 +669,107 @@
 
     </style>
 </head>
-
 <body>
+
 <header>
     <div class="navbar">
-        <div class="logo">Logo</div>
+        <div class="logo">LOGO</div>
         <nav>
             <ul>
-                <li><a href="Giaodienchuadangnhap.html">Phim Đang Chiếu</a></li>
+
+                <li><a href="#">Phim Đang Chiếu</a></li>
                 <li><a href="#">Sắp Chiếu</a></li>
                 <li><a href="#">Thể Loại</a></li>
+                <li><a  href="login.html" class="btn-primary">Thông Tin Cá Nhân</a></li>
             </ul>
         </nav>
         <div class="auth-links">
-            <a th:href="@{/login}">Đăng nhập</a> | <a th:href="@{/register}">Đăng ký</a>
-<!--            <a href="#" class="lang"><img src="uk-flag.png" alt="EN"></a>-->
+            <a href="login.html">Đăng Nhập</a>
+            <a href="registration.html">Đăng Ký</a>
+            <div class="lang">
+                <img src="vi.png" alt="Tiếng Việt">
+            </div>
         </div>
     </div>
 </header>
-
-<div class="login-container">
-    <div class="form-container">
-        <div th:if="${param.error}">
-            <div class="alert alert-danger">Invalid Email or Password</div>
-        </div>
-        <div th:if="${param.logout}">
-            <div class="alert alert-success"> You have been logged out.</div>
-        </div>
-        <div class="tabs">
-            <button class="active">Đăng Nhập</button>
-            <button><a th:href="@{/register}">Đăng ký</a></button>
-        </div>
-        <form method="post" role="form" th:action="@{/login}">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="username" placeholder="Email">
-
-            <label for="password">Mật khẩu</label>
-            <input type="password" id="password" name="password" placeholder="Mật khẩu">
-
-            <a href="#" class="forgot-password">Quên mật khẩu?</a>
-
-            <button type="submit" class="btn-primary">Đăng nhập bằng tài khoản</button>
-            <button class="btn-facebook">Đăng nhập bằng Facebook</button>
-        </form>
+<!--
+<section class="banner">
+    <img src="Quyanback.jpg" alt="Quỷ Án" class="banner-image">
+    <div class="banner-content">
+        <h1>Quỷ Án</h1>
+        <p>Đã mở bán vé</p>
+        <a href="#" class="btn-primary">Đặt Vé Ngay</a>
+        <p>Khởi chiếu: 13.09.2024</p>
     </div>
-</div>
-</body>
+</section> -->
 
+<main class="movie-list">
+    <div class="movie">
+        <img src="Quyanfont.jpg" alt="Quỷ Án">
+        <h3>Quỷ Án</h3>
+        <p>Thể loại: Kinh dị</p>
+        <p>Khởi chiếu: 13.09.2024</p>
+        <a href="movie_detail.html?movie=quyan" class="btn-primary">Mua Vé</a>
+    </div>
+    <div class="movie">
+        <img src="Transformersfont.jpg" alt="Transformers">
+        <h3>Transformers</h3>
+        <p>Thể loại: Hành động</p>
+        <p>Khởi chiếu: 12.09.2024</p>
+        <a href="movie_detail.html?movie=transformer" class="btn-primary">Mua Vé</a>
+    </div>
+    <div class="movie">
+        <img src="Haimuoifont.jpg" alt="Hai Muối">
+        <h3>Hai Muối</h3>
+        <p>Thể loại: Tình cảm, Tâm lí</p>
+        <p>Khởi chiếu: 15.09.2024</p>
+        <a href="movie_detail.html?movie=haimuoi" class="btn-primary">Mua Vé</a>
+    </div>
+    <!-- Thêm các phim khác ở đây tương tự -->
+    <div class="movie">
+        <img src="Anlacfont.jpg" alt="An lạc">
+        <h3>An lạc</h3>
+        <p>Thể loại: Tình cảm, Tâm lí</p>
+        <p>Khởi chiếu: 15.09.2024</p>
+        <a href="movie_detail.html?movie=anlac" class="btn-primary">Mua Vé</a>
+    </div><div class="movie">
+    <img src="Codauhaomonfont.jpg" alt="Cô Dâu Hào Môn">
+    <h3>Cô Dâu Hào Môn</h3>
+    <p>Thể loại: Tình cảm, Tâm lí</p>
+    <p>Khởi chiếu: 15.09.2024</p>
+    <a href="movie_detail.html?movie=codauhaomon" class="btn-primary">Mua Vé</a>
+</div><div class="movie">
+    <img src="Joker2font.jpg" alt="Joker 2">
+    <h3>Joker 2</h3>
+    <p>Thể loại: Tâm lí</p>
+    <p>Khởi chiếu: 15.09.2024</p>
+    <a href="movie_detail.html?movie=joker2" class="btn-primary">Mua Vé</a>
+</div><div class="movie">
+    <img src="Ngayxuacomotchuyentinhfont.jpg" alt="Ngày Xưa Có Một Chuyện Tình">
+    <h3>Ngày Xưa Có Một Chuyện Tình</h3>
+    <p>Thể loại: Tình cảm, Tâm lí</p>
+    <p>Khởi chiếu: 15.09.2024</p>
+    <a href="movie_detail.html?movie=ngayxuacomotchuyentinh" class="btn-primary">Mua Vé</a>
+</div><div class="movie">
+    <img src="Robothoangdafont.jpg" alt="Robot Hoang Dã">
+    <h3>Robot Hoang Dã</h3>
+    <p>Thể loại: Hành Động, Tâm lí</p>
+    <p>Khởi chiếu: 15.09.2024</p>
+    <a href="movie_detail.html?movie=robothoangda" class="btn-primary">Mua Vé</a>
+</div><div class="movie">
+    <img src="Trochoinhantinhfont.jpg" alt="Trò Chơi Nhân Tính">
+    <h3>Trò Chơi Nhân Tính</h3>
+    <p>Thể loại: Hành Động </p>
+    <p>Khởi chiếu: 15.09.2024</p>
+    <a href="movie_detail.html?movie=trochoinhantinh" class="btn-primary">Mua Vé</a>
+</div><div class="movie">
+    <img src="Venom3font.jpg" alt="Venom: Kèo Cuối">
+    <h3>Venom: Kèo Cuối</h3>
+    <p>Thể loại: Hành Động, Viễn Tưởng</p>
+    <p>Khởi chiếu: 15.09.2024</p>
+    <a href="movie_detail.html?movie=venom3" class="btn-primary">Mua Vé</a>
+</div>
+</main>
+
+</body>
 </html>
