@@ -51,6 +51,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto findUserDtoByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return convertEntityToDto(user);
+        }
+        return null;
+    }
+
+    @Override
     public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map((user) -> convertEntityToDto(user))
@@ -65,4 +74,6 @@ public class UserServiceImpl implements UserService {
         userDto.setEmail(user.getEmail());
         return userDto;
     }
+
+
 }

@@ -26,7 +26,7 @@ public class AuthController {
     // handler method to handle home page request
     @GetMapping("/home")
     public String home() {
-        return "home";
+        return "user_account_infor";
     }
 
     // handler method to handle user registration form request

@@ -670,106 +670,79 @@
     </style>
 </head>
 <body>
-
 <header>
     <div class="navbar">
         <div class="logo">LOGO</div>
         <nav>
             <ul>
 
-                <li><a href="#">Phim Đang Chiếu</a></li>
+                <li><a href="Giaodienchuadangnhap.html">Phim Đang Chiếu</a></li>
                 <li><a href="#">Sắp Chiếu</a></li>
                 <li><a href="#">Thể Loại</a></li>
-                <li><a  href="login.html" class="btn-primary">Thông Tin Cá Nhân</a></li>
+                <li><a href="accountinfo.html" class="btn-primary">Thông Tin Cá Nhân</a></li>
             </ul>
         </nav>
         <div class="auth-links">
-            <a href="login.html">Đăng Nhập</a>
-            <a href="registration.html">Đăng Ký</a>
+            <a href="#">Đức Trưởng</a>
+            <a href="login.html">Đăng XUất</a>
             <div class="lang">
                 <img src="vi.png" alt="Tiếng Việt">
             </div>
         </div>
     </div>
 </header>
-<!--
-<section class="banner">
-    <img src="Quyanback.jpg" alt="Quỷ Án" class="banner-image">
-    <div class="banner-content">
-        <h1>Quỷ Án</h1>
-        <p>Đã mở bán vé</p>
-        <a href="#" class="btn-primary">Đặt Vé Ngay</a>
-        <p>Khởi chiếu: 13.09.2024</p>
-    </div>
-</section> -->
+<div class="account-info-container">
+    <h2>THÔNG TIN TÀI KHOẢN</h2>
+    <div class="form-container">
+        <form action="#" method="post">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="full-name">* Họ tên</label>
+                    <input type="text" id="full-name" placeholder="Họ tên" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">* Email</label>
+                    <input type="email" id="email" placeholder="Email" required>
+                </div>
+            </div>
 
-<main class="movie-list">
-    <div class="movie">
-        <img src="Quyanfont.jpg" alt="Quỷ Án">
-        <h3>Quỷ Án</h3>
-        <p>Thể loại: Kinh dị</p>
-        <p>Khởi chiếu: 13.09.2024</p>
-        <a href="movie_detail.html?movie=quyan" class="btn-primary">Mua Vé</a>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="address">* Địa chỉ</label>
+                    <input type="text" id="address" placeholder="Địa chỉ" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Giới tính</label>
+                    <input type="text" id="gender" placeholder="Giới tính">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dob">Ngày sinh</label>
+                    <input type="date" id="dob" placeholder="Ngày sinh">
+                </div>
+                <div class="form-group">
+                    <label for="phone">* Số điện thoại</label>
+                    <input type="tel" id="phone" placeholder="Số điện thoại" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">* Mật khẩu</label>
+                    <input type="password" id="password" placeholder="Mật khẩu" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">* Xác nhận lại mật khẩu</label>
+                    <input type="password" id="confirm-password" placeholder="Xác nhận lại mật khẩu" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-save">LƯU CHỈNH SỬA</button>
+        </form>
     </div>
-    <div class="movie">
-        <img src="Transformersfont.jpg" alt="Transformers">
-        <h3>Transformers</h3>
-        <p>Thể loại: Hành động</p>
-        <p>Khởi chiếu: 12.09.2024</p>
-        <a href="movie_detail.html?movie=transformer" class="btn-primary">Mua Vé</a>
-    </div>
-    <div class="movie">
-        <img src="Haimuoifont.jpg" alt="Hai Muối">
-        <h3>Hai Muối</h3>
-        <p>Thể loại: Tình cảm, Tâm lí</p>
-        <p>Khởi chiếu: 15.09.2024</p>
-        <a href="movie_detail.html?movie=haimuoi" class="btn-primary">Mua Vé</a>
-    </div>
-    <!-- Thêm các phim khác ở đây tương tự -->
-    <div class="movie">
-        <img src="Anlacfont.jpg" alt="An lạc">
-        <h3>An lạc</h3>
-        <p>Thể loại: Tình cảm, Tâm lí</p>
-        <p>Khởi chiếu: 15.09.2024</p>
-        <a href="movie_detail.html?movie=anlac" class="btn-primary">Mua Vé</a>
-    </div><div class="movie">
-    <img src="Codauhaomonfont.jpg" alt="Cô Dâu Hào Môn">
-    <h3>Cô Dâu Hào Môn</h3>
-    <p>Thể loại: Tình cảm, Tâm lí</p>
-    <p>Khởi chiếu: 15.09.2024</p>
-    <a href="movie_detail.html?movie=codauhaomon" class="btn-primary">Mua Vé</a>
-</div><div class="movie">
-    <img src="Joker2font.jpg" alt="Joker 2">
-    <h3>Joker 2</h3>
-    <p>Thể loại: Tâm lí</p>
-    <p>Khởi chiếu: 15.09.2024</p>
-    <a href="movie_detail.html?movie=joker2" class="btn-primary">Mua Vé</a>
-</div><div class="movie">
-    <img src="Ngayxuacomotchuyentinhfont.jpg" alt="Ngày Xưa Có Một Chuyện Tình">
-    <h3>Ngày Xưa Có Một Chuyện Tình</h3>
-    <p>Thể loại: Tình cảm, Tâm lí</p>
-    <p>Khởi chiếu: 15.09.2024</p>
-    <a href="movie_detail.html?movie=ngayxuacomotchuyentinh" class="btn-primary">Mua Vé</a>
-</div><div class="movie">
-    <img src="Robothoangdafont.jpg" alt="Robot Hoang Dã">
-    <h3>Robot Hoang Dã</h3>
-    <p>Thể loại: Hành Động, Tâm lí</p>
-    <p>Khởi chiếu: 15.09.2024</p>
-    <a href="movie_detail.html?movie=robothoangda" class="btn-primary">Mua Vé</a>
-</div><div class="movie">
-    <img src="Trochoinhantinhfont.jpg" alt="Trò Chơi Nhân Tính">
-    <h3>Trò Chơi Nhân Tính</h3>
-    <p>Thể loại: Hành Động </p>
-    <p>Khởi chiếu: 15.09.2024</p>
-    <a href="movie_detail.html?movie=trochoinhantinh" class="btn-primary">Mua Vé</a>
-</div><div class="movie">
-    <img src="Venom3font.jpg" alt="Venom: Kèo Cuối">
-    <h3>Venom: Kèo Cuối</h3>
-    <p>Thể loại: Hành Động, Viễn Tưởng</p>
-    <p>Khởi chiếu: 15.09.2024</p>
-    <a href="movie_detail.html?movie=venom3" class="btn-primary">Mua Vé</a>
 </div>
-</main>
 
 </body>
 </html>
