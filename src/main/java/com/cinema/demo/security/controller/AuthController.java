@@ -1,9 +1,9 @@
-package com.example.ThucTap2024.controller;
+package com.cinema.demo.security.controller;
 
 import jakarta.validation.Valid;
-import com.example.ThucTap2024.dto.UserDto;
-import com.example.ThucTap2024.entity.User;
-import com.example.ThucTap2024.service.UserService;
+import com.cinema.demo.security.dto.UserDto;
+import com.cinema.demo.entity.UserEntity;
+import com.cinema.demo.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,25 +39,56 @@ public class AuthController {
     }
 
     // handler method to handle user registration form submit request
+//    @PostMapping("/register/save")
+//    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
+//                               BindingResult result,
+//                               Model model) {
+//        UserEntity existingUser = userService.findUserByEmail(userDto.getEmail());
+//
+//        if (existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()) {
+//            result.rejectValue("email", null,
+//                    "There is already an account registered with the same email");
+//        }
+//
+//        if (result.hasErrors()) {
+//            model.addAttribute("user", userDto);
+//            return "/register";
+//        }
+//
+//        userService.saveUser(userDto);
+//        return "redirect:/register?success";
+//    }
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto,
                                BindingResult result,
                                Model model) {
-        User existingUser = userService.findUserByEmail(userDto.getEmail());
-
+        // Kiểm tra xem email đã tồn tại chưa
+        UserEntity existingUser = userService.findUserByEmail(userDto.getEmail());
         if (existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()) {
-            result.rejectValue("email", null,
-                    "There is already an account registered with the same email");
+            result.rejectValue("email", null, "There is already an account registered with the same email");
+            System.out.println("Existing user found with email: " + userDto.getEmail());
         }
 
+        // Kiểm tra xem có lỗi validate không
         if (result.hasErrors()) {
+            System.out.println("Validation errors found: " + result.getAllErrors());
             model.addAttribute("user", userDto);
             return "/register";
         }
 
-        userService.saveUser(userDto);
+        try {
+            userService.saveUser(userDto);
+            System.out.println("User saved successfully: " + userDto.getEmail());
+        } catch (Exception e) {
+            System.out.println("Error occurred while saving user: " + e.getMessage());
+            e.printStackTrace();
+            model.addAttribute("user", userDto);
+            return "/register";
+        }
+
         return "redirect:/register?success";
     }
+
 
     // handler method to handle list of users
     @GetMapping("/users")

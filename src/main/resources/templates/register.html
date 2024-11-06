@@ -701,16 +701,16 @@
         <form class="register-form" method="post" role="form" th:action="@{/register/save}" th:object="${user}">
             <div class="row">
                 <div class="form-group">
-                    <label for="firstName">* Họ</label>
-                    <input type="text" id="firstName" name="firstName" placeholder="Họ tên" th:field="*{firstName}">
-                </div>
-                <div class="form-group">
-                    <label for="lastName">* Tên</label>
-                    <input type="text" id="lastName" name="lastName" placeholder="Họ tên" th:field="*{lastName}">
+                    <label for="fullName">* Họ</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Họ và tên" th:field="*{fullName}">
                 </div>
                 <div class="form-group">
                     <label for="email">* Email</label>
                     <input type="email" id="email" name="email" placeholder="Email" th:field="*{email}">
+                </div>
+                <div class="form-group">
+                    <label for="address">* Email</label>
+                    <input type="text" id="address" name="address" placeholder="Địa chỉ" th:field="*{address}">
                 </div>
             </div>
             <div class="row">
@@ -723,27 +723,27 @@
 <!--                    <input type="password" id="confirm-password" placeholder="Xác nhận lại mật khẩu">-->
 <!--                </div>-->
             </div>
-<!--            <div class="row">-->
-<!--                <div class="form-group">-->
-<!--                    <label for="birthdate">Ngày sinh</label>-->
-<!--                    <input type="date" id="birthdate">-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label for="gender">Giới tính</label>-->
-<!--                    <select id="gender">-->
-<!--                        <option value="">Giới tính</option>-->
-<!--                        <option value="male">Nam</option>-->
-<!--                        <option value="female">Nữ</option>-->
-<!--                        <option value="other">Khác</option>-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="row">-->
-<!--                <div class="form-group">-->
-<!--                    <label for="phone">* Số điện thoại</label>-->
-<!--                    <input type="tel" id="phone" placeholder="Số điện thoại">-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="row">
+                <div class="form-group">
+                    <label for="birthdate">Ngày sinh</label>
+                    <input type="date" id="birthdate" name="birthdate" placeholder="Ngày sinh" th:field="*{dob}">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Giới tính</label>
+                    <select id="gender" name="sex" required>
+                        <option value="">Giới tính</option>
+                        <option value="M">Nam</option>
+                        <option value="F">Nữ</option>
+                        <option value="O">Khác</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="phone">* Số điện thoại</label>
+                    <input type="tel" id="phone" placeholder="Số điện thoại" th:field="*{phoneNumber}">
+                </div>
+            </div>
             <button type="submit" class="btn-primary">Đăng ký</button>
             <button class="btn-facebook">Tiếp tục với Facebook</button>
         </form>

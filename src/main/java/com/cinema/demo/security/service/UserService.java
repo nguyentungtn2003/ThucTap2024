@@ -1,14 +1,14 @@
-package com.example.ThucTap2024.service;
+package com.cinema.demo.security.service;
 
-import com.example.ThucTap2024.dto.UserDto;
-import com.example.ThucTap2024.entity.User;
+import com.cinema.demo.entity.UserEntity;
+import com.cinema.demo.security.dto.UserDto;
 
 import java.util.List;
 
 public interface UserService {
     void saveUser(UserDto userDto);
 
-    User findUserByEmail(String email);
+    UserEntity findUserByEmail(String email);
 
     UserDto findUserDtoByEmail(String email);
 

@@ -1,4 +1,4 @@
-package com.example.ThucTap2024.config;
+package com.cinema.demo.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
