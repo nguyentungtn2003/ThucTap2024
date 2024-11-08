@@ -25,15 +25,15 @@ header {
     color: white;
 }
 
-.navbar nav ul {
+/* .navbar nav ul {
     list-style: none;
     display: flex;
     gap: 20px;
-}
+} */
 
 .navbar nav ul li a {
     text-decoration: none;
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 .auth-links {
@@ -45,7 +45,7 @@ header {
 
 .auth-links a {
     text-decoration: none;
-    color: white;
+    color: rgb(255, 0, 0);
 }
 
 .lang img {
@@ -168,7 +168,7 @@ header {
 
 .navbar nav ul li a {
     text-decoration: none;
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 .auth-links {
@@ -180,7 +180,7 @@ header {
 
 .auth-links a {
     text-decoration: none;
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 .lang img {
@@ -301,7 +301,7 @@ header {
 
 .navbar nav ul li a {
     text-decoration: none;
-    color: white;
+    color: rgb(106, 90, 90);
 }
 
 .auth-links {
@@ -313,7 +313,7 @@ header {
 
 .auth-links a {
     text-decoration: none;
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 .lang img {
@@ -517,7 +517,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #ffffff;
     padding: 10px;
     color: #fff;
 }
@@ -658,3 +658,214 @@ nav ul li {
 .btn-save:hover {
     background-color: #0056b3;
 }
+.ticket-container {
+    width: 80%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #ffffff; /* Màu nền trắng */
+}
+
+.breadcrumb {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.ticket-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-poster {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.ticket-info {
+    flex: 1;
+}
+
+.movie-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 8px;
+}
+
+.movie-details {
+    font-size: 14px;
+    color: #777;
+    margin: 0 0 8px;
+}
+
+.movie-theater {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+}
+
+.location-icon {
+    color: #888;
+    margin-right: 4px;
+}
+
+.format {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.detail-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.detail-button:hover {
+    background-color: #0056b3;
+}
+
+.banner {
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.banner-slide {
+    min-width: 100%;
+    display: none; /* Ẩn tất cả slide trừ slide đầu tiên */
+}
+
+.banner-slide.active {
+    display: block; /* Chỉ hiển thị slide đang active */
+}
+
+.banner-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 50%;
+}
+
+.banner-nav.prev {
+    left: 10px;
+}
+
+.banner-nav.next {
+    right: 10px;
+}
+
+.banner-nav:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.seat-selection {
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.seat-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.seat-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.seat {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.seat.available {
+    background-color: #eee;
+    color: #333;
+    cursor: pointer;
+}
+
+.seat.booked {
+    background-color: #666;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.seat.selected {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* CSS cho dropdown */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    position: relative;
+}
+
+nav ul li a {
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+}
+
+/* Ẩn các mục con ban đầu */
+#dropdown-content {
+    display: none ;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 150px;
+    z-index: 1;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Hiển thị các mục con khi hover vào Thể Loại */
+.dropdown:hover #dropdown-content {
+    display: block;
+}
+
+.dropdown-content li {
+    display: block;
+}
+
+.dropdown-content li a {
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    color: #333;
+}
+

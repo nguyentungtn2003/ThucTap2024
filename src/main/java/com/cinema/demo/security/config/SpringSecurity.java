@@ -29,12 +29,14 @@ public class SpringSecurity {
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
+                                .requestMatchers("/home1").permitAll()  // Cho phép truy cập trang /home1 mà không cần xác thực
+                                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()  // Cho phép tài nguyên tĩnh
                                 .requestMatchers("/home").hasRole("USER")
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/home", true)
+                                .defaultSuccessUrl("/home1", true)
                                 .permitAll()
                 ).logout(
                         logout -> logout
