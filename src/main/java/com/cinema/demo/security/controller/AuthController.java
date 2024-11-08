@@ -17,6 +17,7 @@ import java.util.List;
 @Controller
 public class AuthController {
     private UserService userService;
+    //private MovieService movieService;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -26,7 +27,9 @@ public class AuthController {
     // handler method to handle home page request
     @GetMapping("/home")
     public String home() {
-        return "redirect:/user/info"; //có thể sửa nếu không muốn auto vào user inf
+//        List<MovieEntity> movies = movieService.getAllMovies();
+//        model.addAttribute("movies", movies);
+        return "home1";
     }
 
     // handler method to handle user registration form request
@@ -103,5 +106,6 @@ public class AuthController {
     public String login() {
         return "login";
     }
+
 
 }

@@ -20,6 +20,12 @@ public class MovieEntity {
 
     private String title;
 
+    private String image;
+
+    private int is_showing;
+
+    private String trailerurl;
+
     private String version;
 
     private String actor;
