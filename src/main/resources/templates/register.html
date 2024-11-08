@@ -717,6 +717,7 @@
                 <div class="form-group">
                     <label for="password">* Mật khẩu</label>
                     <input type="password" id="password" name="password" placeholder="Mật khẩu" th:field="*{password}">
+                    <span style="color: red" class="text-danger" th:errors="*{password}"></span>
                 </div>
 <!--                <div class="form-group">-->
 <!--                    <label for="confirm-password">* Xác nhận lại mật khẩu</label>-->
