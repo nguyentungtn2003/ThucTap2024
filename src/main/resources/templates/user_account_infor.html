@@ -672,70 +672,69 @@
 <body>
 <header>
     <div class="navbar">
-        <div class="logo">LOGO</div>
+        <div class="logo">Logo</div>
         <nav>
             <ul>
-
                 <li><a href="Giaodienchuadangnhap.html">Phim Đang Chiếu</a></li>
                 <li><a href="#">Sắp Chiếu</a></li>
                 <li><a href="#">Thể Loại</a></li>
-                <li><a href="accountinfo.html" class="btn-primary">Thông Tin Cá Nhân</a></li>
+                <li><a href="/user/info">Thông tin cá nhân</a></li>
             </ul>
         </nav>
-        <div class="auth-links">
-            <a href="#">Đức Trưởng</a>
-            <a href="login.html">Đăng XUất</a>
-            <div class="lang">
-                <img src="vi.png" alt="Tiếng Việt">
-            </div>
-        </div>
     </div>
 </header>
+
 <div class="account-info-container">
     <h2>THÔNG TIN TÀI KHOẢN</h2>
+
+    <div th:if="${error != null}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
     <div class="form-container">
-        <form action="#" method="post">
+        <form th:action="@{/user/update}" method="post" th:object="${user}">
             <div class="form-row">
                 <div class="form-group">
                     <label for="full-name">* Họ tên</label>
-                    <input type="text" id="full-name" placeholder="Họ tên" required>
+                    <!-- Hiển thị họ tên người dùng -->
+                    <input type="text" id="full-name" placeholder="Họ tên" th:field="*{fullName}" required>
                 </div>
                 <div class="form-group">
                     <label for="email">* Email</label>
-                    <input type="email" id="email" placeholder="Email" required>
+                    <!-- Trường email sẽ hiển thị, nhưng không thể chỉnh sửa. Thêm một trường ẩn để gửi lại email -->
+                    <input type="email" id="email" placeholder="Email" th:field="*{email}" required disabled>
+                    <!-- Trường ẩn để gửi lại email trong form -->
+                    <input type="hidden" name="email" th:value="${user.email}" />
                 </div>
             </div>
 
+            <!-- Dòng thông tin khác -->
             <div class="form-row">
                 <div class="form-group">
                     <label for="address">* Địa chỉ</label>
-                    <input type="text" id="address" placeholder="Địa chỉ" required>
+                    <!-- Hiển thị địa chỉ người dùng -->
+                    <input type="text" id="address" placeholder="Địa chỉ" th:field="*{address}" required>
                 </div>
                 <div class="form-group">
                     <label for="gender">Giới tính</label>
-                    <input type="text" id="gender" placeholder="Giới tính">
+                    <select id="gender" name="sex" th:field="*{sex}" required>
+                        <option value="M" th:selected="*{sex == 'M'}">Nam</option>
+                        <option value="F" th:selected="*{sex == 'F'}">Nữ</option>
+                    </select>
                 </div>
             </div>
 
+            <!-- Dòng thông tin ngày sinh và số điện thoại -->
             <div class="form-row">
                 <div class="form-group">
                     <label for="dob">Ngày sinh</label>
-                    <input type="date" id="dob" placeholder="Ngày sinh">
+                    <!-- Hiển thị ngày sinh người dùng -->
+                    <input type="date" id="dob" th:field="*{dob}" placeholder="Ngày sinh">
                 </div>
                 <div class="form-group">
                     <label for="phone">* Số điện thoại</label>
-                    <input type="tel" id="phone" placeholder="Số điện thoại" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="password">* Mật khẩu</label>
-                    <input type="password" id="password" placeholder="Mật khẩu" required>
-                </div>
-                <div class="form-group">
-                    <label for="confirm-password">* Xác nhận lại mật khẩu</label>
-                    <input type="password" id="confirm-password" placeholder="Xác nhận lại mật khẩu" required>
+                    <!-- Hiển thị số điện thoại người dùng -->
+                    <input type="tel" id="phone" placeholder="Số điện thoại" th:field="*{phoneNumber}" required>
                 </div>
             </div>
 

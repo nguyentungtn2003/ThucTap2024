@@ -13,4 +13,6 @@ public interface UserService {
     UserDto findUserDtoByEmail(String email);
 
     List<UserDto> findAllUsers();
+
+    boolean updateUser(UserDto userDto);
 }

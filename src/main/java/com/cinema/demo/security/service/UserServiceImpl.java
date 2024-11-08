@@ -7,6 +7,7 @@ import com.cinema.demo.security.repository.RoleRepository;
 import com.cinema.demo.security.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,26 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional
+    public boolean updateUser(UserDto userDto) {
+        // Tìm người dùng trong cơ sở dữ liệu
+        UserEntity userEntity = userRepository.findByEmail(userDto.getEmail());
+
+        if (userEntity != null) {
+            // Cập nhật thông tin người dùng
+            userEntity.setFullName(userDto.getFullName());
+            userEntity.setAddress(userDto.getAddress());
+            userEntity.setPhoneNumber(userDto.getPhoneNumber());
+            userEntity.setSex(userDto.getSex());
+            userEntity.setDob(userDto.getDob());
+
+            userRepository.save(userEntity);  // Lưu lại thông tin đã cập nhật
+            return true;  // Trả về true nếu cập nhật thành công
+        } else {
+            return false;  // Trả về false nếu không tìm thấy người dùng
+        }
+    }
     private UserDto convertEntityToDto(UserEntity user) {
         UserDto userDto = new UserDto();
 

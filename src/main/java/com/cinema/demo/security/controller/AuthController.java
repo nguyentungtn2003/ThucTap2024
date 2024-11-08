@@ -26,7 +26,7 @@ public class AuthController {
     // handler method to handle home page request
     @GetMapping("/home")
     public String home() {
-        return "user_account_infor";
+        return "redirect:/user/info"; //có thể sửa nếu không muốn auto vào user inf
     }
 
     // handler method to handle user registration form request
