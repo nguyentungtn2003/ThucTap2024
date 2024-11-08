@@ -30,6 +30,7 @@ public class SpringSecurity {
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
                                 .requestMatchers("/home1").permitAll()  // Cho phép truy cập trang /home1 mà không cần xác thực
+                                .requestMatchers("/login.html").permitAll()
                                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()  // Cho phép tài nguyên tĩnh
                                 .requestMatchers("/home").hasRole("USER")
                                 .requestMatchers("/user/info").hasRole("USER")
