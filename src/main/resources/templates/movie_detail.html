@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Phim</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Simplified the path -->
+</head>
+<body>
+
+<header>
+    <div class="navbar">
+        <div class="logo">LOGO</div>
+        <nav>
+            <ul>
+                <li><a href="Giaodienchuadangnhap.html">Home</a></li>
+                <li><a href="comingsoon.html">Sắp Chiếu</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-link" href="#">Thể Loại</a>
+                    <ul id="dropdown-content">
+                        <li><a href="horror.html">Kinh Dị</a></li>
+                        <li><a href="psychology.html">Tâm Lý</a></li>
+                    </ul>
+                </li>
+                <li><a href="myticket.html">Vé Của Tôi</a></li>
+                <li><a href="accountinfo.html">Thông Tin Cá Nhân</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            <a href="#">Đăng Nhập</a>
+            <a href="#">Đăng Ký</a>
+            <div class="lang">
+                <img src="vi.png" alt="Tiếng Việt">
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="movie-detail">
+    <div class="movie-info">
+        <img id="movie-poster" class="movie-poster" src="Quyanfont.jpg" alt="Movie Poster">
+        <div class="movie-details">
+            <h1 id="movie-title" class="movie-title">Tên Phim</h1>
+            <p id="movie-description" class="movie-description">Mô Tả</p>
+            <ul class="movie-attributes">
+                <li>Đạo Diễn: <span id="movie-director"></span></li>
+                <li>Diễn Viên: <span id="movie-actors"></span></li>
+                <li>Thể Loại: <span id="movie-genre"></span></li>
+                <li>Thời Lượng: <span id="movie-duration"></span></li>
+                <li>Ngôn Ngữ: <span id="movie-language"></span></li>
+                <li>Khởi Chiếu: <span id="movie-release-date"></span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="showtimes">
+        <h2>Lịch Chiếu</h2>
+        <div class="time-slots" id="time-slots">
+</main>
+
+<script src="movie_detail.js"></script>
+
+</body>
+</html>

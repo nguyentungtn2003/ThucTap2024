@@ -1,5 +1,3 @@
-// movie_detail.js
-
 // Sample data of movies (in real case, this data can come from an API or a server)
 const movies = {
     quyan: {
@@ -16,7 +14,7 @@ const movies = {
     },
     transformer: {
         title: "Venom 3",
-        description: "",
+        description: "A continuation of the Venom saga...",
         director: "Damian McCarthy",
         actors: "Carolyn Bracken, Johnny French, Steve Wall",
         genre: "Kinh dị",
@@ -138,26 +136,29 @@ function displayMovieDetails() {
 
     if (movie) {
         // Populate the movie details
-        document.getElementById("movie-title").innerText = movie.title;
-        document.getElementById("movie-description").innerText = movie.description;
-        document.getElementById("movie-director").innerText = movie.director;
-        document.getElementById("movie-actors").innerText = movie.actors;
-        document.getElementById("movie-genre").innerText = movie.genre;
-        document.getElementById("movie-duration").innerText = movie.duration;
-        document.getElementById("movie-language").innerText = movie.language;
-        document.getElementById("movie-release-date").innerText = movie.releaseDate;
+        document.getElementById("movie-title").textContent = movie.title;
+        document.getElementById("movie-description").textContent = movie.description;
+        document.getElementById("movie-director").textContent = movie.director;
+        document.getElementById("movie-actors").textContent = movie.actors;
+        document.getElementById("movie-genre").textContent = movie.genre;
+        document.getElementById("movie-duration").textContent = movie.duration;
+        document.getElementById("movie-language").textContent = movie.language;
+        document.getElementById("movie-release-date").textContent = movie.releaseDate;
         document.getElementById("movie-poster").src = movie.poster;
 
         // Populate showtimes
         const timeSlots = document.getElementById("time-slots");
-        movie.showtimes.forEach(time => {
-            const timeSlot = document.createElement("div");
-            timeSlot.classList.add("time-slot");
-            timeSlot.innerText = time;
-            timeSlots.appendChild(timeSlot);
-        });
+        if (movie.showtimes && Array.isArray(movie.showtimes)) {
+            movie.showtimes.forEach(time => {
+                const timeSlot = document.createElement("a");
+                timeSlot.classList.add("btn-showtime");
+                timeSlot.href = "book_ticket.html?time=" + encodeURIComponent(time) + "&movie=" + encodeURIComponent(movieKey); // Pass time and movie key to the booking page
+                timeSlot.textContent = time;
+                timeSlots.appendChild(timeSlot);
+            });
+        }
     }
 }
 
 // Execute the function to display movie details on page load
-displayMovieDetails();
+document.addEventListener("DOMContentLoaded", displayMovieDetails);
