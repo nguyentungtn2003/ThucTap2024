@@ -22,5 +22,10 @@ public class MovieService {
         return movieRepository.findAll().stream()
                 .filter(movie -> movie.getReleaseDate() != null && movie.getReleaseDate().after(currentDate))
                 .collect(Collectors.toList());
+        public MovieEntity getMovieById(int movieId) {
+            return movieRepository.findById(movieId)
+                    .orElseThrow(() -> new IllegalArgumentException("Movie not found with id: " + movieId));
+        }
+
     }
 }
