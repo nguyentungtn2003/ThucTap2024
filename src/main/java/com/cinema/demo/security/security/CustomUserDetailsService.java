@@ -2,7 +2,7 @@ package com.cinema.demo.security.security;
 
 import com.cinema.demo.entity.RoleEntity;
 import com.cinema.demo.entity.UserEntity;
-import com.cinema.demo.security.repository.UserRepository;
+import com.cinema.demo.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

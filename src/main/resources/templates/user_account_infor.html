@@ -18,39 +18,71 @@
         }
 
         header {
-            background-color: black;
+            background-color: #333;
             padding: 10px;
         }
-
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background-color: white;
+            padding: 10px;
         }
 
         .navbar .logo {
             font-size: 24px;
-            color: white;
-            font-weight: bold;
         }
 
-        .navbar nav ul {
-            list-style: none;
+        nav ul {
+            list-style-type: none;
             display: flex;
             gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
         }
 
         .navbar nav ul li a {
             text-decoration: none;
-            color: white;
-            font-size: 16px;
+            color: #333;
             padding: 5px 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .navbar nav ul li a:hover {
-            background-color: #444;
+            background-color: #f0f0f0;
+            color: #333;
+            border-radius: 5px;
+        }
+
+        /* CSS cho Dropdown */
+        .dropdown-content {
+            display: none; /* Ẩn các mục con mặc định */
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 150px;
+            z-index: 1;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        /* Hiển thị các mục con khi hover vào mục cha có class .dropdown */
+        .dropdown:hover .dropdown-content {
+            display: block; /* Hiển thị các mục con khi hover */
+        }
+
+        .dropdown-content li a {
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+
+        .dropdown-content li a:hover {
+            background-color: #f0f0f0;
         }
 
         .account-info-container {
@@ -98,7 +130,6 @@
         .form-group label {
             margin-bottom: 5px;
             color: #333;
-            font-weight: bold;
         }
 
         .form-group input[type="text"],
@@ -117,7 +148,7 @@
         }
 
         .btn-save {
-            background-color: black;
+            background-color: #333;
             color: white;
             padding: 10px;
             font-size: 16px;
@@ -131,45 +162,69 @@
         .btn-save:hover {
             background-color: #444;
         }
-
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+        .success-message {
+            color: green;
+            font-size: 1em;
+        }
     </style>
-</head>
-<body>
 
-<header>
-    <div class="navbar">
-        <div class="logo">LOGO</div>
-        <nav>
-            <ul>
-                <li><a href="../home1">Home</a></li>
-                <li><a href="comingsoon.html">Sắp Chiếu</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-link" href="#">Thể Loại</a>
-                    <ul id="dropdown-content">
-                        <li><a href="horror.html">Kinh Dị</a></li>
-                        <li><a href="psychology.html">Tâm Lý</a></li>
-                        <li><a href="action.html">Hành Động</a></li>
-                    </ul>
-                </li>
-                <li><a href="myticket.html">Vé Của Tôi</a></li>
-                <li><a href="/user/info">Thông Tin Cá Nhân</a></li>
-            </ul>
-        </nav>
-        <div class="auth-links">
-            <a href="login.html">Đăng Nhập</a>
-            <a href="registration.html">Đăng Ký</a>
-            <div class="lang">
-                <img src="vi.png" alt="Tiếng Việt">
-            </div>
+    <script>
+        function checkDob(input) {
+            if (!input.value) {
+                input.value = ""; // Xóa giá trị nếu người dùng xóa ngày tháng
+            }
+        }
+    </script>
+
+    <header>
+        <div class="navbar">
+            <div class="logo">LOGO</div>
+            <nav>
+                <ul>
+                    <li><a href="home1">Home</a></li>
+                    <li><a href="comingsoon.html">Sắp Chiếu</a></li>
+
+                    <!-- Dropdown cho Thể Loại -->
+                    <li class="dropdown">
+                        <a class="dropdown-link" href="#">Thể Loại</a>
+                        <ul class="dropdown-content">
+                            <li><a href="horror.html">Kinh Dị</a></li>
+                            <li><a href="psychology.html">Tâm Lý</a></li>
+                            <li><a href="action.html">Hành Động</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="myticket.html">Vé Của Tôi</a></li>
+
+                    <!-- Dropdown cho Thông Tin Cá Nhân -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-link">Thông Tin Cá Nhân</a>
+                        <ul class="dropdown-content">
+                            <li><a href="/user/info">Xem Thông Tin</a></li>
+                            <li><a href="/user/change-password">Cập Nhật Mật Khẩu</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </div>
-</header>
+    </header>
+
 
 <div class="account-info-container">
     <h2>THÔNG TIN TÀI KHOẢN</h2>
 
+    <!-- Display global error message, if any -->
     <div th:if="${error != null}" class="alert alert-danger">
         <p th:text="${error}"></p>
+    </div>
+
+    <!-- Display success message, if any -->
+    <div th:if="${success != null}" class="alert alert-success">
+        <p th:text="${success}" class="success-message"></p>
     </div>
 
     <div class="form-container">
@@ -177,24 +232,22 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="full-name">* Họ tên</label>
-                    <!-- Hiển thị họ tên người dùng -->
                     <input type="text" id="full-name" placeholder="Họ tên" th:field="*{fullName}" required>
+                    <p th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="error-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="email">* Email</label>
-                    <!-- Trường email sẽ hiển thị, nhưng không thể chỉnh sửa. Thêm một trường ẩn để gửi lại email -->
                     <input type="email" id="email" placeholder="Email" th:field="*{email}" required disabled>
-                    <!-- Trường ẩn để gửi lại email trong form -->
                     <input type="hidden" name="email" th:value="${user.email}" />
+                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></p>
                 </div>
             </div>
 
-            <!-- Dòng thông tin khác -->
             <div class="form-row">
                 <div class="form-group">
                     <label for="address">* Địa chỉ</label>
-                    <!-- Hiển thị địa chỉ người dùng -->
                     <input type="text" id="address" placeholder="Địa chỉ" th:field="*{address}" required>
+                    <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="gender">Giới tính</label>
@@ -202,20 +255,20 @@
                         <option value="M" th:selected="*{sex == 'M'}">Nam</option>
                         <option value="F" th:selected="*{sex == 'F'}">Nữ</option>
                     </select>
+                    <p th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}" class="error-message"></p>
                 </div>
             </div>
 
-            <!-- Dòng thông tin ngày sinh và số điện thoại -->
             <div class="form-row">
                 <div class="form-group">
                     <label for="dob">Ngày sinh</label>
-                    <!-- Hiển thị ngày sinh người dùng -->
-                    <input type="date" id="dob" th:field="*{dob}" placeholder="Ngày sinh">
+                    <input type="date" id="dob" th:field="*{dob}" placeholder="Ngày sinh" oninput="checkDob(this)">
+                    <p th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" class="error-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="phone">* Số điện thoại</label>
-                    <!-- Hiển thị số điện thoại người dùng -->
                     <input type="tel" id="phone" placeholder="Số điện thoại" th:field="*{phoneNumber}" required>
+                    <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="error-message"></p>
                 </div>
             </div>
 
@@ -223,6 +276,5 @@
         </form>
     </div>
 </div>
-
 </body>
 </html>

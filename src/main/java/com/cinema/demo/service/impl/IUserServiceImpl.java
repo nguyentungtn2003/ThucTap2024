@@ -1,10 +1,13 @@
-package com.cinema.demo.security.service;
+package com.cinema.demo.service.impl;
 
-import com.cinema.demo.security.dto.UserDto;
+import com.cinema.demo.dto.UpdateUserDto;
+import com.cinema.demo.dto.UserDto;
 import com.cinema.demo.entity.RoleEntity;
 import com.cinema.demo.entity.UserEntity;
-import com.cinema.demo.security.repository.RoleRepository;
-import com.cinema.demo.security.repository.UserRepository;
+import com.cinema.demo.repository.RoleRepository;
+import com.cinema.demo.repository.UserRepository;
+import com.cinema.demo.service.IUserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +17,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class IUserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public IUserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -77,25 +80,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity findUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+
+    @Override
     @Transactional
-    public boolean updateUser(UserDto userDto) {
+    public void updateUser(UpdateUserDto UpdateUserDto) {
         // Tìm người dùng trong cơ sở dữ liệu
-        UserEntity userEntity = userRepository.findByEmail(userDto.getEmail());
+        UserEntity userEntity = userRepository.findByEmail(UpdateUserDto.getEmail());
 
         if (userEntity != null) {
             // Cập nhật thông tin người dùng
-            userEntity.setFullName(userDto.getFullName());
-            userEntity.setAddress(userDto.getAddress());
-            userEntity.setPhoneNumber(userDto.getPhoneNumber());
-            userEntity.setSex(userDto.getSex());
-            userEntity.setDob(userDto.getDob());
+            userEntity.setFullName(UpdateUserDto.getFullName());
+            userEntity.setAddress(UpdateUserDto.getAddress());
+            userEntity.setPhoneNumber(UpdateUserDto.getPhoneNumber());
+            userEntity.setSex(UpdateUserDto.getSex());
+            userEntity.setDob(UpdateUserDto.getDob());
 
             userRepository.save(userEntity);  // Lưu lại thông tin đã cập nhật
-            return true;  // Trả về true nếu cập nhật thành công
-        } else {
-            return false;  // Trả về false nếu không tìm thấy người dùng
+
         }
     }
+
+
+    @Override
+    public void updatePassword(UserEntity userEntity, String newPassword) {
+        // Mã hóa mật khẩu mới trước khi lưu
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+
+        // Cập nhật mật khẩu mới
+        userEntity.setPassword(encodedNewPassword);
+        userRepository.save(userEntity); // Lưu lại thực thể với mật khẩu đã cập nhật
+    }
+
+
     private UserDto convertEntityToDto(UserEntity user) {
         UserDto userDto = new UserDto();
 

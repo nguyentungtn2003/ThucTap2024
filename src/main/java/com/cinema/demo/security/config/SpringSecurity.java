@@ -19,27 +19,30 @@ public class SpringSecurity {
     private UserDetailsService userDetailsService;
 
     @Bean
-    public static PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/register/**").permitAll()
-                                .requestMatchers("/index").permitAll()
-                                .requestMatchers("/home1").permitAll()  // Cho phép truy cập trang /home1 mà không cần xác thực
-                                .requestMatchers("/login.html").permitAll()
-                                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()  // Cho phép tài nguyên tĩnh
-                                .requestMatchers("/home").hasRole("USER")
-                                .requestMatchers("/user/info").hasRole("USER")
-                                .requestMatchers("/user/update").hasRole("USER")
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            http.csrf().disable()
+                    .authorizeHttpRequests((authorize) ->
+                            authorize.requestMatchers("/register/**").permitAll()
+                                    .requestMatchers("/index").permitAll()
+                                    .requestMatchers("/home").permitAll()
+                                    .requestMatchers("/home1").permitAll()  // Cho phép truy cập trang /home1 mà không cần xác thực
+                                    .requestMatchers("/postLogin").permitAll()
+                                    .requestMatchers("/login.html").permitAll()
+                                    .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()  // Cho phép tài nguyên tĩnh
+                                    .requestMatchers("/user/home1").hasRole("USER")
+                                    .requestMatchers("/user/info").hasRole("USER")
+                                    .requestMatchers("/user/update").hasRole("USER")
+                                    .requestMatchers("/user/change-password").hasRole("USER")
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/home1", true)
+                                .defaultSuccessUrl("/postLogin", true)
                                 .permitAll()
                 ).logout(
                         logout -> logout

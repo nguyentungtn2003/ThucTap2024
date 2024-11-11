@@ -1,9 +1,9 @@
 package com.cinema.demo.security.controller;
 
 import jakarta.validation.Valid;
-import com.cinema.demo.security.dto.UserDto;
+import com.cinema.demo.dto.UserDto;
 import com.cinema.demo.entity.UserEntity;
-import com.cinema.demo.security.service.UserService;
+import com.cinema.demo.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +16,12 @@ import java.util.List;
 
 @Controller
 public class AuthController {
-    private UserService userService;
+    private IUserService IUserService;
     //private MovieService movieService;
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setUserService(IUserService IUserService) {
+        this.IUserService = IUserService;
     }
 
     // handler method to handle home page request
@@ -66,7 +66,7 @@ public class AuthController {
                                BindingResult result,
                                Model model) {
         // Kiểm tra xem email đã tồn tại chưa
-        UserEntity existingUser = userService.findUserByEmail(userDto.getEmail());
+        UserEntity existingUser = IUserService.findUserByEmail(userDto.getEmail());
         if (existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()) {
             result.rejectValue("email", null, "There is already an account registered with the same email");
             System.out.println("Existing user found with email: " + userDto.getEmail());
@@ -80,7 +80,7 @@ public class AuthController {
         }
 
         try {
-            userService.saveUser(userDto);
+            IUserService.saveUser(userDto);
             System.out.println("User saved successfully: " + userDto.getEmail());
         } catch (Exception e) {
             System.out.println("Error occurred while saving user: " + e.getMessage());
@@ -96,7 +96,7 @@ public class AuthController {
     // handler method to handle list of users
     @GetMapping("/users")
     public String users(Model model) {
-        List<UserDto> users = userService.findAllUsers();
+        List<UserDto> users = IUserService.findAllUsers();
         model.addAttribute("users", users);
         return "users";
     }

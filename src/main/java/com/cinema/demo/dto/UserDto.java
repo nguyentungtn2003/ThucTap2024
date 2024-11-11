@@ -1,4 +1,4 @@
-package com.cinema.demo.security.dto;
+package com.cinema.demo.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -43,6 +43,7 @@ public class UserDto {
     private String fullName;
 
     private Character sex;
+
 
     private List<String> roles;
 }

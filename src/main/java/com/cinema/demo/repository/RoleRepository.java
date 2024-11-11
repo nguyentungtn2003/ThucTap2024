@@ -1,4 +1,4 @@
-package com.cinema.demo.security.repository;
+package com.cinema.demo.repository;
 
 import com.cinema.demo.entity.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

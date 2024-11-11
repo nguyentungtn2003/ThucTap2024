@@ -20,7 +20,7 @@ import java.util.List;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private String phoneNumber;
@@ -46,7 +46,7 @@ public class UserEntity {
     @Column(nullable = false)
     private char sex;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+        @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
