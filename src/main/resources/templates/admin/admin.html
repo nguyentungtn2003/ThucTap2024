@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Interface</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Top Header */
+    .header {
+      background-color: black;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 3px solid purple;
+      border-bottom: 1px solid black;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      background-color: white;
+      padding-top: 20px;
+      border-right: 1px solid lightgray;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      margin-top: 45px; /* to align with the header */
+    }
+
+    .sidebar a {
+      display: block;
+      color: black;
+      padding: 10px 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f0f0f0;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 200px; /* Width of the sidebar */
+      padding: 20px;
+      height: calc(100vh - 45px); /* Adjust for header height */
+    }
+    /* Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: black;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* Row colors */
+    tr:nth-child(odd) {
+      background-color: #d9a5a5; /* Red color for odd rows */
+    }
+
+    tr:nth-child(even) {
+      background-color: #c3d0d9; /* Blue color for even rows */
+    }
+
+    tr:nth-child(4) {
+      background-color: #9bc29b; /* Green color for specific rows */
+    }
+
+    /* Icons */
+    .icon {
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    .icon:hover {
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Header -->
+<div class="header">
+  <div>ADMIN 2</div>
+  <div><a href="../login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
+  <a href="/admin/ad2_room_mana">QUẢN LÍ PHÒNG CHIẾU</a>
+  <a href="/admin/ad2_cus_mana">QUẢN LÍ KHÁCH HÀNG</a>
+  <a href="/admin/ad2_addcus">THÊM MỚI KHÁCH HÀNG</a>
+  <a href="/admin/ad2_ticket_mana">QUẢN LÍ VÉ</a>
+  <a href="/admin/ad2_addtick">THÊM VÉ</a>
+  <a href="/admin/ad2_mv_mana">QUẢN LÍ PHIM</a>
+  <a href="/admin/ad2_addmovie">THÊM PHIM</a>
+  <a href="/admin/admin2">THÔNG TIN CÁ NHÂN</a>
+</div>
+
+</body>
+</html>

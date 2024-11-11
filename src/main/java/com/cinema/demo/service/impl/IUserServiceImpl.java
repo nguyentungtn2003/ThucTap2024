@@ -79,10 +79,6 @@ public class IUserServiceImpl implements IUserService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public UserEntity findUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
 
 
     @Override

@@ -1,5 +1,7 @@
 package com.cinema.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,5 +53,6 @@ public class UserEntity {
             name = "users_roles",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
-    private List<RoleEntity> roles = new ArrayList<>();
+        @JsonManagedReference
+        private List<RoleEntity> roles = new ArrayList<>();
 }

@@ -16,8 +16,6 @@ public interface IUserService {
 
     List<UserDto> findAllUsers();
 
-    UserEntity findUserById(Long id);
-
 
     void updateUser(UpdateUserDto UpdateUserDto);
 
