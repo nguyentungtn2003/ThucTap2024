@@ -20,4 +20,7 @@ public interface IUserService {
     void updateUser(UpdateUserDto UpdateUserDto);
 
     void updatePassword(UserEntity userEntity, String newPassword);
+    // Rename updatePassword to resetPassword for password reset functionality
+    boolean  resetPassword(String email, String newPassword);
+    boolean existsByEmail(String email);
 }

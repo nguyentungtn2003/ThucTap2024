@@ -1,6 +1,6 @@
 package com.cinema.demo.dto;
 
-
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;
@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class PasswordChangeDto {
     private Long id;
+
     @NotEmpty(message = "Mật khẩu hiện tại không được để trống")
     private String currentPassword;
 
@@ -21,4 +22,11 @@ public class PasswordChangeDto {
 
     @NotEmpty(message = "Xác nhận mật khẩu không được để trống")
     private String confirmNewPassword;
+
+    @NotEmpty(message = "Email không được để trống")
+    @Email(message = "Email không hợp lệ")
+    private String email;
+
+    @NotEmpty(message = "Token không được để trống")
+    private String token;  // Thêm token để truyền từ form reset mật khẩu
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +28,10 @@ public class IUserServiceImpl implements IUserService {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
     @Override
     public void saveUser(UserDto userDto) {
         UserEntity user = new UserEntity();
@@ -111,6 +115,21 @@ public class IUserServiceImpl implements IUserService {
         userEntity.setPassword(encodedNewPassword);
         userRepository.save(userEntity); // Lưu lại thực thể với mật khẩu đã cập nhật
     }
+
+
+    public boolean resetPassword(String email, String newPassword) {
+        // Tìm người dùng theo email
+        UserEntity user = userRepository.findByEmail(email);
+        if (user != null) {
+            // Cập nhật mật khẩu
+            user.setPassword(newPassword);  // Mật khẩu đã được mã hóa trước đó
+            userRepository.save(user);  // Lưu người dùng với mật khẩu mới
+            return true;
+        }
+        return false;  // Nếu không tìm thấy người dùng
+    }
+
+
 
 
     private UserDto convertEntityToDto(UserEntity user) {

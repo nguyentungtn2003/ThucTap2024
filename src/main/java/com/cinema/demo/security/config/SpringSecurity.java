@@ -39,6 +39,8 @@ public class SpringSecurity {
                                     .requestMatchers("/user/update").hasRole("USER")
                                     .requestMatchers("/user/change-password").hasRole("USER")
                                     .requestMatchers("/admin/**").hasRole("ADMIN")
+                                    .requestMatchers("/request-reset-password").permitAll()  // Cho phép truy cập trang yêu cầu reset mật khẩu
+                                    .requestMatchers("/reset-password").permitAll()  // Cho phép truy cập trang reset mật khẩu
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
@@ -59,4 +61,5 @@ public class SpringSecurity {
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
+
 }
