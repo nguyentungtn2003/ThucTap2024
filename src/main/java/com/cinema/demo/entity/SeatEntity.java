@@ -19,7 +19,7 @@ public class SeatEntity {
 
     @ManyToOne
     @JoinColumn(name = "seatTypeId")
-    private SeatTypeEntity seatType;
+    private SeatTypeEntity seatType;  // Đây là thuộc tính seatType
 
     @ManyToOne
     @JoinColumn(name = "showtimeId")

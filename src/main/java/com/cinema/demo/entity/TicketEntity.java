@@ -21,4 +21,11 @@ public class TicketEntity {
     private String seatNumber;
 
     private String status;
+
+    private String startTime;
+    private String endTime;
+
+    @ManyToOne
+    @JoinColumn(name = "invoiceId")  // Thêm mối quan hệ với InvoiceEntity
+    private InvoiceEntity invoice;
 }

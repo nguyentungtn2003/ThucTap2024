@@ -12,4 +12,7 @@ public class TypeOfConcessionEntity {
     private int concessionTypeId;
 
     private String productType;
+
+    private  int quantity;
+
 }
