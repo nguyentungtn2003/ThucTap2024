@@ -11,7 +11,7 @@ public class MovieEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int movieId;
-
+    private String movieName;
     private String description;
 
     private String productionCompany;
@@ -19,6 +19,12 @@ public class MovieEntity {
     private String director;
 
     private String title;
+
+    private String image;
+
+    private int is_showing;
+
+    private String trailerurl;
 
     private String version;
 

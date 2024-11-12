@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang bán vé phim</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #333;
+            padding: 10px;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 10px;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        .navbar nav ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar nav ul li a:hover {
+            background-color: #f0f0f0;
+            color: #333;
+            border-radius: 5px;
+        }
+
+        /* CSS cho Dropdown */
+        .dropdown-content {
+            display: none; /* Ẩn các mục con mặc định */
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 150px;
+            z-index: 1;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        /* Hiển thị các mục con khi hover vào mục cha có class .dropdown */
+        .dropdown:hover .dropdown-content {
+            display: block; /* Hiển thị các mục con khi hover */
+        }
+
+        .dropdown-content li a {
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+
+        .dropdown-content li a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .account-info-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .account-info-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .alert.alert-danger {
+            color: #d9534f;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="date"],
+        .form-group select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input[disabled] {
+            background-color: #eee;
+        }
+
+        .btn-save {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-save:hover {
+            background-color: #444;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+        .success-message {
+            color: green;
+            font-size: 1em;
+        }
+    </style>
+
+    <script>
+        function checkDob(input) {
+            if (!input.value) {
+                input.value = ""; // Xóa giá trị nếu người dùng xóa ngày tháng
+            }
+        }
+    </script>
+
+    <header>
+        <div class="navbar">
+            <div class="logo">LOGO</div>
+            <nav>
+                <ul>
+                    <li><a href="home1">Home</a></li>
+                    <li><a href="comingsoon.html">Sắp Chiếu</a></li>
+
+                    <!-- Dropdown cho Thể Loại -->
+                    <li class="dropdown">
+                        <a class="dropdown-link" href="#">Thể Loại</a>
+                        <ul class="dropdown-content">
+                            <li><a href="horror.html">Kinh Dị</a></li>
+                            <li><a href="psychology.html">Tâm Lý</a></li>
+                            <li><a href="action.html">Hành Động</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="myticket.html">Vé Của Tôi</a></li>
+
+                    <!-- Dropdown cho Thông Tin Cá Nhân -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-link">Thông Tin Cá Nhân</a>
+                        <ul class="dropdown-content">
+                            <li><a href="/user/info">Xem Thông Tin</a></li>
+                            <li><a href="/user/change-password">Cập Nhật Mật Khẩu</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+<div class="account-info-container">
+    <h2>THÔNG TIN TÀI KHOẢN</h2>
+
+    <!-- Display global error message, if any -->
+    <div th:if="${error != null}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Display success message, if any -->
+    <div th:if="${success != null}" class="alert alert-success">
+        <p th:text="${success}" class="success-message"></p>
+    </div>
+
+    <div class="form-container">
+        <form th:action="@{/user/update}" method="post" th:object="${user}">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="full-name">* Họ tên</label>
+                    <input type="text" id="full-name" placeholder="Họ tên" th:field="*{fullName}" required>
+                    <p th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="error-message"></p>
+                </div>
+                <div class="form-group">
+                    <label for="email">* Email</label>
+                    <input type="email" id="email" placeholder="Email" th:field="*{email}" required disabled>
+                    <input type="hidden" name="email" th:value="${user.email}" />
+                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></p>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="address">* Địa chỉ</label>
+                    <input type="text" id="address" placeholder="Địa chỉ" th:field="*{address}" required>
+                    <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-message"></p>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Giới tính</label>
+                    <select id="gender" name="sex" th:field="*{sex}" required>
+                        <option value="M" th:selected="*{sex == 'M'}">Nam</option>
+                        <option value="F" th:selected="*{sex == 'F'}">Nữ</option>
+                    </select>
+                    <p th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}" class="error-message"></p>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dob">Ngày sinh</label>
+                    <input type="date" id="dob" th:field="*{dob}" placeholder="Ngày sinh" oninput="checkDob(this)">
+                    <p th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" class="error-message"></p>
+                </div>
+                <div class="form-group">
+                    <label for="phone">* Số điện thoại</label>
+                    <input type="tel" id="phone" placeholder="Số điện thoại" th:field="*{phoneNumber}" required>
+                    <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="error-message"></p>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-save">LƯU CHỈNH SỬA</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

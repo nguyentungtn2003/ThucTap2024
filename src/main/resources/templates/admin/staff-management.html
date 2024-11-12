@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Interface - Quản lý Nhân Viên</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Top Header */
+    .header {
+      background-color: black;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 3px solid purple;
+      border-bottom: 1px solid black;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      background-color: white;
+      padding-top: 20px;
+      border-right: 1px solid lightgray;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      margin-top: 45px; /* to align with the header */
+    }
+
+    .sidebar a {
+      display: block;
+      color: black;
+      padding: 10px 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .sidebar a:hover {
+      background-color: #f0f0f0;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 200px; /* Width of the sidebar */
+      padding: 20px;
+      height: calc(100vh - 45px); /* Adjust for header height */
+    }
+
+    /* Form Styles */
+    .form-container {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 500px;
+      margin-bottom: 20px;
+    }
+
+    .form-container h2 {
+      margin-top: 0;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type="date"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    .form-group .radio-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: black;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* Row colors */
+    tr:nth-child(odd) {
+      background-color: #d9a5a5; /* Red color for odd rows */
+    }
+
+    tr:nth-child(even) {
+      background-color: #c3d0d9; /* Blue color for even rows */
+    }
+
+    /* Icons */
+    .icon {
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    .icon:hover {
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Header -->
+<div class="header">
+  <div>ADMIN 2</div>
+  <div><a href="../login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
+  <a href="/admin/add-staff">THÊM MỚI NHÂN VIÊN</a>
+  <a href="/admin/ad2_room_mana.html">QUẢN LÍ PHÒNG CHIẾU</a>
+  <a href="/admin/ad2_cus_mana.html">QUẢN LÍ KHÁCH HÀNG</a>
+  <a href="/admin/ad2_addcus.html">THÊM MỚI KHÁCH HÀNG</a>
+  <a href="/admin/ad2_ticket_mana.html">QUẢN LÍ VÉ</a>
+  <a href="/admin/ad2_addtick.html">THÊM VÉ</a>
+  <a href="/admin/ad2_mv_mana.html">QUẢN LÍ PHIM</a>
+  <a href="/admin/ad2_addmovie.html">THÊM PHIM</a>
+  <a href="/admin/admin2.html">THÔNG TIN CÁ NHÂN</a>
+</div>
+
+<!-- Main Content Area -->
+<div class="main-content">
+  <h1>Quản Lý Nhân Viên</h1>
+
+  <!-- Form Thêm Nhân Viên Mới -->
+  <div class="form-container">
+    <h2>Thêm Nhân Viên Mới</h2>
+    <form id="addStaffForm">
+      <div class="form-group">
+        <label>Email:</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label>Họ Tên:</label>
+        <input type="text" id="fullName" required>
+      </div>
+      <div class="form-group">
+        <label>Mật Khẩu:</label>
+        <input type="password" id="password" required>
+      </div>
+      <div class="form-group">
+        <label>Số Điện Thoại:</label>
+        <input type="text" id="phoneNumber" required>
+      </div>
+      <div class="form-group">
+        <label>Địa Chỉ:</label>
+        <input type="text" id="address" required>
+      </div>
+      <div class="form-group">
+        <label>Ngày Sinh:</label>
+        <input type="date" id="dob" required>
+      </div>
+      <div class="form-group">
+        <label>Giới Tính:</label>
+        <div class="radio-group">
+          <label><input type="radio" name="sex" value="M" required> Nam</label>
+          <label><input type="radio" name="sex" value="F"> Nữ</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Trạng Thái:</label>
+        <div class="radio-group">
+          <label><input type="radio" name="status" value="Active" required> Active</label>
+          <label><input type="radio" name="status" value="Inactive"> Inactive</label>
+        </div>
+      </div>
+      <button type="button" onclick="addStaff()">Thêm Nhân Viên</button>
+    </form>
+  </div>
+
+  <!-- Danh sách Nhân Viên -->
+  <div class="table-container">
+    <table id="staffTable">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Họ Tên</th>
+        <th>Email</th>
+        <th>Quyền</th>
+        <th>Ngày Sinh</th>
+        <th>Giới Tính</th>
+        <th>Trạng Thái</th>
+        <th>Quản Lý</th>
+      </tr>
+      </thead>
+      <tbody id="staffTableBody">
+      <!-- Dữ liệu nhân viên sẽ được thêm ở đây bằng JavaScript -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // Hàm thêm nhân viên (đã cập nhật để lấy dữ liệu từ radio button)
+  function addStaff() {
+    const email = document.getElementById("email").value;
+    const fullName = document.getElementById("fullName").value;
+    const password = document.getElementById("password").value;
+    const phoneNumber = document.getElementById("phoneNumber").value;
+    const address = document.getElementById("address").value;
+    const dob = document.getElementById("dob").value;
+    const sex = document.querySelector('input[name="sex"]:checked').value;
+    const status = document.querySelector('input[name="status"]:checked').value;
+
+    fetch('/admin/staff', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        email, fullName, password, phoneNumber, address, dob, sex, status
+      })
+    })
+            .then(response => response.text())
+            .then(data => {
+              alert(data);
+              loadStaffList(); // Tải lại danh sách sau khi thêm mới
+              document.getElementById("addStaffForm").reset(); // Xóa nội dung form
+            });
+  }
+
+  // Tải danh sách nhân viên khi trang được tải
+  document.addEventListener("DOMContentLoaded", loadStaffList);
+
+  // Hàm tải danh sách nhân viên
+  function loadStaffList() {
+    fetch('/admin/staff')
+            .then(response => response.json())
+            .then(data => {
+              const staffTableBody = document.getElementById("staffTableBody");
+              staffTableBody.innerHTML = ""; // Xóa nội dung cũ
+
+              data.forEach(staff => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+            <td>${staff.id}</td>
+            <td>${staff.fullName}</td>
+            <td>${staff.email}</td>
+            <td>${staff.roles.map(role => role.roleName).join(", ")}</td>
+            <td>${staff.dob}</td>
+            <td>${staff.sex === 'M' ? 'Nam' : 'Nữ'}</td>
+            <td>${staff.status}</td>
+            <td>
+              <span class="icon" onclick="editStaff(${staff.id})">✏️</span>
+              <span class="icon" onclick="deleteStaff(${staff.id})">🗑️</span>
+            </td>
+          `;
+                staffTableBody.appendChild(row);
+              });
+            })
+            .catch(error => console.error('Error loading staff list:', error));
+  }
+
+  // Hàm Xóa Nhân Viên
+  function deleteStaff(id) {
+    if (!confirm("Bạn có chắc chắn muốn xóa nhân viên này?")) return;
+
+    fetch(`/admin/staff/${id}`, {
+      method: 'DELETE'
+    })
+            .then(response => response.text())
+            .then(data => {
+              alert(data);
+              loadStaffList(); // Tải lại danh sách sau khi xóa
+            });
+  }
+
+  // Hàm Sửa Nhân Viên - Đây là hàm cơ bản; cần thêm giao diện để cập nhật thông tin
+  function editStaff(id) {
+    const fullName = prompt("Nhập họ tên mới:");
+    const phoneNumber = prompt("Nhập số điện thoại mới:");
+    const address = prompt("Nhập địa chỉ mới:");
+    const dob = prompt("Nhập ngày sinh mới (YYYY-MM-DD):");
+    const sex = prompt("Nhập giới tính mới (M/F):");
+    const status = prompt("Nhập trạng thái mới (Active/Inactive):");
+
+    fetch(`/admin/staff/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        fullName, phoneNumber, address, dob, sex, status
+      })
+    })
+            .then(response => response.text())
+            .then(data => {
+              alert(data);
+              loadStaffList(); // Tải lại danh sách sau khi cập nhật
+            });
+  }
+</script>
+
+</body>
+</html>

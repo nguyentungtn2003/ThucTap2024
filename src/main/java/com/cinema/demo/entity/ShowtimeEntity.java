@@ -2,6 +2,7 @@ package com.cinema.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,4 +19,7 @@ public class ShowtimeEntity {
     @ManyToOne
     @JoinColumn(name = "movieId")
     private MovieEntity movie;
+
+    @OneToMany(mappedBy = "showtime")  // 'showtime' là tên thuộc tính trong SeatEntity
+    private List<SeatEntity> seats;  // Thêm thuộc tính seats
 }
