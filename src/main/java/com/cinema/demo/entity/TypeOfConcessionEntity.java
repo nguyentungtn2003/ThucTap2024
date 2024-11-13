@@ -9,10 +9,10 @@ import lombok.Data;
 public class TypeOfConcessionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int concessionTypeId;
+    private Integer  concessionTypeId;
 
     private String productType;
-
+    private int price;
     private  int quantity;
 
 }
