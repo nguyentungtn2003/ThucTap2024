@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concession Types Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f4f4f9;
+            padding: 20px;
+            margin-left: 270px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #363636;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        #add-btn, button[type="submit"], #toggle-sidebar {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        #add-btn:hover, button[type="submit"]:hover, #toggle-sidebar:hover {
+            background-color: #0056b3;
+        }
+
+        form input[type="text"], form input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        td {
+            font-size: 16px;
+        }
+
+        .edit-btn, .delete-btn {
+            color: #007bff;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .delete-btn {
+            color: #dc3545;
+        }
+
+        .pagination {
+            display: flex;
+            list-style-type: none;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination li a {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .pagination li a.active {
+            background-color: #0056b3;
+        }
+
+        #sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: #e9ecef;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            transform: translateX(-100%);
+        }
+
+        #sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #e9ecef;
+        }
+
+        #sidebar ul {
+            list-style-type: none;
+        }
+
+        #sidebar ul li {
+            margin: 20px 0;
+        }
+
+        #sidebar ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #sidebar ul li a:hover {
+            background-color: #495057;
+        }
+
+        #toggle-sidebar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        #form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            display: none;
+            position: relative;
+        }
+
+        #form-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        #form-container .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #007bff;
+        }
+
+        #search-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #search-form input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            flex: 1;
+        }
+
+        #search-form button[type="submit"] {
+            padding: 10px 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Concession Types Management</h1>
+
+<!-- Search Form -->
+<form id="search-form" action="/admin/typeofconcession/types" method="get">
+    <input type="hidden" id="search" name="search" value="${search}">
+    <input type="text" id="searchVisible" name="searchVisible" placeholder="Search by product type...">
+    <button type="submit">Search</button>
+</form>
+
+<div id="sidebar"style="padding-top: 100px">
+    <h2>Menu Quản Lý</h2>
+    <ul>
+        <li><a href="/admin/tickets">Danh Sách Vé</a></li>
+        <li><a href="#">Quản Lý Đơn Hàng</a></li>
+        <li><a href="#">Quản Lý Phim</a></li>
+        <li><a href="/admin/typeofconcession/types">Quản Lý Đồ Ăn</a></li>
+        <li><a href="#">Cài Đặt</a></li>
+        <li><a href="/login">Đăng Xuất</a></li>
+    </ul>
+</div>
+
+<!-- Button to Toggle Sidebar -->
+<button id="toggle-sidebar">Mở Menu</button>
+
+<!-- Add Button -->
+<button id="add-btn">Add Concession Type</button>
+
+<!-- Add/Edit Form -->
+<div id="form-container">
+    <span class="close-btn" id="close-form">&times;</span>
+    <h2 id="form-title">Add Concession Type</h2>
+    <form id="concession-form" action="/admin/typeofconcession/type/save" method="post">
+        <input type="hidden" id="concessionTypeId" name="concessionTypeId">
+        <input type="text" id="productType" name="productType" placeholder="Product Type" required>
+        <input type="number" id="quantity" name="quantity" placeholder="Quantity" required>
+        <input type="number" id="price" name="price" placeholder="Price" step="0.01" required>
+        <button type="submit">Save</button>
+    </form>
+</div>
+
+<!-- Types Table -->
+<table>
+    <thead>
+    <tr>
+        <th>Product Type</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="type : ${types}">
+        <td th:text="${type.productType}"></td>
+        <td th:text="${type.quantity}"></td>
+        <td th:text="${type.price}"></td>
+        <td>
+            <span class="edit-btn"
+                  th:data-id="${type.concessionTypeId}"
+                  th:data-product="${type.productType}"
+                  th:data-quantity="${type.quantity}"
+                  th:data-price="${type.price}">Edit</span>
+            <form action="/admin/typeofconcession/type/delete/{id}(id=${type.concessionTypeId})" method="post" style="display:inline;">
+                <button type="submit" class="delete-btn">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Pagination -->
+<ul class="pagination">
+    <li th:if="${currentPage > 0}">
+        <a th:href="@{/admin/typeofconcession/types(page=${currentPage - 1})}">&laquo; Previous</a>
+    </li>
+    <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{/admin/typeofconcession/types(page=${i})}" th:text="${i + 1}" th:classappend="${i == currentPage ? 'active' : ''}"></a>
+    </li>
+    <li th:if="${currentPage < totalPages - 1}">
+        <a th:href="@{/admin/typeofconcession/types(page=${currentPage + 1})}">Next &raquo;</a>
+    </li>
+</ul>
+
+<script>
+    // Show form when Add button is clicked
+    document.getElementById('add-btn').addEventListener('click', function() {
+        document.getElementById('form-container').style.display = 'block';
+    });
+
+    // Close form when the close button is clicked
+    document.getElementById('close-form').addEventListener('click', function() {
+        document.getElementById('form-container').style.display = 'none';
+    });
+
+    // Show data in form when Edit button is clicked
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            document.getElementById('form-title').textContent = 'Edit Concession Type';
+            document.getElementById('concessionTypeId').value = this.dataset.id;
+            document.getElementById('productType').value = this.dataset.product;
+            document.getElementById('quantity').value = this.dataset.quantity;
+            document.getElementById('price').value = this.dataset.price;
+            document.getElementById('form-container').style.display = 'block';
+        });
+    });
+
+    // Toggle sidebar visibility
+    // document.getElementById('toggle-sidebar').addEventListener('click', function() {
+    //     const sidebar = document.getElementById('sidebar');
+    //     sidebar.style.transform = sidebar.style.transform === 'translateX(0%)' ? 'translateX(-100%)' : 'translateX(0%)';
+    // });
+    // Toggle sidebar visibility and button text
+    document.getElementById('toggle-sidebar').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
+        const button = document.getElementById('toggle-sidebar');
+
+        // Check if sidebar is visible
+        if (sidebar.style.transform === 'translateX(0%)') {
+            sidebar.style.transform = 'translateX(-100%)';
+            button.textContent = 'Mở Menu'; // Change button text to "Mở Menu"
+        } else {
+            sidebar.style.transform = 'translateX(0%)';
+            button.textContent = 'Đóng Menu'; // Change button text to "Đóng Menu"
+        }
+    });
+
+</script>
+
+</body>
+</html>
