@@ -24,8 +24,12 @@ public class InvoiceEntity {
     @JoinColumn(name = "userId")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "invoice")  // Thay đổi quan hệ từ ManyToOne sang OneToMany
-    private List<TicketEntity> tickets; // Thêm danh sách vé
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
+    private List<TicketEntity> tickets;
+
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ConcessionOrderEntity> concessionOrders;
+
 
     @ManyToOne
     @JoinColumn(name = "promotion_id")
