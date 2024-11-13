@@ -38,10 +38,13 @@ public class SpringSecurity {
                                     .requestMatchers("/user/info").hasRole("USER")
                                     .requestMatchers("/user/update").hasRole("USER")
                                     .requestMatchers("/user/change-password").hasRole("USER")
-                                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                                    .requestMatchers("/admin/**").permitAll()
                                     .requestMatchers("/request-reset-password").permitAll()  // Cho phép truy cập trang yêu cầu reset mật khẩu
                                     .requestMatchers("/reset-password").permitAll()
-                                    .requestMatchers("/ticket-management/tickets").hasRole("USER")
+
+
+
+
                     ).formLogin(
                         form -> form
                                 .loginPage("/login")
