@@ -134,6 +134,29 @@
     .icon:hover {
       opacity: 0.7;
     }
+
+    button {
+      background-color: #333; /* Màu nền xanh lá cây */
+      color: white; /* Màu chữ trắng */
+      padding: 10px 20px; /* Khoảng cách bên trong */
+      font-size: 16px; /* Kích thước chữ */
+      border: none; /* Xóa viền mặc định */
+      border-radius: 5px; /* Bo góc */
+      cursor: pointer; /* Thay đổi con trỏ chuột thành hình bàn tay */
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng đổ bóng */
+      transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+    }
+
+    button:hover {
+      background-color: #336; /* Đổi màu khi di chuột */
+    }
+
+    button:active {
+      background-color: #336; /* Đổi màu khi nhấn vào */
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Giảm đổ bóng khi nhấn */
+      transform: translateY(2px); /* Tạo hiệu ứng nhấn xuống */
+    }
+
   </style>
 </head>
 <body>
@@ -147,7 +170,6 @@
 <!-- Sidebar -->
 <div class="sidebar">
   <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
-  <a href="/admin/add-staff">THÊM MỚI NHÂN VIÊN</a>
   <a href="/admin/ad2_room_mana.html">QUẢN LÍ PHÒNG CHIẾU</a>
   <a href="/admin/ad2_cus_mana.html">QUẢN LÍ KHÁCH HÀNG</a>
   <a href="/admin/ad2_addcus.html">THÊM MỚI KHÁCH HÀNG</a>
@@ -214,12 +236,14 @@
       <thead>
       <tr>
         <th>ID</th>
-        <th>Họ Tên</th>
+        <th>Fullname</th>
         <th>Email</th>
-        <th>Quyền</th>
-        <th>Ngày Sinh</th>
-        <th>Giới Tính</th>
-        <th>Trạng Thái</th>
+        <th>Role</th>
+        <th>Dob</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Sex</th>
+        <th>Status</th>
         <th>Quản Lý</th>
       </tr>
       </thead>
@@ -278,6 +302,8 @@
             <td>${staff.email}</td>
             <td>${staff.roles.map(role => role.roleName).join(", ")}</td>
             <td>${staff.dob}</td>
+            <td>${staff.phoneNumber}</td>
+            <td>${staff.address}</td>
             <td>${staff.sex === 'M' ? 'Nam' : 'Nữ'}</td>
             <td>${staff.status}</td>
             <td>
