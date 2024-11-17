@@ -1,5 +1,8 @@
 package com.cinema.demo.security.service.impl;
 
+import com.cinema.demo.security.helpers.AppConstants;
+import com.cinema.demo.security.helpers.Helper;
+import com.cinema.demo.security.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import com.cinema.demo.entities.Provider;
 import com.cinema.demo.entities.UserEntity;
@@ -17,16 +20,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private final RoleRepository roleRepository;
 
+    @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
     private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private Helper helper;
+
 
     @Override
     public BaseResponse registerAccount(UserDTO userDTO) {
@@ -47,6 +62,37 @@ public class UserServiceImpl implements UserService {
             //throw new BaseException(String.valueOf(HttpStatus.SERVICE_UNAVAILABLE.value()), "Service Unavailable");
         }
         return response;
+    }
+
+    @Override
+    public UserEntity saveUser(UserEntity user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        RoleEntity userRole = roleRepository.findByName("USER")
+                .orElseThrow(() -> new BaseException("500", "Role USER not found"));
+
+        user.setRoles(new HashSet<>());
+        user.getRoles().add(userRole);
+
+
+        user.setEnabled(false);
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setProviderId(Provider.local.name());
+
+        String emailToken = UUID.randomUUID().toString();
+        user.setEmailToken(emailToken);
+        UserEntity savedUser = userRepository.save(user);
+        String emailLink = helper.getLinkForEmailVerificatiton(emailToken);
+        emailService.sendEmail(savedUser.getEmail(), "Verify Account : Smart  Contact Manager", emailLink);
+
+        user.setAddress(user.getAddress());
+        user.setDob(user.getDob());
+        user.setStatus(user.getStatus() != null ? user.getStatus() : "Active");
+        user.setSex(user.getSex());
+        return savedUser;
+
     }
 
     private UserEntity insertUser(UserDTO userDTO) {
@@ -77,6 +123,11 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public UserEntity getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+
+    }
 
     private void validateAccount(UserDTO userDTO){
         if(ObjectUtils.isEmpty(userDTO)){
@@ -89,12 +140,6 @@ public class UserServiceImpl implements UserService {
             }
         }catch (IllegalAccessException e){
             throw new BaseException(String.valueOf(HttpStatus.SERVICE_UNAVAILABLE.value()), "Service Unavailable");
-        }
-
-        UserEntity user = userRepository.findByEmail(userDTO.getEmail());
-
-        if(!ObjectUtils.isEmpty(user)){
-            throw new BaseException(String.valueOf(HttpStatus.BAD_REQUEST.value()), "User had existed!!!");
         }
 
     }

@@ -51,14 +51,14 @@ public class UserDTO {
                 String[] arr = f.toString().split("\\.");
                 String t = arr[arr.length - 1];
                 if(t.equalsIgnoreCase("username")
-                    || t.equalsIgnoreCase("password")
+                        || t.equalsIgnoreCase("password")
                         || t.equalsIgnoreCase("address")
-                            || t.equalsIgnoreCase("dob")
-                                || t.equalsIgnoreCase("phoneNumber")
-                                    || t.equalsIgnoreCase("sex")
-                                        || t.equalsIgnoreCase("status")
-                                            || t.equalsIgnoreCase("role")
-                        ){
+                        || t.equalsIgnoreCase("dob")
+                        || t.equalsIgnoreCase("phoneNumber")
+                        || t.equalsIgnoreCase("sex")
+                        || t.equalsIgnoreCase("status")
+                        || t.equalsIgnoreCase("role")
+                ){
                     return t;
                 }
             }
