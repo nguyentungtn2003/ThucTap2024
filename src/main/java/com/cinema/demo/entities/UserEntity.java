@@ -1,16 +1,6 @@
 package com.cinema.demo.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,114 +9,74 @@ import lombok.Setter;
 
 import java.sql.Date;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-@Entity(name = "user")
-@Table(name = "users")
+@Entity
+@Table(name = "user")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class UserEntity implements UserDetails {
+public class UserEntity {
 
     @Id
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long id;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name")
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Getter(AccessLevel.NONE)
+    @Column(name = "password")
     private String password;
 
-    @Column()
+    @Column(name = "address")
     private String address;
 
-    @Column()
-    private Date dob;
-
-    @Column()
-    private String status;
-
-    @Column()
-    private char sex;
-
-//    @Column(length = 1000)
-//    private String about;
-
-    @Column(length = 1000)
-    private String profilePic;
-
+    @Column(name = "phonenumber")
     private String phoneNumber;
 
-    @Getter(value = AccessLevel.NONE)
-    // information
-    private boolean enabled = false;
+    @Column(name = "dob")
+    private Date dob;
 
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "sex")
+    private char sex;
+
+    @Column(name = "provider_id")
+    private String providerId;
+
+    @Column(name = "account_non_expired")
+    private boolean accountNonExpired;
+
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
+
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked;
+
+    @Column(name = "credentials_non_expired")
+    private boolean credentialsNonExpired;
+
+    @Column(name = "email_verified")
     private boolean emailVerified = false;
+
+    @Column(name = "phone_verified")
     private boolean phoneVerified = false;
 
-    @Enumerated(value = EnumType.STRING)
-    // SELF, GOOGLE, FACEBOOK, TWITTER, LINKEDIN, GITHUB
-    private Providers provider = Providers.SELF;
-    private String providerUserId;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles = new HashSet<>();
 
-    // add more fields if needed
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Contact> contacts = new ArrayList<>();
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roleList = new ArrayList<>();
-
+    @Column(name = "email_token")
     private String emailToken;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // list of roles[USER,ADMIN]
-        // Collection of SimpGrantedAuthority[roles{ADMIN,USER}]
-        Collection<SimpleGrantedAuthority> roles = roleList.stream().map(role -> new SimpleGrantedAuthority(role))
-                .collect(Collectors.toList());
-        return roles;
-    }
-
-    // for this project:
-    // email id hai wahi hamare username
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
 }
