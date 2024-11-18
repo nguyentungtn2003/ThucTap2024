@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 @Configuration
 @EnableWebSecurity
 public class SpringSecurity {
@@ -24,37 +23,36 @@ public class SpringSecurity {
     }
 
     @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http.csrf().disable()
-                    .authorizeHttpRequests((authorize) ->
-                            authorize.requestMatchers("/register/**").permitAll()
-                                    .requestMatchers("/index").permitAll()
-                                    .requestMatchers("/home").permitAll()
-                                    .requestMatchers("/home1").permitAll()  // Cho phép truy cập trang /home1 mà không cần xác thực
-                                    .requestMatchers("/postLogin").permitAll()
-                                    .requestMatchers("/login.html").permitAll()
-                                    .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()  // Cho phép tài nguyên tĩnh
-                                    .requestMatchers("/user/home1").hasRole("USER")
-                                    .requestMatchers("/user/info").hasRole("USER")
-                                    .requestMatchers("/user/update").hasRole("USER")
-                                    .requestMatchers("/user/change-password").hasRole("USER")
-                                    .requestMatchers("/admin/**").permitAll()
-                                    .requestMatchers("/request-reset-password").permitAll()  // Cho phép truy cập trang yêu cầu reset mật khẩu
-                                    .requestMatchers("/reset-password").permitAll()
-
-
-
-
-                    ).formLogin(
-                        form -> form
-                                .loginPage("/login")
-                                .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/postLogin", true)
-                                .permitAll()
-                ).logout(
-                        logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .permitAll()
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/register/**").permitAll()
+                        .requestMatchers("/index").permitAll()
+                        .requestMatchers("/home").permitAll()
+                        .requestMatchers("/home1").permitAll()
+                        .requestMatchers("/postLogin").permitAll()
+                        .requestMatchers("/login.html").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/user/home1").hasRole("USER")
+                        .requestMatchers("/user/info").hasRole("USER")
+                        .requestMatchers("/user/update").hasRole("USER")
+                        .requestMatchers("/user/change-password").hasRole("USER")
+                        .requestMatchers("/admin/**").permitAll()
+                        .requestMatchers("/request-reset-password").permitAll()
+                        .requestMatchers("/reset-password").permitAll()
+                        .requestMatchers("/invoices/*/qrcode").permitAll() // Sửa đúng pattern
+                        .requestMatchers("/invoices/**").hasRole("USER") // Các endpoint khác yêu cầu vai trò USER
+                        .anyRequest().authenticated()
+                )
+                .formLogin((form) -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/postLogin", true)
+                        .permitAll()
+                )
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .permitAll()
                 );
         return http.build();
     }
@@ -65,5 +63,4 @@ public class SpringSecurity {
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
-
 }
