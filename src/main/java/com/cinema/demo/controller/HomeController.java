@@ -16,7 +16,7 @@ public class HomeController {
 
     @GetMapping("/home1")
     public String homePage(Model model) {
-        List<MovieDTO> movies = movieService.getAllMovies();
+        List<MovieDTO> movies = movieService.getAllMoviesIsShowing();
         List<MovieDTO> upcomingMovies = movieService.getUpcomingMovies(); // Assuming this method exists
 
         model.addAttribute("movies", movies);

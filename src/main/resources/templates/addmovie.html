@@ -109,8 +109,8 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <a href="moviemanagement.html">QUẢN LÍ PHIM</a>
-    <a href="addmovie.html">THÊM PHIM</a>
+    <a href="moviemanagement">QUẢN LÍ PHIM</a>
+    <a href="addmovie">THÊM PHIM</a>
     <a href="accountinfomvmanagement.html">THÔNG TIN CÁ NHÂN</a>
 </div>
 
@@ -119,20 +119,22 @@
     <!-- Form to Add Movie -->
     <h3>Quản Lý Phim</h3>
 
-    <form th:action="@{/movies/create}" th:object="${movie}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/movies/addmovie}" th:object="${movie}" method="post" enctype="multipart/form-data">
+<!--        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />-->
         <!-- Movie Image -->
         <div class="form-group">
             <label for="movieImage">Tải lên ảnh:</label>
-            <input type="file" id="movieImage" name="movieImage" accept="image/*" th:field="*{image}" />
-            <div th:if="${#fields.hasErrors('image')}" class="error-message">
-                <span th:errors="*{image}"></span>
-            </div>
+            <input type="file" id="movieImage" name="movieImage"   />
+<!--            <div th:if="${#fields.hasErrors('image')}" class="error-message">-->
+<!--                <span th:errors="*{image}"></span>-->
+<!--            </div>-->
+            <span class="text-danger" th:errors="*{image}"></span>
         </div>
 
         <!-- Movie Title -->
         <div class="form-group">
             <label for="title">Tên phim:</label>
-            <input type="text" id="title" name="title" placeholder="Nhập tên phim" th:field="*{title}" required />
+            <input type="text" id="title" name="title" placeholder="Nhập tên phim" th:field="*{title}"  />
             <div th:if="${#fields.hasErrors('title')}" class="error-message">
                 <span th:errors="*{title}"></span>
             </div>
@@ -141,7 +143,7 @@
         <!-- Description -->
         <div class="form-group">
             <label for="description">Mô tả:</label>
-            <input type="text" id="description" name="description" placeholder="Nhập mô tả phim" th:field="*{description}" required />
+            <input type="text" id="description" name="description" placeholder="Nhập mô tả phim" th:field="*{description}"  />
             <div th:if="${#fields.hasErrors('description')}" class="error-message">
                 <span th:errors="*{description}"></span>
             </div>
@@ -150,7 +152,7 @@
         <!-- Director -->
         <div class="form-group">
             <label for="director">Đạo diễn:</label>
-            <input type="text" id="director" name="director" placeholder="Nhập đạo diễn" th:field="*{director}" required />
+            <input type="text" id="director" name="director" placeholder="Nhập đạo diễn" th:field="*{director}"  />
             <div th:if="${#fields.hasErrors('director')}" class="error-message">
                 <span th:errors="*{director}"></span>
             </div>
@@ -159,7 +161,7 @@
         <!-- Actor -->
         <div class="form-group">
             <label for="actor">Diễn viên:</label>
-            <input type="text" id="actor" name="actor" placeholder="Nhập tên diễn viên" th:field="*{actor}" required />
+            <input type="text" id="actor" name="actor" placeholder="Nhập tên diễn viên" th:field="*{actor}"  />
             <div th:if="${#fields.hasErrors('actor')}" class="error-message">
                 <span th:errors="*{actor}"></span>
             </div>
@@ -168,7 +170,7 @@
         <!-- Running Time -->
         <div class="form-group">
             <label for="runningTime">Thời lượng:</label>
-            <input type="text" id="runningTime" name="runningTime" placeholder="Nhập thời lượng phim" th:field="*{runningTime}" required />
+            <input type="text" id="runningTime" name="runningTime" placeholder="Nhập thời lượng phim" th:field="*{runningTime}"  />
             <div th:if="${#fields.hasErrors('runningTime')}" class="error-message">
                 <span th:errors="*{runningTime}"></span>
             </div>
@@ -177,21 +179,30 @@
         <!-- Genre -->
         <div class="form-group">
             <label for="version">Thể loại:</label>
-            <input type="text" id="version" name="version" placeholder="Nhập thể loại phim" th:field="*{version}" required />
+            <input type="text" id="version" name="version" placeholder="Nhập thể loại phim" th:field="*{version}"  />
             <div th:if="${#fields.hasErrors('version')}" class="error-message">
                 <span th:errors="*{version}"></span>
             </div>
         </div>
-
-        <!-- Release Date -->
         <div class="form-group">
-            <label for="releaseDate">Ngày chiếu:</label>
-            <input type="date" id="releaseDate" name="releaseDate" th:field="*{releaseDate}" required />
+            <label for="releaseDate">Khởi chiếu:</label>
+            <input type="date" id="releaseDate" name="releaseDate" th:field="*{releaseDate}" />
             <div th:if="${#fields.hasErrors('releaseDate')}" class="error-message">
                 <span th:errors="*{releaseDate}"></span>
             </div>
         </div>
 
+        <!-- Thể loại -->
+<!--        <div class="form-group">-->
+<!--            <label>Thể loại:</label>-->
+<!--            <div th:each="type : ${movieTypes}">-->
+<!--                <label>-->
+<!--                    <input type="checkbox" name="typeIds" value="${type.typeId}" /> &lt;!&ndash; Checkbox cho từng thể loại &ndash;&gt;-->
+<!--                    <span th:text="${type.typeName}"></span> &lt;!&ndash; Hiển thị tên thể loại &ndash;&gt;-->
+<!--                </label>-->
+<!--                <br />-->
+<!--            </div>-->
+<!--        </div>-->
         <!-- Submit Button -->
         <div class="form-group">
             <button type="submit">Lưu thông tin phim</button>

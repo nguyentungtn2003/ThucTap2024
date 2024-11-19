@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Interface</title>
+    <title>Cập Nhật Phim</title>
     <link rel="stylesheet" th:href="@{styles.css}"/>
     <style>
         body {
@@ -116,19 +116,15 @@
 
 <!-- Main Content -->
 <div class="main-content">
-    <!-- Form to Add Movie -->
-    <h3>Quản Lý Phim</h3>
+    <h3>Cập Nhật Thông Tin Phim</h3>
 
-    <form th:action="@{/movies/addmovie}" th:object="${movie}" method="post" enctype="multipart/form-data">
-<!--        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />-->
+    <form th:action="@{/movies/update/{id}(id=${movie.movieId})}" th:object="${movie}" method="post" enctype="multipart/form-data">
+<!--        <input type="hidden" th:field="*{id}">-->
         <!-- Movie Image -->
         <div class="form-group">
             <label for="movieImage">Tải lên ảnh:</label>
-            <input type="file" id="movieImage" name="movieImage"   />
-<!--            <div th:if="${#fields.hasErrors('image')}" class="error-message">-->
-<!--                <span th:errors="*{image}"></span>-->
-<!--            </div>-->
-            <span class="text-danger" th:errors="*{image}"></span>
+            <input type="file" id="movieImage" name="movieImage" />
+<!--            <span class="text-danger" th:errors="*{image}"></span>-->
         </div>
 
         <!-- Movie Title -->
@@ -185,37 +181,17 @@
             </div>
         </div>
 
-        <!-- Release Date -->
-<!--        <div class="form-group">-->
-<!--            <label for="releaseDate">Ngày chiếu:</label>-->
-<!--            <input type="date" id="releaseDate" name="releaseDate" th:field="*{releaseDate}"  />-->
-<!--            <div th:if="${#fields.hasErrors('releaseDate')}" class="error-message">-->
-<!--                <span th:errors="*{releaseDate}"></span>-->
-<!--            </div>-->
-<!--        </div>-->
-
-        <!-- Thể loại -->
-<!--        <div class="form-group">-->
-<!--            <label>Thể loại:</label>-->
-<!--            <div th:each="type : ${movieTypes}">-->
-<!--                <label>-->
-<!--                    <input type="checkbox" name="typeIds" value="${type.typeId}" /> &lt;!&ndash; Checkbox cho từng thể loại &ndash;&gt;-->
-<!--                    <span th:text="${type.typeName}"></span> &lt;!&ndash; Hiển thị tên thể loại &ndash;&gt;-->
-<!--                </label>-->
-<!--                <br />-->
-<!--            </div>-->
-<!--        </div>-->
-
-
-
-
-
-
-
+        <div class="form-group">
+            <label for="releaseDate">Khởi chiếu:</label>
+            <input type="date" id="releaseDate" name="releaseDate" th:field="*{releaseDate}" />
+            <div th:if="${#fields.hasErrors('releaseDate')}" class="error-message">
+                <span th:errors="*{releaseDate}"></span>
+            </div>
+        </div>
 
         <!-- Submit Button -->
         <div class="form-group">
-            <button type="submit">Lưu thông tin phim</button>
+            <button type="submit">Cập nhật phim</button>
         </div>
     </form>
 

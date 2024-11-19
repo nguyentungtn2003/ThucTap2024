@@ -3,109 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Interface</title>
-    <link rel="stylesheet" th:href="@{./styles.css}"/>
+    <title>Movie List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
+        /* Reset styles */
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Top Header */
-        .header {
-            background-color: black;
-            color: white;
-            padding: 10px 20px;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #18191a;
+            color: #fff;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 3px solid purple;
-            border-bottom: 1px solid black;
         }
 
         /* Sidebar */
         .sidebar {
-            width: 200px;
-            background-color: white;
-            padding-top: 20px;
-            border-right: 1px solid lightgray;
+            width: 250px;
+            background-color: #242526;
             height: 100vh;
+            padding: 20px 0;
             position: fixed;
-            top: 0;
-            left: 0;
-            margin-top: 45px; /* to align with the header */
         }
 
         .sidebar a {
             display: block;
-            color: black;
-            padding: 10px 15px;
+            color: #ddd;
+            padding: 15px 25px;
             text-decoration: none;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #e50914;
+            color: #fff;
+        }
+
+        .sidebar .logo {
+            font-size: 24px;
             font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #e50914;
         }
 
-        .sidebar a:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 200px; /* Width of the sidebar */
+        /* Main content */
+        .content {
+            margin-left: 250px;
             padding: 20px;
-            height: calc(100vh - 45px); /* Adjust for header height */
+            width: calc(100% - 250px);
         }
 
-        .movie {
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .top-bar .search-box input {
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .top-bar .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .profile img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .table-controls .show-entries {
+            display: flex;
+            align-items: center;
+        }
+
+        .table-controls .show-entries select,
+        .table-controls .search input {
+            padding: 5px;
+            margin-left: 5px;
+            border: none;
+            border-radius: 5px;
+            color: #000;
+        }
+
+        .table-container {
+            background-color: #242526;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
             padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
         }
 
-        .movie img {
-            max-width: 100%;
-            height: auto;
+        table th {
+            background-color: #333;
         }
 
-        .btn-primary {
-            display: inline-block;
-            margin-top: 10px;
-            background-color: purple;
-            color: white;
+        .btn {
             padding: 5px 10px;
-            text-decoration: none;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .btn-primary:hover {
-            background-color: darkmagenta;
+        .btn-red {
+            background-color: #e50914;
+        }
+
+        .btn-green {
+            background-color: #1db954;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 10px;
+        }
+
+        .switch input:checked + .slider {
+            background-color: #e50914;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 12px;
+            width: 12px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(20px);
         }
     </style>
 </head>
 <body>
 
-<!-- Top Header -->
-<div class="header">
-    <div>MOVIE MANAGEMENT</div>
-    <div><a href="login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
-</div>
-
 <!-- Sidebar -->
 <div class="sidebar">
-    <a href="moviemanagement.html">QUẢN LÍ PHIM</a>
-    <a href="addmovie.html">THÊM PHIM</a>
-    <a href="accountinfomvmanagement.html">THÔNG TIN CÁ NHÂN</a>
+    <div class="logo">Movie Theater</div>
+    <a href="#" class="active">Dashboard</a>
+    <a href="#">Rating</a>
+    <a href="#">Comments</a>
+    <a href="#">Users</a>
+    <a href="moviemanagement">Movie List</a>
+    <a href="#">TV Shows</a>
+    <a href="#">Pricing</a>
+    <a href="#">Authentication</a>
+    <a href="#">Utilities</a>
 </div>
 
-<!-- Main Content Area -->
-<div class="main-content">
-    <h2>Danh Sách Phim</h2>
-    <div th:each="movie : ${movies}" class="movie">
-        <img th:src="@{${movie.image}}" th:alt="${movie.title}"/>
-        <h3 th:text="${movie.title}">Movie Title</h3>
-        <p>Thể loại: <span th:text="${movie.version}">Genre</span></p>
-        <p>Khởi chiếu: <span th:text="${#dates.format(movie.releaseDate, 'dd.MM.yyyy')}">Release Date</span></p>
-        <a th:href="@{/movies/delete/{id}(id=${movie.movieId})}" class="btn-primary">Xóa</a>
+<!-- Main Content -->
+<div class="content">
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="breadcrumbs">Home > Movie List</div>
+        <div class="profile">
+            <img src="https://via.placeholder.com/30" alt="User Profile">
+            <span>Austin Robertson</span>
+        </div>
+    </div>
+
+    <!-- Table Controls -->
+    <div class="table-controls">
+        <div class="show-entries">
+            Show
+            <select onchange="changeEntriesPerPage(this.value)">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            entries
+        </div>
+        <div class="search">
+            Search: <input type="text" placeholder="Search..." oninput="searchMovies(this.value)">
+        </div>
+<!--        <form method="get" action="/movies">-->
+<!--            <input type="text" name="search" placeholder="Search..." value="${param.search}" />-->
+<!--            <button type="submit">Search</button>-->
+<!--        </form>-->
+
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+<!--        <button class="btn btn-red">+ Add Movie</button>-->
+        <a style="text-decoration: none;" th:href="@{/movies/addmovie}" class="btn btn-red">+ Add Movie</a>
+
+
+        <!-- Display Success Message if Available -->
+        <div th:if="${message}" class="flash-message" th:text="${message}"></div>
+        <div th:if="${error}" class="flash-message" th:text="${error}"></div>
+        <table>
+            <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Description</th>
+                <th>Running Time</th>
+                <th>Release Date</th>
+<!--                <th>Movie Type</th>-->
+                <th>Version</th>
+                <th>Actor</th>
+                <th>Director</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Lặp qua danh sách movies và hiển thị thông tin -->
+            <tr th:each="movie : ${movies}">
+                <td th:text="${movie.title}">Title</td>
+                <td th:text="${movie.description}">Description</td>
+                <td th:text="${movie.getRunningTime()}">Running Time</td>
+                <td th:text="${#dates.format(movie.releaseDate, 'yyyy-MM-dd')}">Release Date</td>
+<!--                <td th:text="">Movie Type</td>-->
+                <td th:text="${movie.version}">Version</td>
+                <td th:text="${movie.actor}">Actor</td>
+                <td th:text="${movie.director}">Director</td>
+                <td>
+                    <!-- Form để gửi yêu cầu AJAX khi checkbox thay đổi -->
+                    <label class="switch">
+                        <input type="checkbox"
+                               th:checked="${movie.isShowing == 1}"
+                               th:onclick="|updateMovieStatus(${movie.movieId}, this)|">
+                        <span class="slider"></span>
+                    </label>
+                </td>
+
+                <td class="btn-group">
+                    <!-- Nút Edit -->
+                    <a th:href="@{/movies/update/{id}(id=${movie.movieId})}" class="btn btn-green">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <!-- Nút Delete -->
+                    <a th:href="@{/movies/delete/{id}(id=${movie.movieId})}" class="btn btn-red">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+
+                <!--                <td class="btn-group">-->
+<!--                    <button class="btn btn-green">-->
+<!--                        <i class="fas fa-edit"></i>-->
+<!--                    </button>-->
+<!--                    &lt;!&ndash; Chỉ sử dụng onclick để gọi hàm confirmDelete với URL xóa động &ndash;&gt;-->
+<!--                    <a href="#" class="btn btn-red" onclick="confirmDelete('@{/movies/delete/{id}(id=${movie.movieId})}')">-->
+<!--                        <i class="fas fa-trash"></i>-->
+<!--                    </a>-->
+<!--                </td>-->
+
+
+
+
+            </tr>
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button onclick="changePage(currentPage - 1)">Previous</button>
+            <span>Page 1</span> <!-- Hiển thị số trang hiện tại -->
+            <button onclick="changePage(currentPage + 1)">Next</button>
+        </div>
+
     </div>
 </div>
+<!--<script>-->
+<!--    function confirmDelete(url) {-->
+<!--        // Hiển thị hộp thoại xác nhận-->
+<!--        const confirmation = confirm("Bạn có chắc chắn muốn xóa phim này?");-->
+
+<!--        // Nếu người dùng nhấn "OK", chuyển hướng đến URL xóa-->
+<!--        if (confirmation) {-->
+<!--            // Thực hiện redirect đến URL xóa-->
+<!--            window.location.href = url;-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+
+<script>
+    function updateMovieStatus(movieId, checkbox) {
+        const isShowing = checkbox.checked ? 1 : 0; // Chuyển trạng thái checkbox thành 1 hoặc 0
+
+        // Gửi yêu cầu AJAX để cập nhật trạng thái
+        fetch(`/movies/updateStatus`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                movieId: movieId,
+                isShowing: isShowing
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Movie status updated successfully!');
+                } else {
+                    console.error('Error updating movie status');
+                    // Nếu có lỗi, reset lại trạng thái checkbox
+                    checkbox.checked = !checkbox.checked;
+                }
+            })
+            .catch(error => {
+                console.error('Error updating movie status:', error);
+                // Nếu có lỗi, reset lại trạng thái checkbox
+                checkbox.checked = !checkbox.checked;
+            });
+    }
+
+    function searchMovies(query) {
+        // Lấy tất cả các dòng của bảng
+        const rows = document.querySelectorAll("table tbody tr");
+
+        // Duyệt qua từng dòng trong bảng và ẩn/hiển thị tùy thuộc vào tiêu đề phim có khớp với từ khóa tìm kiếm hay không
+        rows.forEach(row => {
+            const title = row.querySelector("td:nth-child(1)").innerText.toLowerCase(); // Lấy tiêu đề phim
+            if (title.includes(query.toLowerCase())) {
+                row.style.display = ""; // Hiển thị dòng nếu khớp
+            } else {
+                row.style.display = "none"; // Ẩn dòng nếu không khớp
+            }
+        });
+    }
+    function changeEntriesPerPage(entriesPerPage) {
+        // Lưu lại số lượng entry được chọn
+        localStorage.setItem('entriesPerPage', entriesPerPage);
+
+        // Nếu bạn đang lấy dữ liệu từ backend qua API
+        fetchMovies(entriesPerPage);
+    }
+
+    // Hàm để gọi API và lấy dữ liệu mới (nếu cần)
+    function fetchMovies(entriesPerPage) {
+        const url = `/movies?entriesPerPage=${entriesPerPage}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý dữ liệu và cập nhật bảng phim
+                updateMovieTable(data.movies);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
+    // Hàm cập nhật bảng phim
+    function updateMovieTable(movies) {
+        const tableBody = document.querySelector('table tbody');
+        tableBody.innerHTML = ''; // Xóa dữ liệu hiện tại
+
+        movies.forEach(movie => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${movie.title}</td>
+            <td>${movie.description}</td>
+            <td>${movie.runningTime}</td>
+            <td>${movie.releaseDate}</td>
+            <td>${movie.version}</td>
+            <td>${movie.actor}</td>
+            <td>${movie.director}</td>
+            <td>${movie.isShowing ? 'Showing' : 'Not Showing'}</td>
+            <td>
+                <a href="/movies/update/${movie.movieId}" class="btn btn-green"><i class="fas fa-edit"></i></a>
+                <a href="/movies/delete/${movie.movieId}" class="btn btn-red"><i class="fas fa-trash"></i></a>
+            </td>
+        `;
+            tableBody.appendChild(row);
+        });
+    }
+
+
+</script>
+
+
+
 
 </body>
+
 </html>
