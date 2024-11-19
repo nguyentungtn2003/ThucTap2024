@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Interface</title>
+    <link rel="stylesheet" th:href="@{./styles.css}"/>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Top Header */
+        .header {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 3px solid purple;
+            border-bottom: 1px solid black;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            padding-top: 20px;
+            border-right: 1px solid lightgray;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin-top: 45px; /* to align with the header */
+        }
+
+        .sidebar a {
+            display: block;
+            color: black;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 200px; /* Width of the sidebar */
+            padding: 20px;
+            height: calc(100vh - 45px); /* Adjust for header height */
+        }
+
+        .movie {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .movie img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            margin-top: 10px;
+            background-color: purple;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: darkmagenta;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Header -->
+<div class="header">
+    <div>MOVIE MANAGEMENT</div>
+    <div><a href="login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="moviemanagement.html">QUẢN LÍ PHIM</a>
+    <a href="addmovie.html">THÊM PHIM</a>
+    <a href="accountinfomvmanagement.html">THÔNG TIN CÁ NHÂN</a>
+</div>
+
+<!-- Main Content Area -->
+<div class="main-content">
+    <h2>Danh Sách Phim</h2>
+    <div th:each="movie : ${movies}" class="movie">
+        <img th:src="@{${movie.image}}" th:alt="${movie.title}"/>
+        <h3 th:text="${movie.title}">Movie Title</h3>
+        <p>Thể loại: <span th:text="${movie.version}">Genre</span></p>
+        <p>Khởi chiếu: <span th:text="${#dates.format(movie.releaseDate, 'dd.MM.yyyy')}">Release Date</span></p>
+        <a th:href="@{/movies/delete/{id}(id=${movie.movieId})}" class="btn-primary">Xóa</a>
+    </div>
+</div>
+
+</body>
+</html>
