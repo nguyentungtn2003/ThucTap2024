@@ -20,6 +20,14 @@ public class UserController {
 
     // user dashbaord page
 
+    @RequestMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("name", "Substring Technologies");
+        model.addAttribute("youtubeChannel", "Learn Code With Durgesh");
+        model.addAttribute("githubRepo", "https://github.com/learncodewithdurgesh/");
+        return "user/home";
+    }
+
     @RequestMapping(value = "/dashboard")
     public String userDashboard() {
         System.out.println("User dashboard");

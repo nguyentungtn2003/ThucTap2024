@@ -79,6 +79,7 @@ public class CustomOAuth2UserDetails extends DefaultOAuth2UserService {
     public UserEntity registerOAuth2UserDetails(OAuth2UserRequest oAuth2UserRequest, OAuth2UserDetails oAuth2UserDetails) {
         UserEntity user = new UserEntity();
         user.setEmail(oAuth2UserDetails.getEmail());
+        user.setName(oAuth2UserDetails.getName());
         user.setProviderId(oAuth2UserRequest.getClientRegistration().getRegistrationId());
         user.setEnabled(true);
         user.setCredentialsNonExpired(true);
@@ -91,6 +92,7 @@ public class CustomOAuth2UserDetails extends DefaultOAuth2UserService {
         user.setRoles(new HashSet<>());
         user.getRoles().add(userRole);
 
+        user.setStatus("Active");
         return userRepository.save(user);
     }
 

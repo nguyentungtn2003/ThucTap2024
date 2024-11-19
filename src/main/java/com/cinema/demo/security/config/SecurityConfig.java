@@ -146,7 +146,8 @@ private CustomOAuth2UserDetails customOAuth2UserDetails;
         // rangenge
         httpSecurity.authorizeHttpRequests(authorize -> {
             authorize.requestMatchers("/home", "/register", "/services").permitAll();
-            authorize.requestMatchers("/user/**").authenticated();
+            authorize.requestMatchers("/user/**").hasRole("USER");
+            authorize.requestMatchers("/admin/**").hasRole("ADMIN");
             authorize.anyRequest().permitAll();
         });
 
@@ -160,7 +161,7 @@ private CustomOAuth2UserDetails customOAuth2UserDetails;
             formLogin.loginProcessingUrl("/authenticate");
             formLogin.successForwardUrl("/user/profile");
             formLogin.failureForwardUrl("/login?error=true");
-            formLogin.defaultSuccessUrl("/home");
+            formLogin.defaultSuccessUrl("/user/home");
             formLogin.usernameParameter("email");
             formLogin.passwordParameter("password");
 

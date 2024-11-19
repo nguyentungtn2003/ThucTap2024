@@ -12,40 +12,71 @@ public class Helper {
     @Value("${server.baseUrl}")
     private String baseUrl;
 
+//    public static String getEmailOfLoggedInUser(Authentication authentication) {
+//
+//        // agar email is password se login kiya hai to : email kaise nikalenge
+//        if (authentication instanceof OAuth2AuthenticationToken) {
+//
+//            var aOAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
+//            var clientId = aOAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
+//
+//            var oauth2User = (OAuth2User) authentication.getPrincipal();
+//            String email = "";
+//
+//            if (clientId.equalsIgnoreCase("google")) {
+//
+//                // sign with google
+//                System.out.println("Getting email from google");
+//                email = oauth2User.getAttribute("email").toString();
+//
+//            } else if (clientId.equalsIgnoreCase("facebook")) {
+//
+//                // sign with github
+//                System.out.println("Getting email from facebook");
+//                email = oauth2User.getAttribute("email") != null ? oauth2User.getAttribute("email").toString()
+//                        : oauth2User.getAttribute("login").toString() + "@gmail.com";
+//            }
+//
+//            // sign with facebook
+//            return email;
+//
+//        } else {
+//            System.out.println("Getting data from local database");
+//            return authentication.getName();
+//        }
+//
+//    }
+
     public static String getEmailOfLoggedInUser(Authentication authentication) {
-
-        // agar email is password se login kiya hai to : email kaise nikalenge
         if (authentication instanceof OAuth2AuthenticationToken) {
-
-            var aOAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
-            var clientId = aOAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
-
+            var oauth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
+            var clientId = oauth2AuthenticationToken.getAuthorizedClientRegistrationId();
             var oauth2User = (OAuth2User) authentication.getPrincipal();
-            String username = "";
 
-            if (clientId.equalsIgnoreCase("google")) {
+            // Log OAuth2 attributes for debugging
+            System.out.println("OAuth2 attributes: " + oauth2User.getAttributes());
 
-                // sign with google
-                System.out.println("Getting email from google");
-                username = oauth2User.getAttribute("email").toString();
-
-            } else if (clientId.equalsIgnoreCase("github")) {
-
-                // sign with github
-                System.out.println("Getting email from github");
-                username = oauth2User.getAttribute("email") != null ? oauth2User.getAttribute("email").toString()
-                        : oauth2User.getAttribute("login").toString() + "@gmail.com";
+            // Safely handle missing attributes
+            String email = null;
+            if ("google".equalsIgnoreCase(clientId)) {
+                email = (String) oauth2User.getAttribute("email");
+            } else if ("facebook".equalsIgnoreCase(clientId)) {
+                email = oauth2User.getAttribute("email") != null
+                        ? oauth2User.getAttribute("email").toString()
+                        : oauth2User.getAttribute("login") + "@gmail.com";
             }
 
-            // sign with facebook
-            return username;
+            if (email == null) {
+                throw new IllegalArgumentException("Email not provided by OAuth2 provider");
+            }
 
+            return email;
         } else {
-            System.out.println("Getting data from local database");
+            // Fallback for standard authentication
             return authentication.getName();
         }
-
     }
+
 
     public String getLinkForEmailVerificatiton(String emailToken) {
 
