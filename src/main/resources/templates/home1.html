@@ -851,6 +851,45 @@
             display: block;
         }
 
+        #span-title, #span-title-upcoming {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .badge {
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            position: relative;
+            top: -10px;
+            left: 5px;
+            display: none; /* Đảm bảo ban đầu badge bị ẩn */
+        }
+        #notification-dropdown {
+            display: none; /* Ẩn danh sách thông báo mặc định */
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 150px;
+            z-index: 1;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification:hover #notification-dropdown {
+            display: block; /* Hiển thị khi hover */
+        }
+
         /* Ẩn các mục con ban đầu */
         #dropdown-content {
             display: none ;
@@ -868,6 +907,9 @@
 
         .dropdown-content li {
             display: block;
+            list-style: none;
+            padding: 8px 12px;
+            border-bottom: 1px solid #ddd;
         }
 
         .dropdown-content li a {
@@ -876,23 +918,13 @@
             display: block;
             color: #333;
         }
-
-        #span-title, #span-title-upcoming {
-            font-family: 'Arial', sans-serif;
-            color: #333;
-            font-size: 2.5rem;
-            text-align: center;
-            margin-top: 20px;
-            margin-bottom: 30px;
-            padding: 10px;
-            background: linear-gradient(90deg, #ff416c, #ff4b2b);
-            color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        .dropdown-content li:hover {
+            background-color: #f1f1f1;
         }
 
-
-
+        .notification:hover .dropdown-content {
+            display: block;
+        }
 
 
     </style>
@@ -900,8 +932,30 @@
 <script>
     let slides;
     document.addEventListener("DOMContentLoaded", () => {
+        // Khởi tạo slides
         slides = document.querySelectorAll(".banner-slide");
-        console.log(slides);  // Kiểm tra phần tử
+        console.log("Slides:", slides);  // Kiểm tra phần tử
+
+        // Khởi tạo notificationLink
+        const notificationLink = document.getElementById("notification-link");
+        if (!notificationLink) {
+            console.error("Phần tử với ID 'notification-link' không tồn tại.");
+            return;
+        }
+
+        if (notificationLink) {
+            notificationLink.addEventListener("click", (e) => {
+                e.preventDefault(); // Ngăn điều hướng mặc định
+                const dropdown = document.getElementById("notification-dropdown");
+                if (dropdown) {
+                    dropdown.classList.toggle("hidden"); // Ẩn/hiện dropdown
+                } else {
+                    console.error("Dropdown không tồn tại!");
+                }
+            });
+        } else {
+            console.error("Notification link không tồn tại!");
+        }
     });
 
     function showSlide(index) {
@@ -938,10 +992,82 @@
             showSlide(activeIndex - 1);
         }
     }
+
+
+
+    // Thông báo
+    function updateNotificationCount(notifications) {
+        const badge = document.getElementById("notification-count");
+        const count = notifications.length; // Số lượng thông báo
+
+        if (count > 0) {
+            badge.textContent = count; // Hiển thị số lượng thông báo
+            badge.style.display = "inline-block";
+        } else {
+            badge.style.display = "none"; // Ẩn badge nếu không có thông báo
+        }
+        console.log("Notifications:", notifications);
+    }
+
+    // Hiển thị danh sách thông báo
+    function renderNotifications(notifications) {
+        const dropdown = document.getElementById("notification-dropdown");
+        dropdown.innerHTML = ""; // Xóa danh sách cũ
+
+        if (notifications.length === 0) {
+            const noNotifications = document.createElement("li");
+            noNotifications.innerHTML = '<a href="#">Bạn không có thông báo mới</a>';
+            dropdown.appendChild(noNotifications);
+        } else {
+            notifications.forEach(notification => {
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="${notification.link}">${notification.message}</a>`;
+                dropdown.appendChild(li);
+            });
+        }
+        console.log("Rendering notifications:", notifications);
+    }
+
+    // Gọi API để lấy thông báo từ backend
+    async function fetchNotifications(id) {
+        try {
+            const response = await fetch(`/user/notification?id=${id}`);
+            if (!response.ok) throw new Error("Lỗi khi gọi API thông báo");
+
+            const notifications = await response.json();
+            updateNotificationCount(notifications); // Cập nhật số lượng thông báo
+            renderNotifications(notifications); // Hiển thị danh sách thông báo
+        } catch (error) {
+            console.error("Không thể lấy thông báo:", error);
+        }
+    }
+
+
+    async function fetchUserId() {
+        try {
+            const response = await fetch('user/notification/info');
+            if (!response.ok) throw new Error("Không thể lấy thông tin người dùng");
+
+            const user = await response.json();
+            return user.id; // Trả về "id" thay vì "userId"
+        } catch (error) {
+            console.error("Lỗi khi lấy id:", error);
+            return null;
+        }
+    }
+
+    // Lấy userId khi trang load
+    fetchUserId().then(id => { // Thay "userId" bằng "id"
+        if (id) {
+            console.log("ID:", id); // Kiểm tra ID
+            fetchNotifications(id); // Gọi API thông báo với ID
+        } else {
+            console.error("Không tìm thấy id");
+        }
+    });
+
+
 </script>
-
-
-
 <body>
 
 <header>
@@ -960,6 +1086,15 @@
                     </ul>
                 </li>
                 <li><a href="myticket.html">Vé Của Tôi</a></li>
+
+                <li class="notification dropdown">
+                    <a href="#" id="notification-link">
+                        Thông Báo <span id="notification-count" class="badge">0</span>
+                    </a>
+                    <ul id="notification-dropdown" class="dropdown-content hidden">
+                        <li id="no-notifications"><a href="#">Bạn không có thông báo mới</a></li>
+                    </ul>
+                </li>
                 <li><a href="/user/info">Thông Tin Cá Nhân</a></li>
             </ul>
         </nav>

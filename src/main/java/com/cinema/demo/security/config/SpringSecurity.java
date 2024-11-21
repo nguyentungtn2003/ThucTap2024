@@ -45,6 +45,7 @@ public class SpringSecurity {
                                     .requestMatchers("/user/home1").hasRole("USER")
                                     .requestMatchers("/user/info").hasRole("USER")
                                     .requestMatchers("/user/update").hasRole("USER")
+                                    .requestMatchers("/user/notification/**").hasRole("USER")
                                     .requestMatchers("/user/change-password").hasRole("USER")
                                     .requestMatchers("/admin/**").permitAll()
                                     .requestMatchers("/request-reset-password").permitAll()  // Cho phép truy cập trang yêu cầu reset mật khẩu
