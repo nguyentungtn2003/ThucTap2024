@@ -139,6 +139,31 @@ public class SecurityConfig {
             authorize.requestMatchers("/home", "/register", "/services").permitAll();
             authorize.requestMatchers("/user/**").hasRole("USER");
             authorize.requestMatchers("/admin/**").hasRole("ADMIN");
+            authorize.requestMatchers("/index").permitAll()
+                    .requestMatchers("/upload/**").permitAll()
+                    .requestMatchers("/home").permitAll()
+                    .requestMatchers("/home1").permitAll()  // Cho phép truy cập trang /home1 mà không cần xác thực
+                    .requestMatchers("/postLogin").permitAll()
+                    .requestMatchers("/login.html").permitAll()
+                    .requestMatchers("/movies").hasRole("ADMIN")
+                    .requestMatchers("/movies/addmovie").hasRole("ADMIN")
+                    .requestMatchers("/movies/moviemanagement").hasRole("ADMIN")
+                    .requestMatchers("/movies/save").hasRole("ADMIN")
+                    .requestMatchers("/movies/delete/{id}").hasRole("ADMIN")
+                    .requestMatchers("/movies/update/{id}").hasRole("ADMIN")
+                    .requestMatchers("/movies/updateStatus").hasRole("ADMIN")
+                    .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()  // Cho phép tài nguyên tĩnh
+                    .requestMatchers("/user/home1").hasRole("USER")
+                    .requestMatchers("/user/info").hasRole("USER")
+                    .requestMatchers("/user/update").hasRole("USER")
+                    .requestMatchers("/user/notification/**").hasRole("USER")
+                    .requestMatchers("/user/change-password").hasRole("USER")
+                    .requestMatchers("/admin/**").permitAll()
+                    .requestMatchers("/request-reset-password").permitAll()  // Cho phép truy cập trang yêu cầu reset mật khẩu
+                    .requestMatchers("/reset-password").permitAll()
+                    .requestMatchers("/invoices/*/qrcode").permitAll() // Sửa đúng pattern
+                    .requestMatchers("/invoices/**").hasRole("USER") // Các endpoint khác yêu cầu vai trò USER
+                    .anyRequest().authenticated();
             authorize.anyRequest().permitAll();
         });
 

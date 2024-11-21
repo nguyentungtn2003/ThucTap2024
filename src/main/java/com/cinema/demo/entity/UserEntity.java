@@ -80,3 +80,4 @@ public class UserEntity {
     @Column(name = "email_token")
     private String emailToken;
 }
+
