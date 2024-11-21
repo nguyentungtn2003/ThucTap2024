@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Phim</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Simplified the path -->
+</head>
+<body>
+
+<header>
+    <div class="navbar">
+        <div class="logo">LOGO</div>
+        <nav>
+            <ul>
+                <li><a href="Giaodienchuadangnhap.html">Home</a></li>
+                <li><a href="comingsoon.html">Sắp Chiếu</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-link" href="#">Thể Loại</a>
+                    <ul id="dropdown-content">
+                        <li><a href="horror.html">Kinh Dị</a></li>
+                        <li><a href="psychology.html">Tâm Lý</a></li>
+                    </ul>
+                </li>
+                <li><a href="myticket.html">Vé Của Tôi</a></li>
+                <li><a href="accountinfo.html">Thông Tin Cá Nhân</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            <a href="#">Đăng Nhập</a>
+            <a href="#">Đăng Ký</a>
+            <div class="lang">
+                <img src="vi.png" alt="Tiếng Việt">
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="movie-detail">
+    <div class="movie-info">
+        <!-- Display the movie poster -->
+        <img id="movie-poster" class="movie-poster" th:src="@{${movie.image}}" alt="Movie Poster">
+
+        <div class="movie-details">
+            <!-- Display the movie title -->
+            <h1 id="movie-title" class="movie-title" th:text="${movie.title}">Tên Phim</h1>
+            <!-- Display the movie description -->
+            <p id="movie-description" class="movie-description" th:text="${movie.description}">Mô Tả</p>
+            <ul class="movie-attributes">
+                <!-- Display each attribute of the movie -->
+                <li>Đạo Diễn: <span id="movie-director" th:text="${movie.director}">Đạo Diễn</span></li>
+                <li>Diễn Viên: <span id="movie-actors" th:text="${movie.actor}">Diễn Viên</span></li>
+                <li>Thể Loại: <span id="movie-version" th:text="${movie.version}">Phiên Bản</span></li>
+                <li>Thời Lượng: <span id="movie-duration" th:text="${movie.runningTime + ' phút'}">Thời Lượng</span></li>
+                <li>Hãng Sản Xuất: <span id="movie-production-company" th:text="${movie.productionCompany}">Hãng Sản Xuất</span></li>
+                <li>Ngôn Ngữ: <span id="movie-language" th:text="${movie.language}">Ngôn Ngữ</span></li>
+                <li>Khởi Chiếu: <span id="movie-release-date" th:text="${#dates.format(movie.releaseDate, 'dd/MM/yyyy')}">Khởi Chiếu</span></li>
+            </ul>
+            <!-- Optionally, display trailer link if available -->
+            <p><a th:href="${movie.trailerUrl}" target="_blank">Xem Trailer</a></p>
+        </div>
+    </div>
+    <div class="showtimes">
+        <h2>Lịch Chiếu</h2>
+        <div class="time-slots" id="time-slots">
+            <!-- Insert logic here to render available time slots -->
+        </div>
+    </div>
+</main>
+
+<!--<script src="movie_detail.js"></script>-->
+
+</body>
+</html>

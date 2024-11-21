@@ -29,10 +29,18 @@ public class SpringSecurity {
                     .authorizeHttpRequests((authorize) ->
                             authorize.requestMatchers("/register/**").permitAll()
                                     .requestMatchers("/index").permitAll()
+                                     .requestMatchers("/upload/**").permitAll()
                                     .requestMatchers("/home").permitAll()
                                     .requestMatchers("/home1").permitAll()  // Cho phép truy cập trang /home1 mà không cần xác thực
                                     .requestMatchers("/postLogin").permitAll()
                                     .requestMatchers("/login.html").permitAll()
+                                    .requestMatchers("/movies").hasRole("ADMIN")
+                                    .requestMatchers("/movies/addmovie").hasRole("ADMIN")
+                                    .requestMatchers("/movies/moviemanagement").hasRole("ADMIN")
+                                    .requestMatchers("/movies/save").hasRole("ADMIN")
+                                    .requestMatchers("/movies/delete/{id}").hasRole("ADMIN")
+                                    .requestMatchers("/movies/update/{id}").hasRole("ADMIN")
+                                    .requestMatchers("/movies/updateStatus").hasRole("ADMIN")
                                     .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()  // Cho phép tài nguyên tĩnh
                                     .requestMatchers("/user/home1").hasRole("USER")
                                     .requestMatchers("/user/info").hasRole("USER")

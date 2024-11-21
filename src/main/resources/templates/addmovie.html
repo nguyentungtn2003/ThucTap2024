@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Interface</title>
+    <link rel="stylesheet" th:href="@{styles.css}"/>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+
+        /* Top Header */
+        .header {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 3px solid purple;
+            border-bottom: 1px solid black;
+            width: 98%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            padding-top: 70px; /* Adjusted to align with the header */
+            border-right: 1px solid lightgray;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .sidebar a {
+            display: block;
+            color: black;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 200px; /* Width of the sidebar */
+            padding: 80px 20px 20px 20px; /* Adjusted for header and sidebar spacing */
+            height: calc(100vh - 45px); /* Adjust for header height */
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: purple;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button[type="submit"]:hover {
+            background-color: darkmagenta ;
+        }
+
+        /* Error messages */
+        .error-message {
+            color: red;
+            font-size: 0.875em;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Header -->
+<div class="header">
+    <div>MOVIE MANAGEMENT</div>
+    <div><a href="login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="moviemanagement">QUẢN LÍ PHIM</a>
+    <a href="addmovie">THÊM PHIM</a>
+    <a href="accountinfomvmanagement.html">THÔNG TIN CÁ NHÂN</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Form to Add Movie -->
+    <h3>Quản Lý Phim</h3>
+
+    <form th:action="@{/movies/addmovie}" th:object="${movie}" method="post" enctype="multipart/form-data">
+<!--        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />-->
+        <!-- Movie Image -->
+        <div class="form-group">
+            <label for="movieImage">Tải lên ảnh:</label>
+            <input type="file" id="movieImage" name="movieImage"   />
+<!--            <div th:if="${#fields.hasErrors('image')}" class="error-message">-->
+<!--                <span th:errors="*{image}"></span>-->
+<!--            </div>-->
+            <span class="text-danger" th:errors="*{image}"></span>
+        </div>
+
+        <!-- Movie Title -->
+        <div class="form-group">
+            <label for="title">Tên phim:</label>
+            <input type="text" id="title" name="title" placeholder="Nhập tên phim" th:field="*{title}"  />
+            <div th:if="${#fields.hasErrors('title')}" class="error-message">
+                <span th:errors="*{title}"></span>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+            <label for="description">Mô tả:</label>
+            <input type="text" id="description" name="description" placeholder="Nhập mô tả phim" th:field="*{description}"  />
+            <div th:if="${#fields.hasErrors('description')}" class="error-message">
+                <span th:errors="*{description}"></span>
+            </div>
+        </div>
+
+        <!-- Director -->
+        <div class="form-group">
+            <label for="director">Đạo diễn:</label>
+            <input type="text" id="director" name="director" placeholder="Nhập đạo diễn" th:field="*{director}"  />
+            <div th:if="${#fields.hasErrors('director')}" class="error-message">
+                <span th:errors="*{director}"></span>
+            </div>
+        </div>
+
+        <!-- Actor -->
+        <div class="form-group">
+            <label for="actor">Diễn viên:</label>
+            <input type="text" id="actor" name="actor" placeholder="Nhập tên diễn viên" th:field="*{actor}"  />
+            <div th:if="${#fields.hasErrors('actor')}" class="error-message">
+                <span th:errors="*{actor}"></span>
+            </div>
+        </div>
+
+        <!-- Running Time -->
+        <div class="form-group">
+            <label for="runningTime">Thời lượng:</label>
+            <input type="text" id="runningTime" name="runningTime" placeholder="Nhập thời lượng phim" th:field="*{runningTime}"  />
+            <div th:if="${#fields.hasErrors('runningTime')}" class="error-message">
+                <span th:errors="*{runningTime}"></span>
+            </div>
+        </div>
+
+        <!-- Genre -->
+        <div class="form-group">
+            <label for="version">Thể loại:</label>
+            <input type="text" id="version" name="version" placeholder="Nhập thể loại phim" th:field="*{version}"  />
+            <div th:if="${#fields.hasErrors('version')}" class="error-message">
+                <span th:errors="*{version}"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="releaseDate">Khởi chiếu:</label>
+            <input type="date" id="releaseDate" name="releaseDate" th:field="*{releaseDate}" />
+            <div th:if="${#fields.hasErrors('releaseDate')}" class="error-message">
+                <span th:errors="*{releaseDate}"></span>
+            </div>
+        </div>
+
+        <!-- Thể loại -->
+<!--        <div class="form-group">-->
+<!--            <label>Thể loại:</label>-->
+<!--            <div th:each="type : ${movieTypes}">-->
+<!--                <label>-->
+<!--                    <input type="checkbox" name="typeIds" value="${type.typeId}" /> &lt;!&ndash; Checkbox cho từng thể loại &ndash;&gt;-->
+<!--                    <span th:text="${type.typeName}"></span> &lt;!&ndash; Hiển thị tên thể loại &ndash;&gt;-->
+<!--                </label>-->
+<!--                <br />-->
+<!--            </div>-->
+<!--        </div>-->
+        <!-- Submit Button -->
+        <div class="form-group">
+            <button type="submit">Lưu thông tin phim</button>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>
