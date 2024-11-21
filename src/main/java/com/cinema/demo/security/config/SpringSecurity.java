@@ -49,6 +49,9 @@ public class SpringSecurity {
                                     .requestMatchers("/admin/**").permitAll()
                                     .requestMatchers("/request-reset-password").permitAll()  // Cho phép truy cập trang yêu cầu reset mật khẩu
                                     .requestMatchers("/reset-password").permitAll()
+                                    .requestMatchers("/invoices/*/qrcode").permitAll() // Sửa đúng pattern
+                                    .requestMatchers("/invoices/**").hasRole("USER") // Các endpoint khác yêu cầu vai trò USER
+                                    .anyRequest().authenticated()
 
 
 

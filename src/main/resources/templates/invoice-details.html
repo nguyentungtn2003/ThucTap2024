@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Details</title>
+    <style>
+        /* Tổng thể */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Container chính */
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        /* Tiêu đề */
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        /* Thông tin hóa đơn */
+        .details {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .details p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        .details p span {
+            font-weight: bold;
+        }
+
+        /* Nút quay về */
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .details p {
+                font-size: 14px;
+            }
+            .back-button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Invoice Details</h1>
+    <div class="details">
+        <p><span>Invoice ID:</span> <span th:text="${invoiceDetails.invoiceId}"></span></p>
+        <p><span>Total Amount:</span> <span th:text="${invoiceDetails.totalAmount}"></span></p>
+        <p><span>Status:</span> <span th:text="${invoiceDetails.invoiceStatus}"></span></p>
+        <p><span>Created At:</span> <span th:text="${invoiceDetails.invoiceCreatedAt}"></span></p>
+        <p><span>Movie Name:</span> <span th:text="${invoiceDetails.movieName}"></span></p>
+        <p><span>Movie Release Date:</span> <span th:text="${invoiceDetails.movieReleaseDate}"></span></p>
+        <p><span>Show Date Start:</span> <span th:text="${invoiceDetails.showDateStart}"></span></p>
+        <p><span>Show Date End:</span> <span th:text="${invoiceDetails.showDateEnd}"></span></p>
+        <p><span>Concession Type:</span> <span th:text="${invoiceDetails.concessionType}"></span></p>
+        <p><span>Concession Price:</span> <span th:text="${invoiceDetails.concessionPrice}"></span></p>
+        <p><span>Concession Quantity:</span> <span th:text="${invoiceDetails.concessionQuantity}"></span></p>
+        <p><span>Concession Order Price:</span> <span th:text="${invoiceDetails.concessionOrderPrice}"></span></p>
+        <p><span>Ticket Price:</span> <span th:text="${invoiceDetails.ticketPrice}"></span></p>
+    </div>
+    <a href="/invoices" class="back-button">Quay về trang Invoices</a>
+</div>
+</body>
+</html>
