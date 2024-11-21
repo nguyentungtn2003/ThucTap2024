@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,8 +19,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Builder
 @ToString
-public class UserDto
-{
+public class UserDto {
 
     @NotBlank(message = "Username is required")
     @Size(min = 3, message = "Min 3 Characters is required")
@@ -51,7 +51,7 @@ public class UserDto
 //<<<<<<<< HEAD:src/main/java/com/cinema/demo/dto/UserDto.java
 
 
-//    private List<String> roles;
+    private List<String> roles;
 }
 //========
 //}
