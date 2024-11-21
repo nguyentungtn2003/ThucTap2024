@@ -1,6 +1,6 @@
 package com.cinema.demo.security.controller;
 
-import com.cinema.demo.entities.UserEntity;
+import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.security.helpers.Helper;
 import com.cinema.demo.security.service.UserService;
 import org.slf4j.Logger;

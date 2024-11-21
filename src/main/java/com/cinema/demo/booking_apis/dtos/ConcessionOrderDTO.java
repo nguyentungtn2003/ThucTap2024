@@ -1,7 +1,7 @@
 package com.cinema.demo.booking_apis.dtos;
 
-import com.cinema.demo.entities.InvoiceEntity;
-import com.cinema.demo.entities.TypeOfConcessionEntity;
+import com.cinema.demo.entity.InvoiceEntity;
+import com.cinema.demo.entity.TypeOfConcessionEntity;
 import lombok.Data;
 
 import java.math.BigDecimal;

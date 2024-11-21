@@ -1,6 +1,6 @@
 package com.cinema.demo.security.service.security;
 
-import com.cinema.demo.entities.UserEntity;
+import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.security.exception.BaseException;
 import com.cinema.demo.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

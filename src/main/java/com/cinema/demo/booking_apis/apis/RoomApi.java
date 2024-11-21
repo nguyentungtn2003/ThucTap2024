@@ -1,7 +1,6 @@
 package com.cinema.demo.booking_apis.apis;
 
 import com.cinema.demo.booking_apis.dtos.CinemaRoomDTO;
-import com.cinema.demo.booking_apis.repositories.ICinemaRoomRepository;
 import com.cinema.demo.booking_apis.services.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

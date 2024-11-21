@@ -1,8 +1,8 @@
 package com.cinema.demo.security.service.oauth2.security;
 
-import com.cinema.demo.entities.RoleEntity;
+import com.cinema.demo.entity.RoleEntity;
 import lombok.RequiredArgsConstructor;
-import com.cinema.demo.entities.UserEntity;
+import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.security.exception.BaseException;
 import com.cinema.demo.security.repository.RoleRepository;
 import com.cinema.demo.security.repository.UserRepository;

@@ -1,7 +1,7 @@
 package com.cinema.demo.booking_apis.services;
 
 import com.cinema.demo.booking_apis.dtos.ShowtimeDTO;
-import com.cinema.demo.booking_apis.repositories.IShowTimeRepository;
+import com.cinema.demo.booking_apis.repository.IShowTimeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

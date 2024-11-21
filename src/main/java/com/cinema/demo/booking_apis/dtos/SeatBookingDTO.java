@@ -1,7 +1,7 @@
 package com.cinema.demo.booking_apis.dtos;
 
-import com.cinema.demo.entities.BookingEntity;
-import com.cinema.demo.entities.SeatEntity;
+import com.cinema.demo.entity.BookingEntity;
+import com.cinema.demo.entity.SeatEntity;
 import lombok.Data;
 
 @Data

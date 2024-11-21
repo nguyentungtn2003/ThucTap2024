@@ -1,9 +1,9 @@
 package com.cinema.demo;
 
-import com.cinema.demo.booking_apis.repositories.ICinemaRoomRepository;
-import com.cinema.demo.booking_apis.repositories.IMovieRepository;
-import com.cinema.demo.booking_apis.repositories.ISeatRepository;
-import com.cinema.demo.booking_apis.repositories.IShowTimeRepository;
+import com.cinema.demo.booking_apis.repository.ICinemaRoomRepository;
+import com.cinema.demo.booking_apis.repository.IMovieRepository;
+import com.cinema.demo.booking_apis.repository.ISeatRepository;
+import com.cinema.demo.booking_apis.repository.IShowTimeRepository;
 import com.cinema.demo.security.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

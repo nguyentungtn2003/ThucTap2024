@@ -1,17 +1,16 @@
 package com.cinema.demo.booking_apis.services;
 
 import com.cinema.demo.booking_apis.dtos.SeatDTO;
-import com.cinema.demo.booking_apis.repositories.ISeatRepository;
-import com.cinema.demo.booking_apis.repositories.IShowTimeRepository;
-import com.cinema.demo.booking_apis.repositories.ITicketRepository;
-import com.cinema.demo.entities.CinemaRoomEntity;
-import com.cinema.demo.entities.SeatEntity;
+import com.cinema.demo.booking_apis.repository.ISeatRepository;
+import com.cinema.demo.booking_apis.repository.IShowTimeRepository;
+import com.cinema.demo.booking_apis.repository.ITicketRepository;
+import com.cinema.demo.entity.CinemaRoomEntity;
+import com.cinema.demo.entity.SeatEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

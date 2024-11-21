@@ -1,11 +1,11 @@
 package com.cinema.demo.booking_apis.services;
 
 import com.cinema.demo.booking_apis.dtos.BookingRequestDTO;
-import com.cinema.demo.booking_apis.repositories.IInvoiceRepository;
-import com.cinema.demo.booking_apis.repositories.ISeatRepository;
-import com.cinema.demo.booking_apis.repositories.IShowTimeRepository;
-import com.cinema.demo.booking_apis.repositories.ITicketRepository;
-import com.cinema.demo.entities.*;
+import com.cinema.demo.booking_apis.repository.IInvoiceRepository;
+import com.cinema.demo.booking_apis.repository.ISeatRepository;
+import com.cinema.demo.booking_apis.repository.IShowTimeRepository;
+import com.cinema.demo.booking_apis.repository.ITicketRepository;
+import com.cinema.demo.entity.*;
 import com.cinema.demo.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

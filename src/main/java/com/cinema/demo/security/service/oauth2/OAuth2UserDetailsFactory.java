@@ -1,6 +1,6 @@
 package com.cinema.demo.security.service.oauth2;
 
-import com.cinema.demo.entities.Provider;
+import com.cinema.demo.entity.Provider;
 import com.cinema.demo.security.exception.BaseException;
 
 import java.util.Map;

@@ -1,9 +1,9 @@
 package com.cinema.demo.booking_apis.apis;
 
 import com.cinema.demo.booking_apis.dtos.MovieDTO;
-import com.cinema.demo.booking_apis.repositories.IMovieRepository;
+import com.cinema.demo.booking_apis.repository.IMovieRepository;
 import com.cinema.demo.booking_apis.services.IMovieService;
-import com.cinema.demo.entities.MovieEntity;
+import com.cinema.demo.entity.MovieEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

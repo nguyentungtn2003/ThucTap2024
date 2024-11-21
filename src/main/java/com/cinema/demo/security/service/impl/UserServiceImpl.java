@@ -1,12 +1,11 @@
 package com.cinema.demo.security.service.impl;
 
-import com.cinema.demo.security.helpers.AppConstants;
 import com.cinema.demo.security.helpers.Helper;
 import com.cinema.demo.security.service.EmailService;
 import lombok.RequiredArgsConstructor;
-import com.cinema.demo.entities.Provider;
-import com.cinema.demo.entities.UserEntity;
-import com.cinema.demo.entities.RoleEntity;
+import com.cinema.demo.entity.Provider;
+import com.cinema.demo.entity.UserEntity;
+import com.cinema.demo.entity.RoleEntity;
 import com.cinema.demo.security.exception.BaseException;
 import com.cinema.demo.security.repository.RoleRepository;
 import com.cinema.demo.security.repository.UserRepository;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.UUID;
 
 @Service

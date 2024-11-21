@@ -1,6 +1,6 @@
 package com.cinema.demo.security.repository;
 
-import com.cinema.demo.entities.UserEntity;
+import com.cinema.demo.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

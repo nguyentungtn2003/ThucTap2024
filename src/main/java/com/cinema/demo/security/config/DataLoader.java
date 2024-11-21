@@ -1,6 +1,6 @@
 package com.cinema.demo.security.config;
 
-import com.cinema.demo.entities.RoleEntity;
+import com.cinema.demo.entity.RoleEntity;
 import com.cinema.demo.security.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

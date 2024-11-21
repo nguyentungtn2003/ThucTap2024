@@ -1,6 +1,6 @@
 package com.cinema.demo.security.controller;
 
-import com.cinema.demo.entities.UserEntity;
+import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.security.form.UserForm;
 import com.cinema.demo.security.helpers.Message;
 import com.cinema.demo.security.helpers.MessageType;

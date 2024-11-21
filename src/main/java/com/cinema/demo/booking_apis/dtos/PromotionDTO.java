@@ -1,6 +1,6 @@
 package com.cinema.demo.booking_apis.dtos;
 
-import com.cinema.demo.entities.InvoiceEntity;
+import com.cinema.demo.entity.InvoiceEntity;
 import lombok.Data;
 
 import java.util.Date;
