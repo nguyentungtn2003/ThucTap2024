@@ -1,7 +1,7 @@
 package com.cinema.demo.security.config;
 
 import com.cinema.demo.entity.RoleEntity;
-import com.cinema.demo.security.repository.RoleRepository;
+import com.cinema.demo.security.repository.IRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -12,16 +12,16 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
-    private final RoleRepository roleRepository;
+    private final IRoleRepository IRoleRepository;
 
     @Override
     public void run(String... args) {
         String[] roles = {"USER", "ADMIN", "STAFF"};
         Arrays.stream(roles).forEach(role -> {
-            roleRepository.findByName(role).orElseGet(() -> {
+            IRoleRepository.findByRoleName(role).orElseGet(() -> {
                 RoleEntity roleEntity = new RoleEntity();
                 roleEntity.setRoleName(role);
-                return roleRepository.save(roleEntity);
+                return IRoleRepository.save(roleEntity);
             });
         });
     }

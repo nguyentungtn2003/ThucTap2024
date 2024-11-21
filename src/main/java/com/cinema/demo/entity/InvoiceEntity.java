@@ -30,14 +30,14 @@ public class InvoiceEntity {
     @JoinColumn(name = "userId")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<TicketEntity> tickets; // Đảm bảo có getter và setter cho 'tickets'
-
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ConcessionOrderEntity> concessionOrders;
-
-
-    @ManyToOne
-    @JoinColumn(name = "promotion_id")
-    private PromotionEntity promotion;
+//    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<TicketEntity> tickets; // Đảm bảo có getter và setter cho 'tickets'
+//
+//    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<ConcessionOrderEntity> concessionOrders;
+//
+//
+//    @ManyToOne
+//    @JoinColumn(name = "promotion_id")
+//    private PromotionEntity promotion;
 }

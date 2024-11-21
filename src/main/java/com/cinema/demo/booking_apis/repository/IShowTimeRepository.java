@@ -13,7 +13,7 @@ public interface IShowTimeRepository extends JpaRepository<ShowtimeEntity, Integ
     // Lấy danh sách giờ chiếu (startTime) theo movieId và startDate
     @Query("SELECT DISTINCT st.startTime FROM ShowtimeEntity st " +
             "JOIN ShowDateEntity sd ON st.showtimeId = sd.showtime.showtimeId " +
-            "WHERE st.movie.movieId = :movieId AND sd.startDate = :startDate")
+            "WHERE st.movie.movieId = :movieId AND sd.date = :startDate")
     List<LocalTime> getStartTimeByMovieIdAndStartDate(
             @Param("movieId") Integer movieId,
             @Param("startDate") LocalDate startDate);
@@ -21,7 +21,7 @@ public interface IShowTimeRepository extends JpaRepository<ShowtimeEntity, Integ
     // Lấy danh sách các lịch chiếu (ShowtimeEntity) theo movieId, startDate, startTime và roomId
     @Query("SELECT st FROM ShowtimeEntity st " +
             "JOIN ShowDateEntity sd ON st.showtimeId = sd.showtime.showtimeId " +
-            "WHERE st.movie.movieId = :movieId AND sd.startDate = :startDate " +
+            "WHERE st.movie.movieId = :movieId AND sd.date = :startDate " +
             "AND st.startTime = :startTime AND st.cinemaRoom.id = :roomId")
     List<ShowtimeEntity> getSchedulesByMovieIdAndStartDateAndStartTimeAndRoomId(
             @Param("movieId") Integer movieId,

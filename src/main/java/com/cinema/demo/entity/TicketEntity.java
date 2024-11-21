@@ -37,7 +37,6 @@ public class TicketEntity {
     @JoinColumn(name="invoice_id")
     private InvoiceEntity invoiceEntity;
 
-
     private String startTime;
     private String endTime;
 }

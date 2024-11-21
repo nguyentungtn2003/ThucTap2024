@@ -7,8 +7,8 @@ import com.cinema.demo.entity.Provider;
 import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.entity.RoleEntity;
 import com.cinema.demo.security.exception.BaseException;
-import com.cinema.demo.security.repository.RoleRepository;
-import com.cinema.demo.security.repository.UserRepository;
+import com.cinema.demo.security.repository.IRoleRepository;
+import com.cinema.demo.security.repository.IUserRepository;
 import com.cinema.demo.security.request.UserDTO;
 import com.cinema.demo.security.response.BaseResponse;
 import com.cinema.demo.security.service.UserService;
@@ -26,10 +26,10 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private final RoleRepository roleRepository;
+    private final IRoleRepository IRoleRepository;
 
     @Autowired
-    private final UserRepository userRepository;
+    private final IUserRepository IUserRepository;
 
     @Autowired
     private final BCryptPasswordEncoder passwordEncoder;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         UserEntity user = insertUser(userDTO);
 
         try {
-            userRepository.save(user);
+            IUserRepository.save(user);
             response.setCode(String.valueOf(HttpStatus.CREATED.value()));
             response.setMessage("Register account successfully!!!");
         }catch (Exception e){
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public UserEntity saveUser(UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        RoleEntity userRole = roleRepository.findByName("USER")
+        RoleEntity userRole = IRoleRepository.findByRoleName("USER")
                 .orElseThrow(() -> new BaseException("500", "Role USER not found"));
 
         user.setRoles(new HashSet<>());
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
         String emailToken = UUID.randomUUID().toString();
         user.setEmailToken(emailToken);
-        UserEntity savedUser = userRepository.save(user);
+        UserEntity savedUser = IUserRepository.save(user);
         String emailLink = helper.getLinkForEmailVerificatiton(emailToken);
         emailService.sendEmail(savedUser.getEmail(), "Verify Account : Smart  Contact Manager", emailLink);
 
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
             user.setSex(userDTO.getSex());
         }
 
-        RoleEntity userRole = roleRepository.findByName("USER")
+        RoleEntity userRole = IRoleRepository.findByRoleName("USER")
                 .orElseThrow(() -> new BaseException("500", "Role USER not found"));
 
         user.setRoles(new HashSet<>());
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return IUserRepository.findByEmail(email);
 
     }
 

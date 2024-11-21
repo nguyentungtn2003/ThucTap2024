@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 @Data
 @Entity
@@ -14,7 +14,7 @@ public class ShowDateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int showtimeDateId;
 
-    private LocalDate startDate;
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "showtimeId")

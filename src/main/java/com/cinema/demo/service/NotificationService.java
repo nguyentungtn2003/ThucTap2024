@@ -30,10 +30,10 @@ public class NotificationService {
         TicketEntity ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid ticket ID"));
 
-        InvoiceEntity invoice = ticket.getInvoice();
+        InvoiceEntity invoice = ticket.getInvoiceEntity();
 
         return new TicketConfirmationDTO(
-                invoice.getUser().getFullName(),
+                invoice.getUser().getName(),
                 invoice.getUser().getEmail(),
                 ticket.getSeatNumber(),
                 ticket.getStartTime(),

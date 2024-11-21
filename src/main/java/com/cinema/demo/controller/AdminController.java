@@ -4,6 +4,7 @@
     import com.cinema.demo.entity.UserEntity;
     import com.cinema.demo.repository.RoleRepository;
     import com.cinema.demo.repository.UserRepository;
+    import com.cinema.demo.security.exception.BaseException;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.data.domain.Page;
     import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@
     import org.springframework.web.bind.annotation.*;
 
     import java.sql.Date;
+    import java.util.HashSet;
     import java.util.List;
     import java.util.Optional;
     import java.util.stream.Collectors;
@@ -86,25 +88,28 @@
                 return ResponseEntity.badRequest().body("Email đã tồn tại.");
             }
 
-            // Kiểm tra nếu vai trò ROLE_STAFF chưa tồn tại thì thêm vào database
-            RoleEntity staffRole = roleRepository.findByRoleName("ROLE_STAFF");
-            if (staffRole == null) {
-                staffRole = new RoleEntity();
-                staffRole.setRoleName("ROLE_STAFF");
-                staffRole = roleRepository.save(staffRole); // Lưu ROLE_STAFF vào database
-            }
+//            // Kiểm tra nếu vai trò ROLE_STAFF chưa tồn tại thì thêm vào database
+//            RoleEntity staffRole = roleRepository.findByRoleName("ROLE_STAFF");
+//            if (staffRole == null) {
+//                staffRole = new RoleEntity();
+//                staffRole.setRoleName("ROLE_STAFF");
+//                staffRole = roleRepository.save(staffRole); // Lưu ROLE_STAFF vào database
+//            }
 
             // Tạo mới nhân viên và gán vai trò ROLE_STAFF
             UserEntity newStaff = new UserEntity();
             newStaff.setEmail(email);
-            newStaff.setFullName(fullName);
+            newStaff.setName(fullName);
             newStaff.setPassword(passwordEncoder.encode(password)); // Mã hóa mật khẩu
             newStaff.setPhoneNumber(phoneNumber);
             newStaff.setAddress(address);
             newStaff.setDob(dob);
             newStaff.setSex(sex);
             newStaff.setStatus(status);
-            newStaff.setRoles(List.of(staffRole)); // Gán vai trò STAFF cho nhân viên mới
+//            newStaff.setRoles(List.of(staffRole)); // Gán vai trò STAFF cho nhân viên mới
+            RoleEntity userRole = roleRepository.findByRoleName("STAFF");
+            newStaff.setRoles(new HashSet<>());
+            newStaff.getRoles().add(userRole);
 
             userRepository.save(newStaff);
             return ResponseEntity.ok("Thêm nhân viên thành công.");
@@ -128,7 +133,7 @@
             }
 
             UserEntity staff = optionalStaff.get();
-            staff.setFullName(fullName);
+            staff.setName(fullName);
             staff.setPhoneNumber(phoneNumber);
             staff.setAddress(address);
             staff.setDob(dob);

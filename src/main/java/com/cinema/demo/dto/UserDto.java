@@ -21,6 +21,7 @@ import java.util.List;
 @ToString
 public class UserDto {
 
+//    private Long id;
     @NotBlank(message = "Username is required")
     @Size(min = 3, message = "Min 3 Characters is required")
     private String name;

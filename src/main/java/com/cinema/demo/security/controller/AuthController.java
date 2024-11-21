@@ -3,7 +3,7 @@ package com.cinema.demo.security.controller;
 import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.security.helpers.Message;
 import com.cinema.demo.security.helpers.MessageType;
-import com.cinema.demo.security.repository.UserRepository;
+import com.cinema.demo.security.repository.IUserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ public class AuthController {
     // verify email
 
     @Autowired
-    private UserRepository userRepo;
+    private IUserRepository userRepo;
 
     @GetMapping("/verify-email")
     public String verifyEmail(
