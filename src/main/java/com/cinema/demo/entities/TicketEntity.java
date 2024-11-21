@@ -2,6 +2,8 @@ package com.cinema.demo.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 
@@ -13,13 +15,24 @@ public class TicketEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ticketId;
 
+    private String qrImageURL;
+
     @ManyToOne
     @JoinColumn(name = "showtimeId")
     private ShowtimeEntity showtime;
 
     private BigDecimal price;
 
-    private String seatNumber;
-
     private String status;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(nullable = false,name = "seat_id")
+    private SeatEntity seat;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name="invoice_id")
+    private InvoiceEntity invoiceEntity;
+
 }

@@ -12,4 +12,11 @@ public class CinemaRoomEntity {
     private int id;
 
     private String cinemaRoomNum;
+
+    private int capacity;
+
+    private double totalArea;
+
+    @Column(length = 1000)
+    private String imgURL;
 }

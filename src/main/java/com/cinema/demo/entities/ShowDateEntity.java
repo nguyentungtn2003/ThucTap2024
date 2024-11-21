@@ -3,6 +3,7 @@ package com.cinema.demo.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -13,7 +14,7 @@ public class ShowDateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int showtimeDateId;
 
-    private Date date;
+    private LocalDate startDate;
 
     @ManyToOne
     @JoinColumn(name = "showtimeId")

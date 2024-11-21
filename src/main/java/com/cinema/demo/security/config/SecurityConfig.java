@@ -115,7 +115,7 @@ public class SecurityConfig {
 //        return http.build();
 //
 @Autowired
-private CustomOAuth2UserDetails customOAuth2UserDetails;
+    private CustomOAuth2UserDetails customOAuth2UserDetails;
 
     @Autowired
     private UserDetailsServiceCustom userDetailService;
@@ -161,7 +161,7 @@ private CustomOAuth2UserDetails customOAuth2UserDetails;
             formLogin.loginProcessingUrl("/authenticate");
             formLogin.successForwardUrl("/user/profile");
             formLogin.failureForwardUrl("/login?error=true");
-            formLogin.defaultSuccessUrl("/user/home");
+            formLogin.defaultSuccessUrl("/home");
             formLogin.usernameParameter("email");
             formLogin.passwordParameter("password");
 

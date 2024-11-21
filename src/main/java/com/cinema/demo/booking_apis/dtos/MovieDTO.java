@@ -1,31 +1,26 @@
-package com.cinema.demo.entities;
+package com.cinema.demo.booking_apis.dtos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
-@Entity
-@Table(name = "Movie")
-public class MovieEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MovieDTO {
     private int movieId;
 
-    @Column(length = 1000)
     private String smallImageURl;
 
-    @Column(length = 1000)
     private String largeImageURL;
 
-    @Column(length = 500)
     private String shortDescription;
 
-    @Column(length = 1000)
     private String longDescription;
 
-    @Column(length = 1000)
     private String trailerURL;
 
     private String productionCompany;
@@ -45,5 +40,4 @@ public class MovieEntity {
     private String language;
 
     private String rated;
-
 }

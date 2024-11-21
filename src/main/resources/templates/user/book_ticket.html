@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th = "https://www.thymeleaf.org/">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Vé</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const seats = document.querySelectorAll(".seat.available");
+
+        seats.forEach(seat => {
+            seat.addEventListener("click", () => {
+                seat.classList.toggle("selected");
+            });
+        });
+    });
+</script>
+
+<body>
+
+<header>
+    <div class="navbar">
+        <div class="logo">LOGO</div>
+        <nav>
+            <ul>
+                <li><a href="Giaodienchuadangnhap.html">Home</a></li>
+                <li><a href="comingsoon.html">Sắp Chiếu</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-link" href="#">Thể Loại</a>
+                    <ul id="dropdown-content">
+                        <li><a href="action.html">Hành Động</a></li>
+                        <li><a href="psychology.html">Tâm Lý</a></li>
+                    </ul>
+                </li>
+                <li><a href="myticket.html">Vé Của Tôi</a></li>
+                <li><a href="accountinfo.html">Thông Tin Cá Nhân</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            <a href="#">Đức Trưởng</a>
+            <a href="">Đăng Xuất</a>
+            <div class="lang">
+                <img src="vi.png" alt="Tiếng Việt">
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="book-ticket">
+    <div class="ticket-info">
+        <img id="movie-poster" class="movie-poster" src="Quyanfont.jpg" alt="Movie Poster">
+        <h1 id="movie-title">Tên Phim</h1>
+        <p id="showtime-info">Suất chiếu: <span id="showtime"></span></p>
+    </div>
+
+    <section class="seat-selection">
+        <h2>Chọn Ghế</h2>
+        <div class="screen">_______________ MÀN HÌNH _______________</div>
+        <div class="seat-grid">
+            <!-- Hàng A -->
+            <div class="seat-row">
+                <div class="seat available" data-seat="A1">A1</div>
+                <div class="seat available" data-seat="A2">A2</div>
+                <div class="seat available" data-seat="A3">A3</div>
+                <div class="seat available" data-seat="A4">A4</div>
+                <div class="seat available" data-seat="A5">A5</div>
+                <div class="seat available" data-seat="A6">A6</div>
+                <div class="seat available" data-seat="A7">A7</div>
+                <div class="seat available" data-seat="A8">A8</div>
+                <div class="seat available" data-seat="A9">A9</div>
+                <div class="seat available" data-seat="A10">A10</div>
+            </div>
+            <!-- Hàng B -->
+            <div class="seat-row">
+                <div class="seat available" data-seat="B1">B1</div>
+                <div class="seat available" data-seat="B2">B2</div>
+                <div class="seat available" data-seat="B3">B3</div>
+                <div class="seat highlight available" data-seat="B4">B4</div>
+                <div class="seat highlight available" data-seat="B5">B5</div>
+                <div class="seat highlight available" data-seat="B6">B6</div>
+                <div class="seat highlight available" data-seat="B7">B7</div>
+                <div class="seat available" data-seat="B8">B8</div>
+                <div class="seat available" data-seat="B9">B9</div>
+                <div class="seat available" data-seat="B10">B10</div>
+            </div>
+
+            <!-- Hàng C -->
+            <div class="seat-row">
+                <div class="seat available" data-seat="C1">C1</div>
+                <div class="seat available" data-seat="C2">C2</div>
+                <div class="seat available" data-seat="C3">C3</div>
+                <div class="seat highlight available" data-seat="C4">C4</div>
+                <div class="seat highlight available" data-seat="C5">C5</div>
+                <div class="seat highlight available" data-seat="C6">C6</div>
+                <div class="seat highlight available" data-seat="C7">C7</div>
+                <div class="seat available" data-seat="C8">C8</div>
+                <div class="seat available" data-seat="C9">C9</div>
+                <div class="seat available" data-seat="C10">C10</div>
+            </div>
+
+            <!-- Hàng D -->
+            <div class="seat-row">
+                <div class="seat available" data-seat="D1">D1</div>
+                <div class="seat available" data-seat="D2">D2</div>
+                <div class="seat available" data-seat="D3">D3</div>
+                <div class="seat highlight available" data-seat="D4">D4</div>
+                <div class="seat highlight available" data-seat="D5">D5</div>
+                <div class="seat highlight available" data-seat="D6">D6</div>
+                <div class="seat highlight available" data-seat="D7">D7</div>
+                <div class="seat available" data-seat="D8">D8</div>
+                <div class="seat available" data-seat="D9">D9</div>
+                <div class="seat available" data-seat="D10">D10</div>
+            </div>
+
+            <!-- Hàng E -->
+            <div class="seat-row">
+                <div class="seat available" data-seat="E1">E1</div>
+                <div class="seat available" data-seat="E2">E2</div>
+                <div class="seat available" data-seat="E3">E3</div>
+                <div class="seat available" data-seat="E4">E4</div>
+                <div class="seat available" data-seat="E5">E5</div>
+                <div class="seat available" data-seat="E6">E6</div>
+                <div class="seat available" data-seat="E7">E7</div>
+                <div class="seat available" data-seat="E8">E8</div>
+                <div class="seat available" data-seat="E9">E9</div>
+                <div class="seat available" data-seat="E10">E10</div>
+            </div>
+
+        </div>
+
+        <div class="seat-legend">
+            <div class="legend-item">
+                <span class="color-box available"></span> Trống
+            </div>
+            <div class="legend-item">
+                <span class="color-box booked"></span> Đã Đặt
+            </div>
+            <div class="legend-item">
+                <span class="color-box selected"></span> Đang Chọn
+            </div>
+            <div class="legend-item">
+                <span class="color-box vip"></span> Ghế VIP
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Thêm Bỏng Ngô -->
+    <div class="form-group">
+        <img src="popcorn.jpg" alt="Bỏng Ngô" class="product-img">
+        <label for="popcornCount">Số Lượng Bỏng Ngô:</label>
+        <input type="number" id="popcornCount" name="popcornCount" min="0" value="0">
+    </div>
+
+    <!-- Thêm Nước Pepsi -->
+    <div class="form-group">
+        <img src="coke.jpg" alt="Coca Nửa Lon" class="product-img">
+        <label for="pepsiCount">Số Lượng Nước Pepsi:</label>
+        <input type="number" id="pepsiCount" name="pepsiCount" min="0" value="0">
+    </div>
+
+    <div class="confirm">
+        <button onclick="window.location.href='pay.html'" class="btn-primary">Đặt Vé</button>
+    </div>
+
+</main>
+
+<style>
+    /* Tổng thể */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+    }
+
+    .ticket-info {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .ticket-info h1 {
+        font-size: 28px;
+        margin: 10px 0;
+        color: #2a2a2a;
+        margin-right: 1350px;
+    }
+
+    .ticket-info #showtime-info {
+        font-size: 18px;
+        color: #666;
+        margin-right: 1350px
+    }
+
+    /* Chọn Ghế */
+    .seat-selection {
+        text-align: center;
+    }
+
+    .screen {
+        font-weight: bold;
+        margin: 20px 0;
+        color: #333;
+    }
+
+    .seat-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    .seat-row {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+    }
+
+    .seat {
+        width: 40px;
+        height: 40px;
+        margin: 5px;
+        background-color: #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .seat.available:hover {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .seat.highlight {
+        background-color: #f0ad4e;
+    }
+
+    /* Màu ghế */
+    .seat-legend {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .legend-item {
+        margin-right: 20px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+    }
+
+    .color-box {
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        margin-right: 8px;
+    }
+
+    .color-box.available {
+        background-color: #8BC34A;
+    }
+
+    .color-box.booked {
+        background-color: #D32F2F;
+    }
+
+    .color-box.selected {
+        background-color: #2196F3;
+    }
+
+    .color-box.vip {
+        background-color: #f0ad4e;
+    }
+
+    /* Đặt vé và thêm sản phẩm */
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+
+    .form-group label {
+        margin-right: 10px;
+    }
+
+    .product-img {
+        width: 50px;
+        height: auto;
+        margin-right: 10px;
+    }
+
+    .btn-primary {
+        background-color: #ff6600;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff6600;
+    }
+
+    .confirm {
+        margin-top: 30px;
+    }
+</style>
+
+
+
+</body>
+
+</html>
