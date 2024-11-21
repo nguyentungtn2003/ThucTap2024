@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Interface - Quản lý Nhân Viên</title>
+    <!--  <link rel="stylesheet" href="../styles.css">-->
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Top Header */
+        .header {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 3px solid purple;
+            border-bottom: 1px solid black;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            padding-top: 20px;
+            border-right: 1px solid lightgray;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin-top: 45px; /* to align with the header */
+        }
+
+        .sidebar a {
+            display: block;
+            color: black;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 200px; /* Width of the sidebar */
+            padding: 20px;
+            height: calc(100vh - 45px); /* Adjust for header height */
+        }
+
+        /* Form Styles */
+        .form-container {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .form-container h2 {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .form-group .radio-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: black;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Row colors */
+        tr:nth-child(odd) {
+            background-color: #d9a5a5; /* Red color for odd rows */
+        }
+
+        tr:nth-child(even) {
+            background-color: #c3d0d9; /* Blue color for even rows */
+        }
+
+        /* Icons */
+        .icon {
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .icon:hover {
+            opacity: 0.7;
+        }
+
+        button {
+            background-color: #333; /* Màu nền xanh lá cây */
+            color: white; /* Màu chữ trắng */
+            padding: 10px 20px; /* Khoảng cách bên trong */
+            font-size: 16px; /* Kích thước chữ */
+            border: none; /* Xóa viền mặc định */
+            border-radius: 5px; /* Bo góc */
+            cursor: pointer; /* Thay đổi con trỏ chuột thành hình bàn tay */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng đổ bóng */
+            transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+        }
+
+        button:hover {
+            background-color: #336; /* Đổi màu khi di chuột */
+        }
+
+        button:active {
+            background-color: #336; /* Đổi màu khi nhấn vào */
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Giảm đổ bóng khi nhấn */
+            transform: translateY(2px); /* Tạo hiệu ứng nhấn xuống */
+        }
+        .pagination-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination-container button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .pagination-container button.active {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            display: block;
+        }
+
+        .modal {
+            display: none; /* Ẩn modal mặc định */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            height:400px;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center; /* Căn giữa tiêu đề */
+            margin-bottom: 20px; /* Thêm khoảng cách dưới tiêu đề */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Thêm khoảng cách giữa các trường nhập liệu */
+        .modal-content div {
+            margin-bottom: 10px;
+        }
+
+        /* Căn giữa button */
+        button {
+            display: block;
+            margin: 20px auto 0; /* Thêm khoảng cách phía trên nút */
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Hiệu ứng hover cho button */
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Cỡ chữ trong các trường input */
+        input[type="text"], select {
+            font-size: 16px; /* Tăng cỡ chữ trong input */
+            padding: 8px;
+            width: 100%; /* Đảm bảo các trường input chiếm hết chiều rộng */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Tạo khoảng cách giữa nút "Sửa" và "Xóa" */
+        button.icon {
+            margin-bottom: 10px; /* Khoảng cách giữa nút "Sửa" và "Xóa" */
+        }
+
+        /* Nếu nút "Xóa" là button, hãy thêm margin-left cho nút này */
+        button.icon:nth-child(2) {
+            margin-top: 10px; /* Khoảng cách giữa nút "Sửa" và "Xóa" */
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Top Header -->
+<div class="header">
+    <div>ADMIN 2</div>
+    <div><a href="../login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
+    <a href="/admin/showtime-management">QUẢN LÍ SUẤT CHIẾU</a>
+    <a href="/admin/ad2_cus_mana.html">QUẢN LÍ KHÁCH HÀNG</a>
+    <a href="/admin/ad2_addcus.html">THÊM MỚI KHÁCH HÀNG</a>
+    <a href="/admin/tickets">QUẢN LÍ VÉ</a>
+    <a href="/admin/ad2_addtick.html">THÊM VÉ</a>
+    <a href="/admin/ad2_mv_mana.html">QUẢN LÍ PHIM</a>
+    <a href="/admin/ad2_addmovie.html">THÊM PHIM</a>
+    <a href="/admin/admin2.html">THÔNG TIN CÁ NHÂN</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <h1>Quản lý Suất Chiếu</h1>
+
+    <!-- Form thêm suất chiếu -->
+    <div class="form-container">
+        <h2>Thêm Suất Chiếu Mới</h2>
+        <form id="addShowtimeForm">
+            <div class="form-group">
+                <label for="movie">Phim</label>
+                <select id="movie" name="movieId" required>
+                    <!-- Các tùy chọn sẽ được điền từ database -->
+                </select>
+                <span class="error-message" id="movieError"></span>
+            </div>
+            <div class="form-group">
+                <label for="cinemaRoom">Phòng Chiếu</label>
+                <select id="cinemaRoom" name="cinemaRoomId" required>
+                    <!-- Các tùy chọn sẽ được điền từ database -->
+                </select>
+                <span class="error-message" id="cinemaRoomError"></span>
+            </div>
+            <div class="form-group">
+                <label for="showDates">Ngày Chiếu (có thể chọn nhiều ngày)</label>
+                <input type="text" id="showDates" name="showDates" placeholder="Nhập ngày chiếu, cách nhau bởi dấu phẩy (yyyy-mm-dd)" required />
+                <span class="error-message" id="showDatesError"></span>
+            </div>
+            <button type="submit">Thêm Suất Chiếu</button>
+
+            <!-- Thông báo thành công -->
+            <div id="messageContainer" style="display: none; font-size: 16px; margin: 10px 0;"></div>
+            <div id="successMessage" style="display: none; color: green;"></div>
+            <p id="editShowtimeMessageOK" style="display: none;"></p>
+        </form>
+    </div>
+
+    <!-- Bảng danh sách suất chiếu -->
+    <div class="table-container">
+        <h2>Danh Sách Suất Chiếu</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Phim</th>
+                <th>Phòng Chiếu</th>
+                <th>Ngày Chiếu</th>
+                <th>Thao Tác</th>
+            </tr>
+            </thead>
+            <tbody id="showtimeTableBody">
+            <!-- Dữ liệu suất chiếu sẽ được điền vào đây -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="editShowtimeModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Sửa Suất Chiếu</h2>
+        <form id="editShowtimeForm" onsubmit="return false;">
+            <div>
+                <label for="editShowtimeId">Mã suất chiếu:</label>
+                <input type="text" id="editShowtimeId" disabled>
+            </div>
+            <div>
+                <label for="editMovie">Chọn Phim:</label>
+                <select id="editMovie">
+                    <!-- Tùy chọn phim sẽ được tải từ JavaScript -->
+                </select>
+            </div>
+            <div>
+                <label for="editCinemaRoom">Chọn Phòng Chiếu:</label>
+                <select id="editCinemaRoom">
+                    <!-- Tùy chọn phòng chiếu sẽ được tải từ JavaScript -->
+                </select>
+            </div>
+            <div>
+                <label for="editShowDates">Ngày Chiếu (YYYY-MM-DD, phân cách bằng dấu phẩy):</label>
+                <input type="text" id="editShowDates">
+            </div>
+            <div>
+                <button type="button" onclick="updateShowtime()">Lưu</button>
+            </div>
+            <p id="editShowtimeMessageError" style="display: none;"></p>
+        </form>
+        <!-- Vùng hiển thị thông báo lỗi -->
+
+    </div>
+</div>
+
+
+<script>
+    // Hàm để xử lý việc hiển thị bảng suất chiếu, form thêm suất chiếu, v.v.
+    document.getElementById('addShowtimeForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Lấy các giá trị từ form
+        const movieId = document.getElementById("movie").value;
+        const cinemaRoomId = document.getElementById("cinemaRoom").value;
+        const showDates = document.getElementById("showDates").value.split(',').map(date => date.trim());
+
+        console.log("movieId:", movieId); // Log giá trị movieId
+        console.log("cinemaRoomId:", cinemaRoomId); // Log giá trị cinemaRoomId
+        console.log("showDates:", showDates); // Log giá trị showDates
+
+        let isValid = true; // Biến kiểm tra tính hợp lệ của form
+
+        // Xóa lỗi cũ
+        document.querySelectorAll(".error-message").forEach(error => error.textContent = "");
+
+        // Kiểm tra trường hợp rỗng (blank)
+        if (!movieId) {
+            document.getElementById("movieError").textContent = "Phim không được để trống.";
+            isValid = false;
+        }
+        if (!cinemaRoomId) {
+            document.getElementById("cinemaRoomError").textContent = "Phòng chiếu không được để trống.";
+            isValid = false;
+        }
+        if (!showDates || showDates.length === 0) {
+            document.getElementById("showDatesError").textContent = "Ngày chiếu không được để trống.";
+            isValid = false;
+        }
+
+        // Kiểm tra ngày chiếu hợp lệ
+        showDates.forEach((date, index) => {
+            const dateRegex = /^\d{4}-\d{2}-\d{2}$/; // Kiểm tra định dạng yyyy-mm-dd
+            if (!dateRegex.test(date)) {
+                document.getElementById("showDatesError").textContent = `Ngày chiếu thứ ${index + 1} không hợp lệ (yyyy-mm-dd).`;
+                isValid = false;
+            }
+        });
+
+        // Nếu form không hợp lệ, không gọi API
+        if (!isValid) {
+            console.log("Form không hợp lệ, dừng gửi yêu cầu");
+            return;
+        }
+
+        // Nếu tất cả các trường hợp hợp lệ, tiếp tục gọi API thêm suất chiếu
+        fetch('/admin/showtime-management/showtime', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                movieId, cinemaRoomId, showDates: showDates.join(',')
+            })
+        })
+            .then(response => {
+                console.log("Response status:", response.status); // Log mã trạng thái của phản hồi
+                if (!response.ok) {
+                    return response.text().then(errorMessage => {
+                        console.error("Lỗi phản hồi từ máy chủ:", errorMessage); // Log lỗi chi tiết từ phản hồi
+                        throw new Error(errorMessage);
+                    });
+                }
+                return response.text(); // Nếu phản hồi hợp lệ, chuyển thành văn bản
+            })
+            .then(data => {
+                console.log("Dữ liệu trả về từ server:", data); // Log dữ liệu trả về từ máy chủ
+
+                const successMessage = document.getElementById("successMessage");
+                successMessage.textContent = "Thêm suất chiếu thành công!";
+                successMessage.style.display = "block"; // Hiển thị thông báo
+
+                // Ẩn thông báo sau 3 giây
+                setTimeout(() => {
+                    successMessage.style.display = "none";
+                }, 3000);
+
+                // Cập nhật lại bảng suất chiếu sau khi thêm mới
+                fetchShowtimes();
+
+                // Reset form
+                document.getElementById("addShowtimeForm").reset();
+            })
+            .catch(error => {
+                console.error("Có lỗi xảy ra khi thêm suất chiếu:", error); // Log lỗi nếu có
+                alert("Lỗi khi thêm suất chiếu: " + error.message); // Thông báo lỗi cho người dùng
+            });
+    });
+
+
+    function fetchShowtimes() {
+        fetch('/admin/showtime-management/showtime')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('showtimeTableBody');
+                tbody.innerHTML = ''; // Xóa nội dung cũ trong bảng
+
+                data.forEach(showtime => {
+                    const row = document.createElement('tr');
+
+                    // Kiểm tra showDates trước khi xử lý
+
+                    let showDatesDisplay = 'Không có ngày chiếu';
+                    if (Array.isArray(showtime.showDates) && showtime.showDates.length > 0) {
+                        showDatesDisplay = showtime.showDates.map(date => {
+                            const dateObj = new Date(date.date);
+                            return dateObj.toISOString().split('T')[0]; // Lấy phần ngày từ ISO string
+                        }).join(', ');
+                    }
+
+                    row.innerHTML = `
+                    <td>${showtime.movie.movieName}</td>
+                    <td>${showtime.cinemaRoom.cinemaRoomNum}</td>
+                    <td>${showDatesDisplay}</td>
+                    <td>
+                        <button class="icon" onclick="editShowtime(${showtime.showtimeId})">Sửa</button>
+                        <button class="icon" onclick="deleteShowtime(${showtime.showtimeId})">Xóa</button>
+                    </td>
+                `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error("Có lỗi xảy ra khi lấy danh sách suất chiếu:", error); // Log lỗi nếu có
+            });
+    }
+
+
+    // Hàm để mở modal sửa suất chiếu
+    function editShowtime(id) {
+        fetch(`/admin/showtime-management/showtime/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                // Cập nhật các trường trong modal với dữ liệu từ backend
+                document.getElementById('editShowtimeId').value = data.showtimeId;
+                document.getElementById('editMovie').value = data.movie.movieId;
+                document.getElementById('editCinemaRoom').value = data.cinemaRoom.cinemaRoomId;
+
+                // Định dạng ngày chiếu giống `fetchShowtimes`
+                let showDatesDisplay = 'Không có ngày chiếu';
+                if (Array.isArray(data.showDates) && data.showDates.length > 0) {
+                    showDatesDisplay = data.showDates.map(dateObj => {
+                        const date = new Date(dateObj.date); // Lấy ngày từ `dateObj.date`
+                        return date.toISOString().split('T')[0]; // Định dạng thành YYYY-MM-DD
+                    }).join(', ');
+                }
+                document.getElementById('editShowDates').value = showDatesDisplay;
+
+                // Hiển thị modal
+                document.getElementById('editShowtimeModal').style.display = 'flex';
+
+                // Tải dữ liệu vào modal (phim và phòng chiếu)
+                loadDataToModal();
+            })
+            .catch(error => console.error('Error loading showtime details:', error));
+    }
+
+    // Hàm để đóng modal sửa suất chiếu
+    function closeModal() {
+        document.getElementById('editShowtimeModal').style.display = 'none';
+    }
+
+    //save
+    function updateShowtime() {
+        const showtimeId = document.getElementById('editShowtimeId').value;
+        const movieId = document.getElementById('editMovie').value;
+        const cinemaRoomId = document.getElementById('editCinemaRoom').value;
+
+        // Lấy giá trị từ ô nhập ngày chiếu và chuyển thành mảng
+        const showDatesInput = document.getElementById('editShowDates').value;
+        const showDates = showDatesInput.split(',').map(date => date.trim()); // Tách thành mảng và loại bỏ khoảng trắng
+
+        // Tạo đối tượng gửi lên server
+        const showtimeData = {
+            movieId: parseInt(movieId),
+            cinemaRoomId: parseInt(cinemaRoomId),
+            showDates: showDates,
+        };
+
+        fetch(`/admin/showtime-management/showtime/${showtimeId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(showtimeData),
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text(); // Lấy thông báo từ server
+                } else {
+                    throw new Error('Cập nhật thất bại');
+                }
+            })
+            .then(message => {
+                // Hiển thị thông báo thành công
+                const messageBox = document.getElementById('editShowtimeMessageOK');
+                messageBox.textContent = message;
+                messageBox.style.color = 'green'; // Màu xanh cho thông báo thành công
+                messageBox.style.display = 'block';
+
+                // Đóng modal sau khi lưu thành công
+                closeModal();
+
+                // Ẩn thông báo sau 3 giây
+                setTimeout(() => {
+                    message.style.display = "none";
+                }, 3000);
+
+                fetchShowtimes(); // Làm mới danh sách suất chiếu
+            })
+            .catch(error => {
+                // Hiển thị thông báo lỗi
+                const messageBox = document.getElementById('editShowtimeMessageError');
+                messageBox.textContent = error.message;
+                messageBox.style.color = 'red'; // Màu đỏ cho thông báo lỗi
+                messageBox.style.display = 'block';
+            });
+    }
+
+    // Hàm hiển thị thông báo
+    function displayMessage(message, type) {
+        const messageContainer = document.getElementById('messageContainer');
+        messageContainer.textContent = message;
+
+        // Thêm kiểu hiển thị (xanh cho success, đỏ cho error)
+        if (type === 'success') {
+            messageContainer.style.color = 'green';
+        } else {
+            messageContainer.style.color = 'red';
+        }
+
+        // Hiển thị thông báo trong 3 giây, sau đó ẩn
+        messageContainer.style.display = 'block';
+        setTimeout(() => {
+            messageContainer.style.display = 'none';
+        }, 3000);
+    }
+
+    // Hàm để xóa suất chiếu
+    function deleteShowtime(id) {
+        fetch(`/admin/showtime-management/showtime/${id}`, {
+            method: 'DELETE'
+        }).then(response => {
+            if (response.ok) {
+                alert("Xóa suất chiếu thành công!");
+                fetchShowtimes(); // Cập nhật lại bảng sau khi xóa
+            } else {
+                alert("Lỗi khi xóa suất chiếu!");
+            }
+        });
+    }
+
+    function loadMovies() {
+        fetch('/admin/showtime-management/movies')
+            .then(response => response.json())
+            .then(data => {
+
+                const movieSelect = document.getElementById('movie');
+                movieSelect.innerHTML = '';
+                data.forEach(movie => {
+                    const option = document.createElement('option');
+                    option.value = movie.movieId;
+                    option.textContent = movie.movieName;
+                    movieSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading movies:', error));
+    }
+
+    function loadMoviesForEdit() {
+        fetch('/admin/showtime-management/movies')
+            .then(response => response.json())
+            .then(data => {
+
+                const movieSelect = document.getElementById('editMovie');
+                movieSelect.innerHTML = '';
+                data.forEach(movie => {
+                    const option = document.createElement('option');
+                    option.value = movie.movieId;
+                    option.textContent = movie.movieName;
+                    movieSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading movies:', error));
+    }
+
+    function loadCinemaRooms() {
+        fetch('/admin/showtime-management/cinema-rooms')
+            .then(response => response.json())
+            .then(data => {
+                const cinemaRoomSelect = document.getElementById('cinemaRoom');
+                cinemaRoomSelect.innerHTML = '';
+                data.forEach(room => {
+                    const option = document.createElement('option');
+                    option.value = room.id;
+                    option.textContent = room.cinemaRoomNum;
+                    cinemaRoomSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading cinema rooms:', error));
+    }
+    function loadCinemaRoomsForEdit() {
+        fetch('/admin/showtime-management/cinema-rooms')
+            .then(response => response.json())
+            .then(data => {
+                const cinemaRoomSelect = document.getElementById('editCinemaRoom');
+                cinemaRoomSelect.innerHTML = '';
+                data.forEach(room => {
+                    const option = document.createElement('option');
+                    option.value = room.id;
+                    option.textContent = room.cinemaRoomNum;
+                    cinemaRoomSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading cinema rooms:', error));
+    }
+
+    // Hàm để load dữ liệu phim và phòng chiếu vào modal khi mở
+    function loadDataToModal() {
+        // Tải danh sách phim vào dropdown trong modal
+        loadMoviesForEdit();
+
+        // Tải danh sách phòng chiếu vào dropdown trong modal
+        loadCinemaRoomsForEdit();
+    }
+
+    // Sử dụng DOMContentLoaded để gọi các hàm sau khi DOM sẵn sàng
+    document.addEventListener("DOMContentLoaded", () => {
+        loadMovies();
+        loadCinemaRooms();
+    });
+
+    // Hàm để xử lý phân trang (tiến và lùi trang)
+    function nextPage() {
+        // Lấy số trang hiện tại và gọi API để chuyển sang trang tiếp theo
+    }
+
+    function prevPage() {
+        // Lấy số trang hiện tại và gọi API để chuyển sang trang trước
+    }
+
+    function goToPage(pageNumber) {
+        // Chuyển tới trang cụ thể
+    }
+
+    function isValidDate(dateString) {
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/; // Định dạng YYYY-MM-DD
+        if (!dateRegex.test(dateString)) return false;
+        const date = new Date(dateString);
+        return date instanceof Date && !isNaN(date);
+    }
+
+
+
+    // Tải danh sách suất chiếu khi trang được tải
+    window.onload = fetchShowtimes;
+</script>
+
+</body>
+</html>

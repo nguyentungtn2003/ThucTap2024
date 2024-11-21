@@ -1,5 +1,6 @@
 package com.cinema.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -22,4 +23,8 @@ public class ShowtimeEntity {
 
     @OneToMany(mappedBy = "showtime")  // 'showtime' là tên thuộc tính trong SeatEntity
     private List<SeatEntity> seats;  // Thêm thuộc tính seats
+
+    @OneToMany(mappedBy = "showtime")
+    @JsonManagedReference  // Add this annotation to avoid infinite recursion
+    private List<ShowDateEntity> showDates;
 }

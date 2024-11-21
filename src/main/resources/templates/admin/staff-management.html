@@ -4,181 +4,259 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Interface - Quản lý Nhân Viên</title>
-  <link rel="stylesheet" href="../styles.css">
+<!--  <link rel="stylesheet" href="../styles.css">-->
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
 
-    /* Top Header */
-    .header {
-      background-color: black;
-      color: white;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 3px solid purple;
-      border-bottom: 1px solid black;
-    }
+      /* Top Header */
+      .header {
+        background-color: black;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 3px solid purple;
+        border-bottom: 1px solid black;
+      }
 
-    /* Sidebar */
-    .sidebar {
-      width: 200px;
-      background-color: white;
-      padding-top: 20px;
-      border-right: 1px solid lightgray;
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      margin-top: 45px; /* to align with the header */
-    }
+      /* Sidebar */
+      .sidebar {
+        width: 200px;
+        background-color: white;
+        padding-top: 20px;
+        border-right: 1px solid lightgray;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin-top: 45px; /* to align with the header */
+      }
 
-    .sidebar a {
-      display: block;
-      color: black;
-      padding: 10px 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+      .sidebar a {
+        display: block;
+        color: black;
+        padding: 10px 15px;
+        text-decoration: none;
+        font-weight: bold;
+      }
 
-    .sidebar a:hover {
-      background-color: #f0f0f0;
-    }
+      .sidebar a:hover {
+        background-color: #f0f0f0;
+      }
 
-    /* Main Content */
-    .main-content {
-      margin-left: 200px; /* Width of the sidebar */
-      padding: 20px;
-      height: calc(100vh - 45px); /* Adjust for header height */
-    }
+      /* Main Content */
+      .main-content {
+        margin-left: 200px; /* Width of the sidebar */
+        padding: 20px;
+        height: calc(100vh - 45px); /* Adjust for header height */
+      }
 
-    /* Form Styles */
-    .form-container {
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      padding: 20px;
-      border-radius: 5px;
-      max-width: 500px;
-      margin-bottom: 20px;
-    }
+      /* Form Styles */
+      .form-container {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 500px;
+        margin-bottom: 20px;
+      }
 
-    .form-container h2 {
-      margin-top: 0;
-    }
+      .form-container h2 {
+        margin-top: 0;
+      }
 
-    .form-group {
-      margin-bottom: 15px;
-    }
+      .form-group {
+        margin-bottom: 15px;
+      }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
 
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="password"],
-    .form-group input[type="date"] {
-      width: 100%;
-      padding: 8px;
-      box-sizing: border-box;
-    }
+      .form-group input[type="text"],
+      .form-group input[type="email"],
+      .form-group input[type="password"],
+      .form-group input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+      }
 
-    .form-group .radio-group {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
+      .form-group .radio-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
 
-    /* Table */
-    .table-container {
-      overflow-x: auto;
-    }
+      /* Table */
+      .table-container {
+        overflow-x: auto;
+      }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
 
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
+      th, td {
+        padding: 10px;
+        text-align: left;
+      }
 
-    th {
-      background-color: black;
-      color: white;
-      font-weight: bold;
-    }
+      th {
+        background-color: black;
+        color: white;
+        font-weight: bold;
+      }
 
-    /* Row colors */
-    tr:nth-child(odd) {
-      background-color: #d9a5a5; /* Red color for odd rows */
-    }
+      /* Row colors */
+      tr:nth-child(odd) {
+        background-color: #d9a5a5; /* Red color for odd rows */
+      }
 
-    tr:nth-child(even) {
-      background-color: #c3d0d9; /* Blue color for even rows */
-    }
+      tr:nth-child(even) {
+        background-color: #c3d0d9; /* Blue color for even rows */
+      }
 
-    /* Icons */
-    .icon {
-      margin: 0 5px;
-      cursor: pointer;
-    }
+      /* Icons */
+      .icon {
+        margin: 0 5px;
+        cursor: pointer;
+      }
 
-    .icon:hover {
-      opacity: 0.7;
-    }
+      .icon:hover {
+        opacity: 0.7;
+      }
 
-    button {
-      background-color: #333; /* Màu nền xanh lá cây */
-      color: white; /* Màu chữ trắng */
-      padding: 10px 20px; /* Khoảng cách bên trong */
-      font-size: 16px; /* Kích thước chữ */
-      border: none; /* Xóa viền mặc định */
-      border-radius: 5px; /* Bo góc */
-      cursor: pointer; /* Thay đổi con trỏ chuột thành hình bàn tay */
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng đổ bóng */
-      transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
-    }
+      button {
+        background-color: #4CAF50; /* Màu nền xanh lá cây */
+        color: white; /* Màu chữ trắng */
+        padding: 10px 20px; /* Khoảng cách bên trong */
+        font-size: 16px; /* Kích thước chữ */
+        border: none; /* Xóa viền mặc định */
+        border-radius: 5px; /* Bo góc */
+        cursor: pointer; /* Thay đổi con trỏ chuột thành hình bàn tay */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng đổ bóng */
+        transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+      }
 
-    button:hover {
-      background-color: #336; /* Đổi màu khi di chuột */
-    }
+      button:hover {
+        background-color: #4CAF50; /* Đổi màu khi di chuột */
+      }
 
-    button:active {
-      background-color: #336; /* Đổi màu khi nhấn vào */
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Giảm đổ bóng khi nhấn */
-      transform: translateY(2px); /* Tạo hiệu ứng nhấn xuống */
-    }
+      button:active {
+        background-color: #4CAF50; /* Đổi màu khi nhấn vào */
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Giảm đổ bóng khi nhấn */
+        transform: translateY(2px); /* Tạo hiệu ứng nhấn xuống */
+      }
+      .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+      }
+      .pagination-container button {
+        margin: 0 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+      .pagination-container button.active {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+      }
+      .error-message {
+        color: red;
+        font-size: 0.9em;
+        display: block;
+      }
 
-  </style>
-</head>
-<body>
+      #editStaffModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none; /* Ẩn modal ban đầu */
+        justify-content: center;
+        align-items: center;
+      }
 
-<!-- Top Header -->
-<div class="header">
-  <div>ADMIN 2</div>
-  <div><a href="../login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
-</div>
+      #editStaffModal form {
+        background-color: white;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        width: 700px; /* Điều chỉnh độ rộng của form */
+        gap: 5px; /* Thêm khoảng cách giữa các trường */
+      }
 
-<!-- Sidebar -->
-<div class="sidebar">
-  <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
-  <a href="/admin/ad2_room_mana.html">QUẢN LÍ PHÒNG CHIẾU</a>
-  <a href="/admin/ad2_cus_mana.html">QUẢN LÍ KHÁCH HÀNG</a>
-  <a href="/admin/ad2_addcus.html">THÊM MỚI KHÁCH HÀNG</a>
-  <a href="/admin/ad2_ticket_mana.html">QUẢN LÍ VÉ</a>
-  <a href="/admin/ad2_addtick.html">THÊM VÉ</a>
-  <a href="/admin/ad2_mv_mana.html">QUẢN LÍ PHIM</a>
-  <a href="/admin/ad2_addmovie.html">THÊM PHIM</a>
-  <a href="/admin/admin2.html">THÔNG TIN CÁ NHÂN</a>
-</div>
+      /* Các trường nhập liệu */
+      #editStaffModal input,
+      #editStaffModal select {
+        padding: 10px; /* Thêm khoảng cách bên trong trường */
+        font-size: 16px; /* Tăng kích thước chữ */
+        margin-bottom: 10px; /* Tạo khoảng cách giữa các trường */
+        border: 1px solid #ccc; /* Đặt viền cho các trường */
+        border-radius: 4px; /* Làm tròn góc các trường */
+      }
+
+      /* Các nút Lưu và Hủy */
+      #editStaffModal .button-container {
+        display: flex;
+        justify-content: space-between; /* Tách nút ra */
+      }
+
+      #editStaffModal .button-container button {
+        padding: 10px 10px;
+        font-size: 16px; /* Tăng kích thước chữ của nút */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #editStaffModal .button-container .save-button {
+        background-color: #4CAF50; /* Màu xanh cho nút lưu */
+        color: white;
+      }
+
+      #editStaffModal .button-container .cancel-button {
+        background-color: #f44336; /* Màu đỏ cho nút hủy */
+        color: white;
+      }
+
+      #editStaffModal .button-container button:hover {
+        opacity: 0.8; /* Hiệu ứng khi hover */
+      }
+    </style>
+  </head>
+  <body>
+
+  <!-- Top Header -->
+  <div class="header">
+    <div>ADMIN 2</div>
+    <div><a href="../login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
+    <a href="/admin/showtime-management">QUẢN LÍ SUẤT CHIẾU</a>
+    <a href="/admin/ad2_cus_mana.html">QUẢN LÍ KHÁCH HÀNG</a>
+    <a href="/admin/ad2_addcus.html">THÊM MỚI KHÁCH HÀNG</a>
+    <a href="/admin/tickets">QUẢN LÍ VÉ</a>
+    <a href="/admin/ad2_addtick.html">THÊM VÉ</a>
+    <a href="/admin/ad2_mv_mana.html">QUẢN LÍ PHIM</a>
+    <a href="/admin/ad2_addmovie.html">THÊM PHIM</a>
+    <a href="/admin/admin2.html">THÔNG TIN CÁ NHÂN</a>
+  </div>
 
 <!-- Main Content Area -->
 <div class="main-content">
@@ -191,26 +269,32 @@
       <div class="form-group">
         <label>Email:</label>
         <input type="email" id="email" required>
+        <div id="emailError" class="error-message"></div>
       </div>
       <div class="form-group">
         <label>Họ Tên:</label>
         <input type="text" id="fullName" required>
+        <div id="fullNameError" class="error-message"></div>
       </div>
       <div class="form-group">
         <label>Mật Khẩu:</label>
         <input type="password" id="password" required>
+        <div id="passwordError" class="error-message"></div>
       </div>
       <div class="form-group">
         <label>Số Điện Thoại:</label>
         <input type="text" id="phoneNumber" required>
+        <div id="phoneNumberError" class="error-message"></div>
       </div>
       <div class="form-group">
         <label>Địa Chỉ:</label>
         <input type="text" id="address" required>
+        <div id="addressError" class="error-message"></div>
       </div>
       <div class="form-group">
         <label>Ngày Sinh:</label>
         <input type="date" id="dob" required>
+        <div id="dobError" class="error-message"></div>
       </div>
       <div class="form-group">
         <label>Giới Tính:</label>
@@ -218,6 +302,7 @@
           <label><input type="radio" name="sex" value="M" required> Nam</label>
           <label><input type="radio" name="sex" value="F"> Nữ</label>
         </div>
+        <div id="sexError" class="error-message"></div>
       </div>
       <div class="form-group">
         <label>Trạng Thái:</label>
@@ -225,11 +310,14 @@
           <label><input type="radio" name="status" value="Active" required> Active</label>
           <label><input type="radio" name="status" value="Inactive"> Inactive</label>
         </div>
+        <div id="statusError" class="error-message"></div>
       </div>
       <button type="button" onclick="addStaff()">Thêm Nhân Viên</button>
     </form>
   </div>
-
+  <div id="successMessage" style="display: none; color: green; font-size: 16px; padding: 10px; margin-top: 10px;">
+    Cập nhật thành công!
+  </div>
   <!-- Danh sách Nhân Viên -->
   <div class="table-container">
     <table id="staffTable">
@@ -249,13 +337,41 @@
       </thead>
       <tbody id="staffTableBody">
       <!-- Dữ liệu nhân viên sẽ được thêm ở đây bằng JavaScript -->
+
       </tbody>
     </table>
   </div>
+  <div id="pagination" class="pagination-container"></div>
+
+  <div id="editStaffModal" style="display: none;">
+    <form id="editStaffForm">
+      <label>Họ Tên:</label>
+      <input type="text" id="editFullName" required><br>
+      <label>Số Điện Thoại:</label>
+      <input type="text" id="editPhoneNumber" required><br>
+      <label>Địa Chỉ:</label>
+      <input type="text" id="editAddress" required><br>
+      <label>Ngày Sinh:</label>
+      <input type="date" id="editDob" required><br>
+      <label>Giới Tính:</label>
+      <select id="editSex">
+        <option value="M">Nam</option>
+        <option value="F">Nữ</option>
+      </select><br>
+      <label>Trạng Thái:</label>
+      <select id="editStatus">
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select><br>
+      <button type="button" onclick="saveStaffChanges()">Lưu Thay Đổi</button>
+      <button type="button" onclick="closeEditModal()">Hủy</button>
+    </form>
+  </div>
+
 </div>
 
 <script>
-  // Hàm thêm nhân viên (đã cập nhật để lấy dữ liệu từ radio button)
+  // Hàm thêm nhân viên
   function addStaff() {
     const email = document.getElementById("email").value;
     const fullName = document.getElementById("fullName").value;
@@ -266,6 +382,79 @@
     const sex = document.querySelector('input[name="sex"]:checked').value;
     const status = document.querySelector('input[name="status"]:checked').value;
 
+    let isValid = true; // Biến kiểm tra tính hợp lệ của form
+
+    // Xóa lỗi cũ
+    document.querySelectorAll(".error-message").forEach(error => error.textContent = "");
+
+    // Kiểm tra trường hợp rỗng (blank)
+    if (!email) {
+      document.getElementById("emailError").textContent = "Email không được để trống.";
+      isValid = false;
+    }
+    if (!fullName) {
+      document.getElementById("fullNameError").textContent = "Họ tên không được để trống.";
+      isValid = false;
+    }
+    if (!password) {
+      document.getElementById("passwordError").textContent = "Mật khẩu không được để trống.";
+      isValid = false;
+    }
+    if (!phoneNumber) {
+      document.getElementById("phoneNumberError").textContent = "Số điện thoại không được để trống.";
+      isValid = false;
+    }
+    if (!address) {
+      document.getElementById("addressError").textContent = "Địa chỉ không được để trống.";
+      isValid = false;
+    }
+    if (!dob) {
+      document.getElementById("dobError").textContent = "Ngày sinh không được để trống.";
+      isValid = false;
+    }
+    if (!sex) {
+      document.getElementById("sexError").textContent = "Giới tính không được để trống.";
+      isValid = false;
+    }
+    if (!status) {
+      document.getElementById("statusError").textContent = "Trạng thái không được để trống.";
+      isValid = false;
+    }
+
+
+
+    if (!email.includes("@")) {
+      document.getElementById("emailError").textContent = "Email không hợp lệ.";
+      isValid = false;
+    }
+
+    // Kiểm tra tên đầy đủ
+    if (fullName.trim().length < 3) {
+      document.getElementById("fullNameError").textContent = "Họ tên phải có ít nhất 3 ký tự.";
+      isValid = false;
+    }
+
+    // Kiểm tra mật khẩu
+    const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      document.getElementById("passwordError").textContent =
+              "Mật khẩu phải có ít nhất 8 ký tự và 1 ký tự đặc biệt (!@#$%^&*).";
+      isValid = false;
+    }
+
+    // Kiểm tra số điện thoại
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      document.getElementById("phoneNumberError").textContent = "Số điện thoại phải có 10 chữ số.";
+      isValid = false;
+    }
+
+    // Nếu form không hợp lệ, không gọi API
+    if (!isValid) {
+      return;
+    }
+
+    // Nếu tất cả các trường hợp hợp lệ, tiếp tục gọi API thêm nhân viên
     fetch('/admin/staff', {
       method: 'POST',
       headers: {
@@ -277,45 +466,72 @@
     })
             .then(response => response.text())
             .then(data => {
-              alert(data);
+              const successMessage = document.getElementById("successMessage");
+              successMessage.textContent = "Thêm nhân viên thành công!";
+              successMessage.style.display = "block"; // Hiển thị thông báo
+
+              // Ẩn thông báo sau 3 giây
+              setTimeout(() => {
+                successMessage.style.display = "none";
+              }, 3000);
               loadStaffList(); // Tải lại danh sách sau khi thêm mới
               document.getElementById("addStaffForm").reset(); // Xóa nội dung form
-            });
+            })
+            .catch(error => console.error('Error adding staff:', error));
   }
+
 
   // Tải danh sách nhân viên khi trang được tải
   document.addEventListener("DOMContentLoaded", loadStaffList);
 
   // Hàm tải danh sách nhân viên
-  function loadStaffList() {
-    fetch('/admin/staff')
+  let currentPage = 0;
+  const pageSize = 4;
+
+  function loadStaffList(page = 0) {
+    fetch(`/admin/staff?page=${page}&size=${pageSize}`)
             .then(response => response.json())
             .then(data => {
               const staffTableBody = document.getElementById("staffTableBody");
               staffTableBody.innerHTML = ""; // Xóa nội dung cũ
 
-              data.forEach(staff => {
+              data.content.forEach(staff => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-            <td>${staff.id}</td>
-            <td>${staff.fullName}</td>
-            <td>${staff.email}</td>
-            <td>${staff.roles.map(role => role.roleName).join(", ")}</td>
-            <td>${staff.dob}</td>
-            <td>${staff.phoneNumber}</td>
-            <td>${staff.address}</td>
-            <td>${staff.sex === 'M' ? 'Nam' : 'Nữ'}</td>
-            <td>${staff.status}</td>
-            <td>
-              <span class="icon" onclick="editStaff(${staff.id})">✏️</span>
-              <span class="icon" onclick="deleteStaff(${staff.id})">🗑️</span>
-            </td>
-          `;
+          <td>${staff.id}</td>
+          <td>${staff.fullName}</td>
+          <td>${staff.email}</td>
+          <td>${staff.roles.map(role => role.roleName).join(", ")}</td>
+          <td>${staff.dob}</td>
+          <td>${staff.phoneNumber}</td>
+          <td>${staff.address}</td>
+          <td>${staff.sex === 'M' ? 'Nam' : 'Nữ'}</td>
+          <td>${staff.status}</td>
+          <td>
+            <span class="icon" onclick="editStaff(${staff.id})">✏️</span>
+            <span class="icon" onclick="deleteStaff(${staff.id})">🗑️</span>
+          </td>
+        `;
                 staffTableBody.appendChild(row);
               });
+
+              // Hiển thị nút phân trang
+              const pagination = document.getElementById("pagination");
+              pagination.innerHTML = "";
+
+              for (let i = 0; i < data.totalPages; i++) {
+                const pageButton = document.createElement("button");
+                pageButton.innerText = i + 1;
+                pageButton.className = i === page ? "active" : "";
+                pageButton.onclick = () => loadStaffList(i);
+                pagination.appendChild(pageButton);
+              }
             })
             .catch(error => console.error('Error loading staff list:', error));
   }
+
+  // Gọi hàm loadStaffList khi trang được tải
+  document.addEventListener("DOMContentLoaded", () => loadStaffList(currentPage));
 
   // Hàm Xóa Nhân Viên
   function deleteStaff(id) {
@@ -326,20 +542,58 @@
     })
             .then(response => response.text())
             .then(data => {
-              alert(data);
+              const successMessage = document.getElementById("successMessage");
+              successMessage.textContent = "Xóa nhân viên thành công!";
+              successMessage.style.display = "block"; // Hiển thị thông báo
+
+              // Ẩn thông báo sau 3 giây
+              setTimeout(() => {
+                successMessage.style.display = "none";
+              }, 3000);
               loadStaffList(); // Tải lại danh sách sau khi xóa
             });
   }
 
   // Hàm Sửa Nhân Viên - Đây là hàm cơ bản; cần thêm giao diện để cập nhật thông tin
-  function editStaff(id) {
-    const fullName = prompt("Nhập họ tên mới:");
-    const phoneNumber = prompt("Nhập số điện thoại mới:");
-    const address = prompt("Nhập địa chỉ mới:");
-    const dob = prompt("Nhập ngày sinh mới (YYYY-MM-DD):");
-    const sex = prompt("Nhập giới tính mới (M/F):");
-    const status = prompt("Nhập trạng thái mới (Active/Inactive):");
 
+  function editStaff(id) {
+    // Tìm thông tin nhân viên bằng ID
+    fetch(`/admin/staff/${id}`)  // Cập nhật đường dẫn để lấy thông tin nhân viên theo ID
+            .then(response => response.json())
+            .then(staff => {
+              // Điền thông tin vào các trường trong modal
+              document.getElementById("editFullName").value = staff.fullName;
+              document.getElementById("editPhoneNumber").value = staff.phoneNumber;
+              document.getElementById("editAddress").value = staff.address;
+              document.getElementById("editDob").value = staff.dob;
+              document.getElementById("editSex").value = staff.sex;
+              document.getElementById("editStatus").value = staff.status;
+
+              // Lưu lại ID nhân viên cần sửa trong form
+              document.getElementById("editStaffForm").setAttribute("data-id", id);
+
+              // Hiển thị modal
+              document.getElementById("editStaffModal").style.display = "flex";
+            })
+            .catch(error => console.error('Error fetching staff details:', error));
+  }
+
+  // Hàm để đóng modal
+  function closeEditModal() {
+    document.getElementById("editStaffModal").style.display = "none";
+  }
+
+  // Hàm để lưu thay đổi thông tin nhân viên
+  function saveStaffChanges() {
+    const id = document.getElementById("editStaffForm").getAttribute("data-id");
+    const fullName = document.getElementById("editFullName").value;
+    const phoneNumber = document.getElementById("editPhoneNumber").value;
+    const address = document.getElementById("editAddress").value;
+    const dob = document.getElementById("editDob").value;
+    const sex = document.getElementById("editSex").value;
+    const status = document.getElementById("editStatus").value;
+
+    // Gửi request PUT tới API để cập nhật thông tin nhân viên
     fetch(`/admin/staff/${id}`, {
       method: 'PUT',
       headers: {
@@ -351,11 +605,19 @@
     })
             .then(response => response.text())
             .then(data => {
-              alert(data);
+              const successMessage = document.getElementById("successMessage");
+              successMessage.textContent = "Cập nhật thành công!";
+              successMessage.style.display = "block"; // Hiển thị thông báo
+
+              setTimeout(() => {
+                successMessage.style.display = "none";
+              }, 3000);
+
               loadStaffList(); // Tải lại danh sách sau khi cập nhật
-            });
+              closeEditModal(); // Đóng modal sau khi lưu
+            })
+            .catch(error => console.error('Error updating staff:', error));
   }
 </script>
-
 </body>
 </html>
