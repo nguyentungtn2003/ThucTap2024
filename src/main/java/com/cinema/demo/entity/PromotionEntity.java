@@ -2,6 +2,9 @@ package com.cinema.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.Date;
 
 @Data
@@ -19,4 +22,9 @@ public class PromotionEntity {
     private Date startDate;
 
     private Date endDate;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name="invoice_id")
+    private InvoiceEntity invoiceEntity;
 }

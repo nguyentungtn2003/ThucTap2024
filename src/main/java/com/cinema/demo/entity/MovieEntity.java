@@ -41,6 +41,11 @@ public class MovieEntity {
 
     private int runningTime;
 
+    private String language;
+
+    private String rated;
+
+
     public String getTrailerUrl() {
         return trailerurl;
     }

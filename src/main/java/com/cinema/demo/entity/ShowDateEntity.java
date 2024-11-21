@@ -3,7 +3,8 @@ package com.cinema.demo.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -13,7 +14,7 @@ public class ShowDateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int showtimeDateId;
 
-    private Date date;
+    private LocalDate startDate;
 
     @ManyToOne
     @JoinColumn(name = "showtimeId")

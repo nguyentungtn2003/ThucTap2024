@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Phim</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        /* Tổng quan */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Movie Info */
+        .movie-detail {
+            padding: 40px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .movie-info {
+            display: flex;
+            margin-bottom: 40px;
+            justify-content: space-between;
+        }
+
+        .movie-poster {
+            width: 300px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .movie-details {
+            max-width: 800px;
+        }
+
+        .movie-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .movie-description {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .movie-attributes {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .movie-attributes li {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .movie-attributes li strong {
+            color: #333;
+        }
+
+        /* Showtimes */
+        .showtimes {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .showtimes h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .time-slots {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .btn-showtime {
+            background-color: #ff6600;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 5px;
+            text-align: center;
+            flex: 1 1 45%;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-showtime:hover {
+            background-color: #e65c00;
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .movie-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .movie-poster {
+                width: 200px;
+            }
+
+            .movie-details {
+                max-width: 100%;
+            }
+
+            .time-slots {
+                flex-direction: column;
+            }
+
+            .btn-showtime {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+        <div class="logo">LOGO</div>
+        <nav>
+            <ul>
+
+                <li><a href="Giaodienchuadangnhap.html">Home</a></li>
+                <li><a href="comingsoon.html">Sắp Chiếu</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-link" href="#">Thể Loại</a>
+                    <ul id="dropdown-content">
+                        <li><a href="action.html">Hành Động</a></li>
+                        <li><a href="psychology.html">Tâm Lý</a></li>
+                    </ul>
+                </li>
+                <li><a href="myticket.html">Vé Của Tôi</a></li>
+                <li><a href="accountinfo.html">Thông Tin Cá Nhân</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            <a href="#">Đăng Nhập</a>
+            <a href="#">Đăng Ký</a>
+            <div class="lang">
+                <img src="vi.png" alt="Tiếng Việt">
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="movie-detail">
+    <div class="movie-info">
+        <img id="movie-poster" class="movie-poster" src="Quyanfont.jpg" alt="Movie Poster">
+        <div class="movie-details">
+            <h1 id="movie-title" class="movie-title">Tên Phim</h1>
+            <p id="movie-description" class="movie-description">Một bộ phim kịch tính, đầy bí ẩn, xoay quanh một vụ
+                án lớn cần được giải quyết.</p>
+            <ul class="movie-attributes">
+                <li><strong>Đạo Diễn:</strong> Trương Minh</li>
+                <li><strong>Diễn Viên:</strong> Nguyễn Anh Tuấn, Mai Linh</li>
+                <li><strong>Thể Loại:</strong> Hành Động, Tâm Lý</li>
+                <li><strong>Thời Lượng:</strong> 120 phút</li>
+                <li><strong>Ngôn Ngữ:</strong> Tiếng Việt</li>
+                <li><strong>Khởi Chiếu:</strong> 19/12/2024</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="showtimes">
+        <h2>Lịch Chiếu</h2>
+        <div class="time-slots" id="time-slots">
+            <!-- Nút lịch chiếu mẫu -->
+            <a href="book_ticket.html?movie=MovieTitle&time=11:00" class="btn-showtime">11:00</a>
+            <a href="book_ticket.html?movie=MovieTitle&time=14:30" class="btn-showtime">14:30</a>
+            <a href="book_ticket.html?movie=MovieTitle&time=17:00" class="btn-showtime">17:00</a>
+            <a href="book_ticket.html?movie=MovieTitle&time=20:30" class="btn-showtime">20:30</a>
+        </div>
+    </div>
+</main>
+
+
+</body>
+</html>
