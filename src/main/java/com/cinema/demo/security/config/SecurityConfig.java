@@ -141,12 +141,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
+
         // configuration
         // urls configure kiay hai ki koun se public rangenge aur koun se private
         // rangenge
         httpSecurity.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/home", "/register", "/services").permitAll();
-            authorize.requestMatchers("/user/**").hasRole("USER");
+            authorize.requestMatchers("/register", "/services").permitAll();
+            authorize.requestMatchers("/api/movies/**").permitAll();
+            authorize.requestMatchers("/home").hasRole("USER");
             authorize.requestMatchers("/admin/**").hasRole("ADMIN");
             authorize.anyRequest().permitAll();
         });
@@ -159,9 +161,8 @@ public class SecurityConfig {
             //
             formLogin.loginPage("/login");
             formLogin.loginProcessingUrl("/authenticate");
-            formLogin.successForwardUrl("/user/profile");
+            formLogin.successForwardUrl("/home");
             formLogin.failureForwardUrl("/login?error=true");
-            formLogin.defaultSuccessUrl("/home");
             formLogin.usernameParameter("email");
             formLogin.passwordParameter("password");
 
@@ -205,7 +206,11 @@ public class SecurityConfig {
         httpSecurity.logout(logoutForm -> {
             logoutForm.logoutUrl("/do-logout");
             logoutForm.logoutSuccessUrl("/login?logout=true");
+            logoutForm.invalidateHttpSession(true);
+            logoutForm.deleteCookies("JSESSIONID");
         });
+
+        httpSecurity.headers(headers -> headers.cacheControl(cacheControl -> cacheControl.disable()));
 
         return httpSecurity.build();
 

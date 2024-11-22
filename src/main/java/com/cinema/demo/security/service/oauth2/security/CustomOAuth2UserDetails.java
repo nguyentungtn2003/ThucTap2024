@@ -72,7 +72,8 @@ public class CustomOAuth2UserDetails extends DefaultOAuth2UserService {
                 userDetails.getRoles().stream()
                         .filter(role -> role != null && role.getName() != null)
                         .map(role -> new SimpleGrantedAuthority(role.getName()))
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                oAuth2User.getAttributes()
         );
     }
 
@@ -86,7 +87,7 @@ public class CustomOAuth2UserDetails extends DefaultOAuth2UserService {
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
 
-        RoleEntity userRole = roleRepository.findByName("USER")
+        RoleEntity userRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new BaseException("500", "Role USER not found"));
 
         user.setRoles(new HashSet<>());

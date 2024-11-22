@@ -10,11 +10,12 @@ public class OAuth2GoogleUser extends OAuth2UserDetails {
 
     @Override
     public String getName() {
-        return (String) attributes.get("name");
+        return (String) attributes.getOrDefault("name", "Unknown User");
     }
 
     @Override
     public String getEmail() {
-        return (String) attributes.get("email");
+        return (String) attributes.getOrDefault("email", "no-email@domain.com");
     }
+
 }

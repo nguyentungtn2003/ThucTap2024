@@ -16,7 +16,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        String[] roles = {"USER", "ADMIN", "STAFF"};
+        String[] roles = {"ROLE_USER", "ROLE_ADMIN", "ROLE_STAFF"};
         Arrays.stream(roles).forEach(role -> {
             roleRepository.findByName(role).orElseGet(() -> {
                 RoleEntity roleEntity = new RoleEntity();
