@@ -3,7 +3,7 @@ package com.cinema.demo.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @Entity
@@ -45,5 +45,7 @@ public class MovieEntity {
     private String language;
 
     private String rated;
+
+    private int isShowing;
 
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,7 +16,10 @@ public class ShowDateEntity {
 
     private LocalDate startDate;
 
-    @ManyToOne
-    @JoinColumn(name = "showtimeId")
-    private ShowtimeEntity showtime;
+//    @ManyToOne
+//    @JoinColumn(name = "showtimeId")
+//    private ShowtimeEntity showtime;
+
+    @OneToMany(mappedBy = "showDate", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ShowtimeEntity> showtime;
 }

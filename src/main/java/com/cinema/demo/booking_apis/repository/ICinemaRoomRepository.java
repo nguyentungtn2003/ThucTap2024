@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface ICinemaRoomRepository extends JpaRepository<CinemaRoomEntity, Integer> {
 
-    @Query("SELECT cr FROM CinemaRoomEntity cr " +
+    @Query("SELECT DISTINCT cr FROM CinemaRoomEntity cr " +
             "JOIN ShowtimeEntity st ON cr.id = st.cinemaRoom.id " +
-            "JOIN ShowDateEntity sd ON st.showtimeId = sd.showtime.showtimeId " +
+            "JOIN ShowDateEntity sd ON st.showDate.showtimeDateId = sd.showtimeDateId " +
             "WHERE st.movie.movieId = :movieId " +
             "AND sd.startDate = :startDate " +
             "AND st.startTime = :startTime")

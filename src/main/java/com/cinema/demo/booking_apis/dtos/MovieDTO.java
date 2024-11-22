@@ -42,6 +42,8 @@ public class MovieDTO {
 
     private String rated;
 
+    private int isShowing;
+
     private List<String> types;
 
 }

@@ -1,7 +1,6 @@
 package com.cinema.demo.booking_apis.controllers;
 
 import com.cinema.demo.booking_apis.dtos.MovieDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,39 +15,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("movie-details")
+@RequestMapping("list-movies")
 public class MovieController {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${server.baseUrl}")
     private String baseUrl;
 
-    /**
-     * Hiển thị trang chi tiết phim
-     * @param movieId ID của bộ phim cần xem chi tiết
-     * @param model   Model để truyền dữ liệu tới view
-     * @return Tên template Thymeleaf để hiển thị (movie-details.html)
-     */
     @GetMapping
-    public String displayMovieDetailPage(@RequestParam Integer movieId, Model model) {
-        // Tạo URL endpoint từ cấu hình base URL
-        String urlTemplate = UriComponentsBuilder.fromHttpUrl(baseUrl + "/api/movies/details")
-                .queryParam("movieId", "{movieId}")
-                .encode()
-                .toUriString();
+    public String displayListMoviePage(Model model) {
+        // URL gọi đến API
+        String apiUrl = baseUrl + "/api/movies/showing";
 
-        // Tham số cho request
-        Map<String, Integer> params = new HashMap<>();
-        params.put("movieId", movieId);
+        // Gửi request để lấy danh sách phim
+        ResponseEntity<MovieDTO[]> response = restTemplate.getForEntity(apiUrl, MovieDTO[].class);
 
-        // Gửi request đến backend để lấy thông tin phim
-        ResponseEntity<MovieDTO> response = restTemplate.getForEntity(urlTemplate, MovieDTO.class, params);
-        MovieDTO movie = response.getBody();
+        // Lấy danh sách phim từ response
+        MovieDTO[] movies = response.getBody();
 
-        // Truyền dữ liệu phim vào model để Thymeleaf render
-        model.addAttribute("movie", movie);
+        // Đẩy danh sách phim vào model để Thymeleaf sử dụng
+        model.addAttribute("movies", movies);
 
-        // Trả về tên view Thymeleaf
-        return "boleto/demo/movie-details";
+        // Trả về tên file Thymeleaf (movie-grid.html)
+        return "boleto/demo/movie-grid";
     }
 }

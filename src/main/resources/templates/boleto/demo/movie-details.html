@@ -281,7 +281,11 @@
                         <p><a href="#0">Rate It</a></p>
                     </div>
                 </div>
-                <a href="#0" class="custom-button">book tickets</a>
+                <a th:href="@{/schedule(movieId=${movieId})}"
+                   class="custom-button">
+                    Book Tickets
+                </a>
+
             </div>
         </div>
     </section>

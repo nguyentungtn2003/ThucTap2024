@@ -22,4 +22,8 @@ public class ShowtimeEntity {
     @ManyToOne
     @JoinColumn(name = "movieId")
     private MovieEntity movie;
+
+    @ManyToOne
+    @JoinColumn(name = "showDateId")
+    private ShowDateEntity showDate;
 }

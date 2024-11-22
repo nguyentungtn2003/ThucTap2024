@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface IMovieRepository extends JpaRepository<MovieEntity, Integer> {
-    List<MovieEntity> findMovieEntityByRunningTimeOrderByMovieIdDesc(Integer runningTime);
+    List<MovieEntity> findMovieEntityByIsShowingOrderByMovieIdDesc(Integer runningTime);
 
     List<MovieEntity> findMovieEntityByRunningTimeAndTitleContaining(Integer runningTime,String title);
 

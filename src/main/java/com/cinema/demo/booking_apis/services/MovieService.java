@@ -18,9 +18,10 @@ public class MovieService implements IMovieService{
 
     @Autowired
     private ModelMapper modelMapper;
+
     @Override
     public List<MovieDTO> findAllShowingMovies() {
-        return movieRepository.findMovieEntityByRunningTimeOrderByMovieIdDesc(1)
+        return movieRepository.findMovieEntityByIsShowingOrderByMovieIdDesc(1)
                 .stream()
                 .map(movie -> modelMapper.map(movie, MovieDTO.class))
                 .collect(Collectors.toList());
