@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public UserEntity saveUser(UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        RoleEntity userRole = IRoleRepository.findByRoleName("USER")
+        RoleEntity userRole = IRoleRepository.findByRoleName("ROLE_USER")
                 .orElseThrow(() -> new BaseException("500", "Role USER not found"));
 
         user.setRoles(new HashSet<>());
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
             user.setSex(userDTO.getSex());
         }
 
-        RoleEntity userRole = IRoleRepository.findByRoleName("USER")
+        RoleEntity userRole = IRoleRepository.findByRoleName("ROLE_USER")
                 .orElseThrow(() -> new BaseException("500", "Role USER not found"));
 
         user.setRoles(new HashSet<>());

@@ -163,8 +163,7 @@ public class SecurityConfig {
                     .requestMatchers("/reset-password").permitAll()
                     .requestMatchers("/invoices/*/qrcode").permitAll() // Sửa đúng pattern
                     .requestMatchers("/invoices/**").hasRole("USER") // Các endpoint khác yêu cầu vai trò USER
-                    .anyRequest().authenticated();
-            authorize.anyRequest().permitAll();
+                    .anyRequest().permitAll();
         });
 
         // form default login
