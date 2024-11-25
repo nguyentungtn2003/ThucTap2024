@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách vé</title>
+    <style>
+        /* Reset margin và padding của mọi phần tử */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+
+            color: rgb(255, 255, 255); /* Màu trắng */
+        }
+
+        /* Sidebar */
+        #sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: rgb(54, 54, 54); /* Màu xám đậm */
+            color: rgb(255, 255, 255); /* Màu trắng */
+            position: fixed;
+            top: 0;
+            left: -250px;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        #sidebar.open {
+            transform: translateX(250px);
+        }
+
+        #sidebar h2 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: rgb(255, 255, 255); /* Màu trắng */
+        }
+
+        #sidebar ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        #sidebar ul li {
+            margin: 20px 0;
+        }
+
+        #sidebar ul li a {
+            color: rgb(237, 237, 237); /* Gần màu trắng */
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #sidebar ul li a:hover {
+            background-color: rgb(54, 54, 54); /* Màu xám đậm khi hover */
+        }
+
+        /* Nút mở sidebar */
+        #toggle-sidebar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: rgb(223, 223, 223); /* Màu xám sáng */
+            color: rgb(0, 0, 0); /* Màu đen */
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            z-index: 1001;
+            transition: background-color 0.3s ease;
+        }
+
+        #toggle-sidebar.open {
+            left: 250px;
+        }
+
+        #toggle-sidebar:hover {
+            background-color: rgb(237, 237, 237); /* Gần màu trắng khi hover */
+        }
+
+        /* Nội dung trang */
+        main {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: rgb(255, 255, 255); /* Màu trắng */
+            margin-bottom: 20px;
+        }
+
+        /* Bảng danh sách vé */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: rgb(237, 237, 237); /* Màu sáng cho nền bảng */
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgb(223, 223, 223);
+        }
+
+        th {
+            background-color: rgb(54, 54, 54); /* Màu xám đậm cho header */
+            color: rgb(255, 255, 255); /* Màu trắng */
+        }
+
+        td {
+            background-color: rgb(254, 254, 254); /* Màu gần trắng cho ô bảng */
+            color: rgb(0, 0, 0); /* Màu đen cho văn bản */
+        }
+
+        tr:hover td {
+            background-color: rgb(223, 223, 223); /* Màu xám sáng khi hover */
+            color: rgb(0, 0, 0); /* Màu đen */
+        }
+
+        .button {
+            padding: 8px 15px;
+            background-color: rgb(54, 54, 54); /* Nút màu xám đậm */
+            color: rgb(255, 255, 255); /* Màu trắng */
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: rgb(237, 237, 237); /* Gần màu trắng khi hover */
+            color: rgb(0, 0, 0); /* Màu đen */
+        }
+
+        /* Hiệu ứng pagination */
+        /* Hiệu ứng pagination */
+        #pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #pagination .button {
+            padding: 10px 20px;
+            background-color: rgb(54, 54, 54); /* Nút màu xám đậm */
+            color: rgb(255, 255, 255); /* Màu trắng */
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin: 0 5px;
+        }
+
+        #pagination .button:hover {
+            background-color: rgb(237, 237, 237); /* Gần màu trắng khi hover */
+            color: rgb(0, 0, 0); /* Màu đen */
+            transform: scale(1.1); /* Tăng kích thước khi hover */
+        }
+
+        #pagination .button[disabled] {
+            background-color: #bbb;
+            cursor: not-allowed;
+        }
+
+        /* Hiển thị số trang giữa */
+        #pagination span {
+            font-size: 20px;
+            color: rgb(255, 255, 255); /* Màu trắng cho số trang */
+            margin: 0 10px;
+        }
+
+        #pagination .button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(54, 54, 54, 0.6);
+        }
+
+
+        .button[disabled] {
+            background-color: #bbb;
+            cursor: not-allowed;
+        }
+
+        /* Hiển thị thông báo */
+        .alert {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgb(223, 223, 223); /* Màu xám sáng cho thông báo */
+            color: rgb(0, 0, 0); /* Màu đen */
+            border-radius: 5px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar">
+    <h2>Menu Quản Lý</h2>
+    <ul>
+        <li><a href="/admin/tickets">Danh Sách Vé</a></li>
+        <li><a href="#">Quản Lý Đơn Hàng</a></li>
+        <li><a href="#">Quản Lý Phim</a></li>
+        <li><a href="/admin/typeofconcession/types">Quản Lý Đồ Ăn</a></li>
+        <li><a href="#">Cài Đặt</a></li>
+        <li><a href="/login">Đăng Xuất</a></li>
+    </ul>
+</div>
+
+<!-- Nút mở sidebar -->
+<button id="toggle-sidebar">Mở Menu</button>
+
+<main>
+    <h1>Danh sách vé</h1>
+
+    <!-- Hiển thị thông báo thành công hoặc lỗi -->
+    <div th:if="${message}" class="alert">
+        <p th:text="${message}"></p>
+    </div>
+
+    <!-- Chọn số lượng sản phẩm mỗi trang -->
+    <label for="pageSize" style="color: black;">Số sản phẩm mỗi trang:</label>
+    <form action="/admin/tickets" method="get">
+        <select name="size" id="pageSize" onchange="this.form.submit()" style="width: 50px;height: 50px;font-size: 30px">
+            <option value="2" th:selected="${pageSize == 2}">2</option>
+            <option value="5" th:selected="${pageSize == 5}">5</option>
+            <option value="10" th:selected="${pageSize == 10}">10</option>
+            <option value="20" th:selected="${pageSize == 20}">20</option>
+        </select>
+        <input type="hidden" name="page" th:value="${currentPage}"/>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Invoice ID</th>
+            <th>Tên Phim</th>
+            <th>Email</th>
+            <th>Chi Tiết Vé</th>
+            <th>Tổng Số Tiền</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ticket : ${invoiceTickets.content}">
+            <td th:text="${ticket.id}"></td>
+            <td th:text="${ticket.movieName}"></td>
+            <td th:text="${ticket.email}"></td>
+            <td>
+                <div>
+                    <strong>Seat Type: </strong><span th:text="${ticket.tickets[0].seatType}"></span><br>
+                    <strong>Quantity: </strong><span th:text="${ticket.tickets[0].quantity}"></span><br>
+                    <strong>Seat Numbers: </strong><span th:text="${ticket.tickets[0].seatNumbers}"></span>
+                </div>
+            </td>
+            <td th:text="${ticket.totalAmount * 100} + ' VNĐ'"></td>
+            <td th:text="${ticket.status}"
+                th:style="${ticket.status == 'Paid'} ? 'color: red; font-weight: bold;' : ''">
+            </td>
+            <td>
+                <form th:action="@{/admin/tickets/delete/{invoiceId}(invoiceId=${ticket.id})}" method="post" onsubmit="confirmDelete(event)">
+                    <button type="submit" class="icon">🗑️</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination buttons -->
+    <!-- Pagination buttons -->
+    <div id="pagination">
+        <a th:if="${currentPage > 0}"
+           th:href="@{'/admin/tickets?page=' + (${currentPage - 1}) + '&size=' + ${pageSize}}"
+           class="button">Previous</a>
+
+        <span th:text="'Trang ' + (${currentPage + 1}) + ' / ' + ${totalPages}" style="color: black"></span>
+
+        <a th:if="${currentPage < totalPages - 1}"
+           th:href="@{'/admin/tickets?page=' + (${currentPage + 1}) + '&size=' + ${pageSize}}"
+           class="button">Next</a>
+    </div>
+
+
+</main>
+
+<script>
+    // Đóng mở sidebar khi nhấn nút
+    const sidebar = document.getElementById('sidebar');
+    const toggleSidebarButton = document.getElementById('toggle-sidebar');
+
+    toggleSidebarButton.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        toggleSidebarButton.classList.toggle('open');
+    });
+
+    function confirmDelete(event) {
+        if (!confirm('Bạn có chắc chắn muốn xóa không?')) {
+            event.preventDefault();
+        }
+    }
+</script>
+
+</body>
+</html>
