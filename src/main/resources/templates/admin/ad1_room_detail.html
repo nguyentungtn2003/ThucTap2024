@@ -541,7 +541,7 @@
 
             try {
                 // Gửi request POST đến API
-                const response = await fetch(`http://localhost:8081/admins/room-management/details/insertNote`, {
+                const response = await fetch(`http://localhost:8080/admin/room-management/details/insertNote`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json", // Đảm bảo gửi với Content-Type là application/json
@@ -620,7 +620,7 @@
             status: status === "true"
         };
 
-        fetch('http://localhost:8081/admins/room-management/details/edit/' + id, {
+        fetch('http://localhost:8080/admin/room-management/details/edit/' + id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -643,7 +643,7 @@
         const id = element.getAttribute("data-id");
 
         if (confirm("Bạn có chắc muốn xóa Room Detail này không?")) {
-            fetch('http://localhost:8081/admins/room-management/details/delete/' + id, {
+            fetch('http://localhost:8080/admin/room-management/details/delete/' + id, {
                 method: 'DELETE',
             })
                 .then(response => {
