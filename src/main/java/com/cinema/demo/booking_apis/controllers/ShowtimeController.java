@@ -44,7 +44,6 @@ public class ShowtimeController {
         return "boleto/demo/movie-ticket-plan";
     }
 
-    // API trả danh sách suất chiếu dưới dạng JSON
     @GetMapping("/api")
     @ResponseBody
     public ResponseEntity<List<ShowtimeDTO>> getShowtimes(@RequestParam int movieId,

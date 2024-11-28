@@ -33,26 +33,22 @@ public class SeatService implements ISeatService {
 
     @Override
     public List<SeatDTO> getSeatsByShowTimeId(Integer showtimeId) {
-        // Lấy phòng chiếu dựa trên lịch chiếu
         CinemaRoomEntity room = showTimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy lịch chiếu với ID: " + showtimeId))
                 .getCinemaRoom();
 
-        // Lấy danh sách ghế trong phòng chiếu
         List<SeatEntity> listSeat = seatRepository.getSeatEntityByCinemaRoom_Id(room.getId());
 
-        // Lấy ra các vé đã được đặt trong lịch đó rồi map sang các chỗ ngồi
         List<SeatEntity> occupiedSeats = ticketRepository.findTicketEntityByShowtime_ShowtimeId(showtimeId)
                 .stream().map(ticket -> ticket.getSeat())
                 .collect(Collectors.toList());
 
-        // Map list chỗ ngồi của phòng ở bước 1 sang list dto
         List<SeatDTO> filteredSeats = listSeat.stream().map(seat -> {
             SeatDTO seatDTO = modelMapper.map(seat,SeatDTO.class);
             if(occupiedSeats.stream()
                     .map(occupiedSeat->occupiedSeat.getSeatId())
                     .collect(Collectors.toList()).contains(seat.getSeatId())){
-                seatDTO.setIsOccupied(2); // Nếu ghế nào nằm trong list ghế đã được occupied thì set = 1
+                seatDTO.setIsOccupied(2);
             }
             return seatDTO;
         }).collect(Collectors.toList());
@@ -63,7 +59,7 @@ public class SeatService implements ISeatService {
     @Override
     public SeatDTO getSeatById(Integer seatId) {
         SeatEntity seatEntity = seatRepository.findById(seatId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy ghế với ID: " + seatId)); // Xử lý lỗi nếu không tìm thấy ghế
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy ghế với ID: " + seatId));
 
         return modelMapper.map(seatEntity, SeatDTO.class);
     }
@@ -71,20 +67,17 @@ public class SeatService implements ISeatService {
     @Override
     public void updateSeatStatus(SeatDTO seatDTO) {
         SeatEntity seatEntity = seatRepository.findById(seatDTO.getSeatId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy ghế với ID: " + seatDTO.getSeatId()));  // Xử lý khi ghế không tìm thấy
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy ghế với ID: " + seatDTO.getSeatId()));
 
-        seatEntity.setIsOccupied(seatDTO.getIsOccupied());  // Cập nhật trạng thái ghế
-
+        seatEntity.setIsOccupied(seatDTO.getIsOccupied());
         seatRepository.save(seatEntity);
     }
 
     @Override
     public BigDecimal getPriceBySeatType(String seatName) {
-        // Truy vấn loại ghế theo tên
         SeatTypeEntity seatTypeEntity = seatTypeRepository.findBySeatName(seatName)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy loại ghế với tên: " + seatName));  // Ném lỗi nếu không tìm thấy
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy loại ghế với tên: " + seatName));
 
-        // Trả về giá của loại ghế
         return seatTypeEntity.getSeatPrice();
     }
 

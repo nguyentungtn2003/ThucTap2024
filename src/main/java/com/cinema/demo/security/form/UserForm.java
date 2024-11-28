@@ -44,6 +44,6 @@ public class UserForm {
 
     private String status;
 
-    @NotBlank(message = "Gender should not be empty")
+    @NotNull(message = "Gender should not be empty")
     private Character sex;
 }

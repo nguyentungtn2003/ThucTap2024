@@ -49,7 +49,6 @@ public class SeatController {
                                            HttpServletRequest request,
                                            Model model) {
         HttpSession session = request.getSession();
-        // Lưu thông tin vào session
         session.setAttribute("movie_Id", movieId);
         session.setAttribute("start_Date", startDate);
         session.setAttribute("start_Time", startTime);
@@ -58,7 +57,6 @@ public class SeatController {
         MovieDTO movie = movieService.getById(movieId);
         model.addAttribute("movie", movie);
 
-        // Gọi API để lấy danh sách suất chiếu
         String showTimesUrl = UriComponentsBuilder.fromHttpUrl(baseUrl + API_GET_SHOW_TIMES)
                 .queryParam("movieId", movieId)
                 .queryParam("startDate", startDate)
@@ -84,7 +82,6 @@ public class SeatController {
         model.addAttribute("startTime", startTime);
         model.addAttribute("roomId", roomId);
 
-        // Gọi API để lấy danh sách ghế
         String seatsUrl = UriComponentsBuilder.fromHttpUrl(baseUrl + API_GET_SEATS)
                 .queryParam("showtimeId", selectedShowtime.getShowtimeId())
                 .toUriString();
@@ -99,7 +96,6 @@ public class SeatController {
         }
 
 
-//        // Phân loại ghế theo hàng
 //        Map<String, List<SeatDTO>> seatsByRow = new TreeMap<>();
 //        for (SeatDTO seat : seats) {
 //            String seatPosition = seat.getSeatPosition();
@@ -109,7 +105,6 @@ public class SeatController {
 //            }
 //        }
 
-        // Phân loại ghế theo hàng và thêm vào LinkedHashMap để giữ thứ tự ngược
         Map<String, List<SeatDTO>> seatsByRow = new LinkedHashMap<>();
         for (char row = 'G'; row >= 'A'; row--) {
             String rowKey = String.valueOf(row);
@@ -120,7 +115,6 @@ public class SeatController {
         }
 
 
-        // Loại ghế theo từng hàng
         Map<String, String> seatTypes = new HashMap<>();
         for (char row = 'A'; row <= 'B'; row++) {
             seatTypes.put(String.valueOf(row), "Silver");
@@ -132,7 +126,6 @@ public class SeatController {
             seatTypes.put(String.valueOf(row), "Platinum");
         }
 
-        // Truyền vào model
         model.addAttribute("seatsByRow", seatsByRow);
         model.addAttribute("seatTypes", seatTypes);
 

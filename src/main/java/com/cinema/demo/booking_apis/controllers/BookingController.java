@@ -137,7 +137,6 @@ public class BookingController {
         List<SeatDTO> selectedSeats = new ArrayList<>();
         BigDecimal totalAmount = BigDecimal.ZERO;
 
-        // Retrieve movie and showtime
         MovieDTO movie = movieService.getById(movieId);
         ShowtimeDTO showtime = showtimeService.getShowtimeById(showtimeId);
         CinemaRoomDTO cinemaRoom = iRoomService.getById(room_Id);
@@ -146,7 +145,6 @@ public class BookingController {
             return "boleto/demo/404";
         }
 
-        // Process each selected seat
         for (Integer seatId : seatIds) {
             SeatDTO seat = seatService.getSeatById(seatId);
             if (seat == null) {
@@ -163,17 +161,14 @@ public class BookingController {
                 return "boleto/demo/404";
             }
 
-            // Update seat status and add to list
-            seat.setIsOccupied(1);
+            seat.setIsOccupied(2);
             seatService.updateSeatStatus(seat);
             selectedSeats.add(seat);
 
-            // Add seat price to total amount
             BigDecimal seatPrice = seatService.getPriceBySeatType(seat.getSeatType().getSeatName());
             totalAmount = totalAmount.add(seatPrice);
         }
 
-        // Save booking
         BookingDTO booking = new BookingDTO();
         booking.setTotalFoodTicketAmount(totalAmount);
         booking.setBookingFee(bookingFee);
@@ -181,7 +176,6 @@ public class BookingController {
         booking.setCreatedDateTime(LocalDateTime.now());
         bookingService.saveBooking(booking);
 
-        // Save seat bookings
         for (SeatDTO seat : selectedSeats) {
             SeatBookingDTO seatBooking = new SeatBookingDTO();
             seatBooking.setBooking(booking);
@@ -189,7 +183,6 @@ public class BookingController {
             seatBookingService.saveSeatBooking(seatBooking);
         }
 
-        // Save tickets
         List<TicketDTO> tickets = new ArrayList<>();
         for (SeatDTO seat : selectedSeats) {
             TicketDTO ticket = new TicketDTO();
@@ -211,7 +204,6 @@ public class BookingController {
         }
         model.addAttribute("foodList", foodList);
 
-        // Add attributes for the frontend
 
         model.addAttribute("movie", movie);
         model.addAttribute("showtime", showtime);
@@ -286,7 +278,6 @@ public class BookingController {
 //    }
 
 
-    // Xử lý đơn hàng và hiển thị giỏ hàng
     @PostMapping("/order")
     public String orderConcession(@RequestParam("concessionTypeId") int concessionTypeId,
                                   @RequestParam("quantity") int quantity,
@@ -296,12 +287,11 @@ public class BookingController {
         Optional<InvoiceEntity> invoiceEntityOpt = invoiceService.getInvoiceById(invoiceId);
         if (invoiceEntityOpt.isEmpty()) {
             model.addAttribute("error", "Invoice không tồn tại");
-            return "boleto/demo/popcorn"; // Quay lại trang food với thông báo lỗi
+            return "boleto/demo/popcorn";
         }
 
         InvoiceEntity invoiceEntity = invoiceEntityOpt.get();
 
-        // Lấy TypeOfConcessionEntity từ ID món ăn
         Optional<TypeOfConcessionEntity> concessionTypeOpt = typeOfConcessionService.getAllConcessions().stream()
                 .filter(type -> type.getConcessionTypeId() == concessionTypeId)
                 .findFirst();
@@ -313,7 +303,6 @@ public class BookingController {
 
         TypeOfConcessionEntity concessionType = concessionTypeOpt.get();
 
-        // Tạo mới đơn hàng và lưu vào CSDL
         ConcessionOrderEntity concessionOrderEntity = new ConcessionOrderEntity();
         concessionOrderEntity.setQuantity(quantity);
         concessionOrderEntity.setPrice(concessionType.getPrice());
@@ -322,7 +311,6 @@ public class BookingController {
 
         concessionOrderService.saveConcessionOrder(concessionOrderEntity);
 
-        // Thêm vào giỏ hàng (session hoặc cơ sở dữ liệu)
         List<ConcessionOrderEntity> cart = (List<ConcessionOrderEntity>) model.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<>();
@@ -330,19 +318,17 @@ public class BookingController {
 
         cart.add(concessionOrderEntity);
 
-        // Tính tổng tiền
         BigDecimal totalAmount = cart.stream()
                 .map(order -> order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalPriceWithVAT = totalAmount.add(BigDecimal.valueOf(15)); // Ví dụ thêm phí VAT 15
+        BigDecimal totalPriceWithVAT = totalAmount.add(BigDecimal.valueOf(15));
 
-        // Hiển thị thông tin giỏ hàng và tổng tiền
         model.addAttribute("invoiceId", invoiceId);
         model.addAttribute("cart", cart);
         model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalPriceWithVAT", totalPriceWithVAT);
         model.addAttribute("success", "Đặt hàng thành công");
-        return "boleto/demo/popcorn"; // Chuyển tới trang giỏ hàng với thông tin
+        return "boleto/demo/popcorn";
     }
 }
