@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lí Vật Tư</title>
+    <style>
+        /* CSS styles remain unchanged as per your original code */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #161b22;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .sidebar h1 {
+            color: #58a6ff;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .sidebar .admin-info .name {
+            color: #c9d1d9;
+            font-size: 1rem;
+        }
+
+        .sidebar .admin-info .role {
+            font-size: 0.9rem;
+            color: #8b949e;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #c9d1d9;
+            padding: 15px 20px;
+            display: block;
+            border-radius: 5px;
+            margin: 5px 10px;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #21262d;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .header button {
+            background-color: #22303f;
+            border: none;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .header button:hover {
+            background-color: #1f6feb;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: #161b22;
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .stat-card p {
+            margin: 5px 0 0;
+            color: #8b949e;
+        }
+
+        .tables {
+            display: flex;
+            gap: 20px;
+        }
+
+        .table-card {
+            background-color: #161b22;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            overflow-x: auto;
+        }
+
+        .table-card h3 {
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #c9d1d9;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #21262d;
+        }
+
+        th {
+            background-color: #21262d;
+        }
+
+        .btn {
+            background-color: #58a6ff;
+            border: none;
+            padding: 5px 10px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #1f6feb;
+        }
+
+        .status-visible {
+            color: #3fb950;
+        }
+
+        .btn.active {
+            background-color: #1f6feb;
+            color: white;
+            font-weight: bold;
+        }
+
+        .side-form {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 30%;
+            height: 100%;
+            background-color: #161b22;
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .side-form.active {
+            right: 0;
+        }
+
+        .side-form h2 {
+            margin-top: 0;
+            color: #58a6ff;
+        }
+
+        .side-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .side-form input, .side-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #21262d;
+            border-radius: 5px;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+
+        .side-form button {
+            background-color: #58a6ff;
+            border: none;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+        }
+
+        .side-form button:hover {
+            background-color: #1f6feb;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Modal background */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto; /* 10% from top, centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Adjust width */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s;
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button.btn_save {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button.delete {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h1>ADMIN 1</h1>
+    <div class="admin-info">
+        <img src="admin1.jpg" alt="Admin Avatar">
+        <div>
+            <div class="name">John Doe</div>
+            <div class="role">Admin</div>
+        </div>
+    </div>
+    <a href="ad1_mainboard.html">Adminboard</a>
+    <a href="ad1_mana.html">Quản lý nhân viên</a>
+    <a href="ad1_room.html" class="active">Quản lý phòng chiếu</a>
+    <a href="ad1_cus.html">Quản lý khách hàng</a>
+    <a href="ad1_ticket.html">Quản lý vé</a>
+    <a href="ad1_movie.html">Quản lý phim</a>
+    <a href="ad2_promotion.html">Quản lý khuyến mãi</a>
+    <a href="admin1.html">Thông tin cá nhân</a>
+</div>
+<div class="main-content">
+    <div class="header">
+        <h1 th:text="'Danh sách vật tư phòng ' + ${cinemaRoom.getCinemaRoomNum()}"></h1>
+        <!-- Nút "Thêm Mới Vật Tư" -->
+        <button id="addCustomers" onclick="openModal()">Thêm Mới ghi chú</button>
+    </div>
+    <div class="search-bar">
+        <input
+                type="text"
+                id="searchInput"
+                placeholder="Tìm kiếm vật tư..."
+                style="width: 100%; padding: 10px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #21262d;">
+    </div>
+    <div class="tables">
+        <div class="table-card">
+            <h3>Danh Sách Vật Tư</h3>
+            <table id="materialTable">
+                <thead>
+                <tr>
+                    <th>ghế</th>
+                    <th>máy chiếu</th>
+                    <th>loa</th>
+                    <th>đèn</th>
+                    <th>ghi chú</th>
+                    <th>ngày thêm</th>
+                    <th>Quản Lý</th>
+                    <th>trạng thái</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Dữ liệu khách hàng -->
+                <tr th:each="roomDetail : ${allInfoRoomDetails}">
+                    <td th:text="${roomDetail.getChair()}"></td>
+                    <td th:text="${roomDetail.getMovieProjector()}"></td>
+                    <td th:text="${roomDetail.getLoudspeaker()}"></td>
+                    <td th:text="${roomDetail.getLed()}"></td>
+                    <td th:text="${roomDetail.getNote()}"></td>
+                    <td th:text="${roomDetail.getDate()}"></td>
+                    <td>
+                        <button class="edit"><span
+                                class="edit-icon"
+                                onclick="openEditModal(this)"
+                                th:attr="data-id=${roomDetail.getId()},
+                                    data-chair=${roomDetail.getChair()},
+                                    data-projector=${roomDetail.getMovieProjector()},
+                                    data-loudspeaker=${roomDetail.getLoudspeaker()},
+                                    data-led=${roomDetail.getLed()},
+                                    data-note=${roomDetail.getNote()},
+                                    data-status=${roomDetail.getStatus()}">
+                                ✏️
+                            </span></button>
+
+                        <button class="delete">
+                                 <span
+                                         class="delete-icon"
+                                         onclick="deleteRoomDetail(this)"
+                                         th:attr="data-id=${roomDetail.getId()}">
+                                     🗑️
+                                </span>
+                        </button>
+                    </td>
+                    <td th:text="${roomDetail.getStatus() == true ? 'Done' : 'processing'}"></td>
+                </tr>
+
+                </tbody>
+            </table>
+            <div id="pagination" style="margin-top: 10px; display: flex; justify-content: center;">
+                <!-- JavaScript will handle pagination links -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="addMaterialModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Thêm Mới Vật Tư</h2>
+        <form id="materialForm">
+
+            <label for="chair">Số Ghế:</label>
+            <input type="number" id="chair" name="chair" placeholder="Nhập số ghế" required>
+
+            <label for="projector">Máy Chiếu:</label>
+            <input type="number" id="projector" name="projector" placeholder="Nhập số máy chiếu" required>
+
+            <label for="speaker">Loa:</label>
+            <input type="number" id="speaker" name="speaker" placeholder="Nhập số loa" required>
+
+            <label for="led">Đèn:</label>
+            <input type="number" id="led" name="led" placeholder="Nhập số đèn" required>
+
+            <label for="note">Ghi Chú:</label>
+            <textarea id="note" name="note" placeholder="Nhập ghi chú"></textarea>
+
+            <label for="status">Trạng Thái:</label>
+            <select id="status" name="status" required>
+                <option value="0">Processing</option>
+                <option value="1">Done</option>
+            </select>
+
+            <input id="idCinemaRoom" th:value="${cinemaRoom.getId()}" hidden>
+
+            <button class="btn_save" type="submit">Lưu</button>
+        </form>
+    </div>
+</div>
+
+<!--chỉnh sửa thông tin vật tư-->
+<div id="editRoomDetailModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Chỉnh sửa thông tin phòng</h2>
+        <form id="editRoomDetailForm">
+
+            <input type="hidden" id="editId" name="id">
+
+            <label for="editChair">Số Ghế:</label>
+            <input type="number" id="editChair" name="chair" required>
+
+            <label for="editProjector">Máy Chiếu:</label>
+            <input type="number" id="editProjector" name="projector" required>
+
+            <label for="editLoudspeaker">Loa:</label>
+            <input type="number" id="editLoudspeaker" name="loudspeaker" required>
+
+            <label for="editLed">Đèn:</label>
+            <input type="number" id="editLed" name="led" required>
+
+            <label for="editNote">Ghi Chú:</label>
+            <textarea id="editNote" name="note"></textarea>
+
+            <label for="editStatus">Trạng Thái:</label>
+            <select id="editStatus" name="status">
+                <option value="false">Processing</option>
+                <option value="true">Done</option>
+            </select>
+
+            <button class="btn_save" type="button" onclick="saveRoomDetail()">Lưu</button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    // Mở modal
+    function openModal() {
+        document.getElementById("addMaterialModal").style.display = "block";
+
+        // gửi form
+        document.getElementById("materialForm").addEventListener("submit", async function (e) {
+            e.preventDefault(); // Ngăn chặn hành vi submit mặc định
+
+            // Thu thập dữ liệu từ form
+            const chair = document.getElementById("chair").value;
+            const projector = document.getElementById("projector").value;
+            const speaker = document.getElementById("speaker").value;
+            const led = document.getElementById("led").value;
+            const note = document.getElementById("note").value;
+            const status = document.getElementById("status").value;
+            const idCinemaRoom = document.getElementById("idCinemaRoom").value;
+
+            // Kiểm tra xem có trường nào bị thiếu dữ liệu
+            if (!chair || !projector || !speaker || !led || !status || !idCinemaRoom) {
+                alert("Vui lòng điền đầy đủ thông tin.");
+                return;
+            }
+            // Chuyển đổi status từ chuỗi "0"/"1" thành boolean true/false
+            const statusBool = status === "1"; // Nếu status = "1", trả về true, nếu không là false.
+
+            // Tạo payload dữ liệu
+            const data = {
+                chair: parseInt(chair), // Đảm bảo số liệu là kiểu số
+                movieProjector: parseInt(projector),
+                loudspeaker: parseInt(speaker),
+                led: parseInt(led),
+                note: note,
+                status: statusBool, // Chuyển đổi giá trị "0" hoặc "1" thành số nguyên
+                idCinemaRoom: parseInt(idCinemaRoom)
+            };
+
+            try {
+                // Gửi request POST đến API
+                const response = await fetch(`http://localhost:8081/admins/room-management/details/insertNote`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json", // Đảm bảo gửi với Content-Type là application/json
+                    },
+                    body: JSON.stringify(data), // Chuyển dữ liệu thành chuỗi JSON
+                });
+
+                // Kiểm tra phản hồi từ server
+                if (response.ok) {
+                    const result = await response.json();
+                    alert("Thêm vật tư thành công!");
+                    closeModal(); // Đóng modal
+                    location.reload() // cập nhật lại danh sách
+                } else {
+                    const error = await response.json();
+                    alert("Thêm vật tư thất bại: " + (error.message || "Lỗi không xác định."));
+                }
+            } catch (err) {
+                console.error("Lỗi khi gửi API:", err);
+                alert("Không thể kết nối đến server. Vui lòng thử lại sau.");
+            }
+        });
+    }
+
+    // Đóng modal
+    function closeModal() {
+        document.getElementById("addMaterialModal").style.display = "none";
+    }
+
+    //edit modal
+    function openEditModal(element) {
+        // Lấy thông tin từ data-* attributes
+        const id = element.getAttribute("data-id");
+        const chair = element.getAttribute("data-chair");
+        const projector = element.getAttribute("data-projector");
+        const loudspeaker = element.getAttribute("data-loudspeaker");
+        const led = element.getAttribute("data-led");
+        const note = element.getAttribute("data-note");
+        const status = element.getAttribute("data-status");
+
+        // Gán thông tin vào form
+        document.getElementById("editId").value = id;
+        document.getElementById("editChair").value = chair;
+        document.getElementById("editProjector").value = projector;
+        document.getElementById("editLoudspeaker").value = loudspeaker;
+        document.getElementById("editLed").value = led;
+        document.getElementById("editNote").value = note;
+        document.getElementById("editStatus").value = status;
+
+        // Hiển thị modal
+        document.getElementById("editRoomDetailModal").style.display = "block";
+    }
+
+    function closeModal() {
+        // Ẩn modal
+        document.getElementById("editRoomDetailModal").style.display = "none";
+    }
+
+    //lưu dữ liệu khi ấn lưu
+    function saveRoomDetail() {
+        const id = document.getElementById("editId").value;
+        const chair = document.getElementById("editChair").value;
+        const projector = document.getElementById("editProjector").value;
+        const loudspeaker = document.getElementById("editLoudspeaker").value;
+        const led = document.getElementById("editLed").value;
+        const note = document.getElementById("editNote").value;
+        const status = document.getElementById("editStatus").value;
+
+        const data = {
+            id: id,
+            chair: chair,
+            movieProjector: projector,
+            loudspeaker: loudspeaker,
+            led: led,
+            note: note,
+            status: status === "true"
+        };
+
+        fetch('http://localhost:8081/admins/room-management/details/edit/' + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Cập nhật thành công!");
+                    location.reload(); // Tải lại trang
+                } else {
+                    alert("Cập nhật thất bại!");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+    }
+
+    //xóa room detail
+    function deleteRoomDetail(element) {
+        const id = element.getAttribute("data-id");
+
+        if (confirm("Bạn có chắc muốn xóa Room Detail này không?")) {
+            fetch('http://localhost:8081/admins/room-management/details/delete/' + id, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Xóa thành công!");
+                        location.reload(); // Tải lại trang sau khi xóa
+                    } else {
+                        alert("Xóa thất bại! Room Detail không tồn tại.");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        }
+    }
+
+    //tìm kiếm
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const filter = this.value.toLowerCase(); // Lấy giá trị tìm kiếm và chuyển thành chữ thường
+        const rows = document.querySelectorAll('#materialTable tbody tr'); // Lấy tất cả các hàng trong tbody
+
+        rows.forEach(row => {
+            const cells = Array.from(row.querySelectorAll('td')); // Lấy tất cả các ô (td) trong hàng
+            const matches = cells.some(cell => cell.textContent.toLowerCase().includes(filter)); // Kiểm tra ô nào khớp từ khóa
+            row.style.display = matches ? '' : 'none'; // Hiển thị hoặc ẩn hàng
+        });
+    });
+</script>
+</body>
+</html>

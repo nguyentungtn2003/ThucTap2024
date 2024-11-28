@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Quản lí phòng chiếu</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #161b22;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .sidebar h1 {
+            color: #58a6ff;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .sidebar .admin-info .name {
+            color: #c9d1d9;
+            font-size: 1rem;
+        }
+
+        .sidebar .admin-info .role {
+            font-size: 0.9rem;
+            color: #8b949e;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #c9d1d9;
+            padding: 15px 20px;
+            display: block;
+            border-radius: 5px;
+            margin: 5px 10px;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #21262d;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .header button {
+            background-color: #22303f;
+            border: none;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .header button:hover {
+            background-color: #1f6feb;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: #161b22;
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .stat-card p {
+            margin: 5px 0 0;
+            color: #8b949e;
+        }
+
+        .tables {
+            display: flex;
+            gap: 20px;
+        }
+
+        .table-card {
+            background-color: #161b22;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            overflow-x: auto;
+        }
+
+        .table-card h3 {
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #c9d1d9;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #21262d;
+        }
+
+        th {
+            background-color: #21262d;
+        }
+
+        .btn {
+            background-color: #58a6ff;
+            border: none;
+            padding: 5px 10px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #1f6feb;
+        }
+
+        .status-visible {
+            color: #3fb950;
+        }
+
+        .btn.active {
+            background-color: #1f6feb;
+            color: white;
+            font-weight: bold;
+        }
+
+        .maintenance{
+            color: yellow;
+        }
+
+        .active {
+            color: green; /* Màu xanh cho Active */
+        }
+
+        .off {
+            color: red; /* Màu đỏ cho Off */
+        }
+
+        /* To save space, I'm omitting the unchanged CSS from your original file */
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h1>ADMIN 1</h1>
+    <div class="admin-info">
+        <img src="admin1.jpg" alt="Admin Avatar">
+        <div>
+            <div class="name">John Doe</div>
+            <div class="role">Admin</div>
+        </div>
+    </div>
+    <a href="ad1_mainboard.html">Adminboard</a>
+    <a href="ad1_mana.html">Quản lý nhân viên</a>
+    <a href="ad1_room.html" class="active">Quản lý phòng chiếu</a>
+    <a href="ad1_cus.html">Quản lý khách hàng</a>
+    <a href="ad1_ticket.html">Quản lý vé</a>
+    <a href="ad1_movie.html">Quản lý phim</a>
+    <a href="ad1_promotion.html">Quản lý khuyến mãi</a>
+    <a href="admin1.html">Thông tin cá nhân</a>
+</div>
+<div class="main-content">
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm tên phòng hoặc tên phim..."
+               style="width: 100%; padding: 10px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #21262d;">
+    </div>
+    <div class="tables">
+        <div class="table-card">
+            <h3>Danh Sách Phòng Chiếu</h3>
+            <table id="roomTable" class="display">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên Phòng</th>
+                    <th>số ghế</th>
+                    <th>Tên Phim</th>
+                    <th>thời lượng phim</th>
+                    <th>trạng thái</th>
+                    <th>Cơ Sở Vật Chất</th>
+                    <th>ngày</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="room : ${allInfoRoom}">
+                    <td th:text="${room.getId()}"></td>
+                    <td th:text="${room.getNameRoom()}"></td>
+                    <td th:text="${room.getChair()}"></td>
+                    <td th:text="${room.getNameMovie()}"></td>
+                    <td th:text="${room.getRuningTime()} + ' p'"></td>
+
+                    <td th:text="${room.roomDetail?.status == false
+                 ? 'bảo trì'
+                 : (room?.status == 1 ? 'đang hoạt động' : 'không hoạt động')}"
+                        th:classappend="${room.roomDetail.status == false
+                     ? 'maintenance'
+                     : (room.status == 1 ? 'active' : 'off')}">
+                    </td>
+
+                    <td><a th:href="@{/admins/room-management/details/{idRoom}(idRoom=${room.getId()})}">Xem</a></td>
+                    <td th:text="${room.getDate()}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="pagination" style="margin-top: 10px; display: flex; justify-content: center;">
+                <!-- JavaScript sẽ xử lý phân trang -->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#roomTable tbody tr');
+
+        rows.forEach(row => {
+            const cells = Array.from(row.querySelectorAll('td'));
+            const matches = cells.some(cell => cell.textContent.toLowerCase().includes(filter));
+            row.style.display = matches ? '' : 'none';
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const rowsPerPage = 16; // Số dòng mỗi trang
+        const rows = Array.from(document.querySelectorAll('#roomTable tbody tr'));
+        const pagination = document.getElementById('pagination');
+
+        function renderPage(page) {
+            // Tính toán phạm vi hiển thị
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+
+            rows.forEach((row, index) => {
+                row.style.display = index >= start && index < end ? '' : 'none';
+            });
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(rows.length / rowsPerPage);
+            pagination.innerHTML = ''; // Xóa nội dung cũ
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.style.margin = '0 5px';
+                btn.addEventListener('click', () => renderPage(i));
+                pagination.appendChild(btn);
+            }
+        }
+
+        // Khởi tạo trang đầu tiên và phân trang
+        renderPagination();
+        renderPage(1);
+    });
+</script>
+
+
+</html>
