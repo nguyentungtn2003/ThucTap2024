@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.util.*;
+import java.util.ArrayList;
 
-@Entity
-@Table(name = "user")
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -85,4 +85,3 @@ public class UserEntity {
     @JsonManagedReference // Dùng khi ánh xạ hai chiều
     private List<NotificationEntity> notifications = new ArrayList<>();
 }
-
