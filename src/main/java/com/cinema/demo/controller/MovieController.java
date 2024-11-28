@@ -46,7 +46,7 @@ public class MovieController {
 //        return "moviemanagement";
 //    }
     @GetMapping("/moviemanagement")
-    public String getMovies(@RequestParam(value = "entriesPerPage", defaultValue = "10") int entriesPerPage,
+    public String getMovies(@RequestParam(value = "entriesPerPage", defaultValue = "20") int entriesPerPage,
                             @RequestParam(value = "page", defaultValue = "1") int page,
                             Model model) {
         // Lấy danh sách phim với phân trang
@@ -64,7 +64,7 @@ public class MovieController {
 
     // Hiển thị trang tạo phim mới
     @GetMapping("/addmovie")
-    public String showAddMovieForm(@RequestParam(value = "entriesPerPage", defaultValue = "10") int entriesPerPage,
+    public String showAddMovieForm(@RequestParam(value = "entriesPerPage", defaultValue = "20") int entriesPerPage,
                                    @RequestParam(value = "page", defaultValue = "1") int page,
                                    Model model) {
         model.addAttribute("movie", new MovieDTO());
@@ -85,7 +85,7 @@ public class MovieController {
                               @Valid @ModelAttribute("movie") MovieDTO movieDTO,
                               BindingResult result,
                               RedirectAttributes redirectAttributes,
-                              @RequestParam(value = "entriesPerPage", defaultValue = "10") int entriesPerPage,
+                              @RequestParam(value = "entriesPerPage", defaultValue = "20") int entriesPerPage,
                               @RequestParam(value = "page", defaultValue = "1") int page,
                               Model model) {
 
@@ -185,7 +185,7 @@ public class MovieController {
     @GetMapping
     public String getAllMovies(Model model,
                                @RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "10") int size) {
+                               @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size); // Mỗi trang hiển thị 10 phim
         Page<MovieDTO> moviePage = (Page<MovieDTO>) movieService.getAllMovies(pageable);
         model.addAttribute("movies", moviePage);
