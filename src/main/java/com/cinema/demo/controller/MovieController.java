@@ -4,9 +4,7 @@ import com.cinema.demo.dto.MovieDTO;
 import com.cinema.demo.dto.request.MovieStatusUpdateRequest;
 import com.cinema.demo.entity.MovieEntity;
 import com.cinema.demo.entity.TypeEntity;
-import com.cinema.demo.repository.TypeRepository;
 import com.cinema.demo.service.IMovieService;
-import com.cinema.demo.service.impl.MovieServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/movies")
@@ -62,7 +58,7 @@ public class MovieController {
         model.addAttribute("totalPages", movieDTOPage.getTotalPages());  // Tổng số trang
         model.addAttribute("currentPage", page);  // Trang hiện tại
 
-        return "movie_management";
+        return "admin/movie_management";
     }
 
 
@@ -81,7 +77,7 @@ public class MovieController {
         List<TypeEntity> movieTypes = movieService.getTypeMoVie();  // Lấy tất cả loại phim
         System.out.println(movieTypes);
         model.addAttribute("movieTypes", movieTypes);  // Thêm vào model để hiển thị trên form// Thêm đối tượng MovieDTO vào model
-        return "movie_management"; // Trả về view
+        return "admin/movie_management"; // Trả về view
     }
 
     @PostMapping("/addmovie")
@@ -100,7 +96,7 @@ public class MovieController {
         model.addAttribute("totalPages", movieDTOPage.getTotalPages());  // Tổng số trang
         model.addAttribute("currentPage", page);  // Trang hiện tại
         if (result.hasErrors()) {
-            return "movie_management";  // Nếu có lỗi, trả về lại form
+            return "admin/movie_management";  // Nếu có lỗi, trả về lại form
         }
 
         // Xử lý upload hình ảnh và lưu
