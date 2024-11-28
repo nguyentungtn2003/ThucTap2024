@@ -13,13 +13,14 @@ public class TicketDTO {
 
     private String qrImageURL;
 
-    private ShowtimeEntity showtime;
+    private ShowtimeDTO showtime;
 
     private BigDecimal price;
 
     private String status;
 
-    private SeatEntity seat;
+    private SeatDTO seat;
+//    private Integer seatId;
 
-    private InvoiceEntity invoiceEntity;
+    private InvoiceDTO invoiceEntity;
 }

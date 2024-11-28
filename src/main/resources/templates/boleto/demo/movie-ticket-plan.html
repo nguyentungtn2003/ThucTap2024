@@ -52,7 +52,7 @@
             <div class="header-wrapper">
                 <div class="logo">
                     <a href="index.html">
-                        <img src="assets/images/logo/logo.png" alt="logo">
+                        <img th:src="@{images/logo/logo.png}" alt="logo">
                     </a>
                 </div>
                 <ul class="menu">
@@ -183,29 +183,35 @@
 
     <!-- ==========Window-Warning-Section========== -->
     <section class="window-warning inActive">
-        <div class="lay"></div>
+        <div class="lay" onclick="this.parentElement.classList.add('inActive')"></div>
         <div class="warning-item">
             <h6 class="subtitle">Welcome! </h6>
             <h4 class="title">Select Your Seats</h4>
             <div class="thumb">
-                <img src="assets/images/movie/seat-plan.png" alt="movie">
+                <img th:src="@{images/movie/seat-plan.png}" alt="movie">
             </div>
-            <a href="movie-seat-plan.html" class="custom-button seatPlanButton">Seat Plans<i class="fas fa-angle-right"></i></a>
+            <a class="custom-button seatPlanButton">Seat Plans<i class="fas fa-angle-right"></i></a>
         </div>
     </section>
     <!-- ==========Window-Warning-Section========== -->
 
     <!-- ==========Banner-Section========== -->
-    <section class="details-banner hero-area bg_img" data-background="assets/images/banner/banner03.jpg">
+    <section class="details-banner hero-area bg_img" data-th-background="@{images/banner/banner03.jpg}">
         <div class="container">
             <div class="details-banner-wrapper">
                 <div class="details-banner-content">
-                    <h3 class="title" th:text="${movie.title}"></h3>
+<!--                    <h3 class="title" th:text="${movie.title}"></h3>-->
+<!--                    <p th:text="${movie.shortDescription}"></p>-->
+<!--                    <div class="tags">-->
+<!--                        <a th:each="language : ${movie.language}" th:text="${language}">English</a>-->
+<!--                        -->
+<!--                    </div>-->
+                    <h3 class="title" th:text="${movie.title}">Movie Title</h3>
                     <div class="tags">
-                        <a href="#0">English</a>
-                        <a href="#0">Hindi</a>
-                        <a href="#0">Telegu</a>
-                        <a href="#0">Tamil</a>
+<!--                             <p th:text="${movie.shortDescription}"></p>-->
+                        <p>Actors: <span th:text="${movie.actor}"></span></p>
+<!--                        <p>Release Date: <span th:text="${movie.releaseDate}"></span></p>-->
+                        <p>Duration: <span th:text="${movie.runningTime}"></span> minutes</p>
                     </div>
                 </div>
             </div>
@@ -219,15 +225,15 @@
             <form class="ticket-search-form two">
                 <div class="form-group">
                     <div class="thumb">
-                        <img src="assets/images/ticket/date.png" alt="ticket">
+                        <img th:src="@{images/ticket/date.png}" alt="ticket">
                     </div>
-                    <span class="type">date</span>
-                    <select id="startDate" class="select-bar" onchange="loadShowtimes()">
-                        <option value="">-- Select Date --</option>
-                        <option th:each="date : ${showDates}"
-                                th:value="${#dates.format(date.startDate, 'yyyy-MM-dd')}"
-                                th:text="${#dates.format(date.startDate, 'dd/MM/yyyy')}">
-                        </option>
+                    <span class="type">Select Date</span>
+                    <select class="select-bar" id="date-select" onchange="fetchShowtimes()" required>
+                        <!-- Lặp qua danh sách ngày chiếu từ model -->
+                        <option>Select Date</option>
+                        <th:block th:each="date : ${availableDates}">
+                            <option th:value="${date}" th:text="${date}"></option>
+                        </th:block>
                     </select>
                 </div>
             </form>
@@ -239,25 +245,27 @@
     <div class="ticket-plan-section padding-bottom padding-top">
         <div class="container">
             <div class="row justify-content-center">
-                <div id="showtimes-container" style="display: none;" class="col-lg-9 mb-5 mb-lg-0">
-                    <ul class="seat-plan-wrapper bg-five">
-                        <li th:each="showtime : ${showtimes}">
-                            <div class="movie-schedule">
+                <div class="col-lg-9 mb-5 mb-lg-0">
+                    <ul id="list-show-times" class="seat-plan-wrapper bg-five">
+                        <li class="active">
+                            <!-- ==========suất chiếu hiển thị ở đây========== -->
+                            <div id="showtimes-container" class="movie-schedule">
                                 <div class="item">
-                                    <a th:href="@{/cinema-rooms(movieId=${movieId}, startDate=${startDate}, roomId=${showtime.roomId})}"
-                                       th:text="${showtime.time}">
-                                    </a>
+                                    <!--09:40-->
                                 </div>
                             </div>
+                            <!-- ==========suất chiếu hiển thị ở đây========== -->
                         </li>
                     </ul>
-                </div>
-                <div id="rooms-container" style="display: none;" class="col-lg-9 mb-5 mb-lg-0">
-                    <ul class="seat-plan-wrapper bg-five">
-                        <li th:each="room : ${rooms}">
-                            <div class="movie-name">
-                                <a th:href="#0" th:text="${room.name}"></a>
+                    <ul id="list-room" class="seat-plan-wrapper bg-five">
+                        <li  class="active">
+                            <!-- ==========phòng chiếu hiển thị ở đây========== -->
+                            <div id="rooms-container" class="movie-schedule">
+                                <div class="item">
+                                    <!--RoomA-->
+                                </div>
                             </div>
+                            <!-- ==========phòng chiếu hiển thị ở đây========== -->
                         </li>
                     </ul>
                 </div>
@@ -265,7 +273,7 @@
                     <div class="widget-1 widget-banner">
                         <div class="widget-1-body">
                             <a href="#0">
-                                <img src="assets/images/sidebar/banner/banner03.jpg" alt="banner">
+                                <img th:src="@{images/sidebar/banner/banner03.jpg}" alt="banner">
                             </a>
                         </div>
                     </div>
@@ -275,51 +283,370 @@
     </div>
 
     <script>
-        function loadShowtimes() {
-            const startDate = document.getElementById('startDate').value;
-            if (!startDate) return;
+        // function fetchRooms(startTime) {
+        //     const dateSelect = document.getElementById('date-select');
+        //     const selectedDate = dateSelect.value;
+        //     const roomContainer = document.getElementById('rooms-container');
+        //
+        //     // Sử dụng movieId từ Thymeleaf
+        //     const movieId = [[${movieId}]];
+        //
+        //     // Xóa nội dung cũ trong roomContainer
+        //     roomContainer.innerHTML = '<div>Đang tải...</div>';
+        //
+        //     // Gọi API để lấy danh sách phòng chiếu
+        //     fetch(`/api/rooms?movieId=${movieId}&startDate=${selectedDate}&startTime=${startTime}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Không thể lấy phòng chiếu');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(rooms => {
+        //             // Làm sạch container và hiển thị danh sách phòng chiếu
+        //             roomContainer.innerHTML = '';
+        //             rooms.forEach(room => {
+        //                 const roomDiv = document.createElement('div');
+        //                 roomDiv.className = 'item';
+        //                 roomDiv.textContent = `${room.cinemaRoomNum}`; // Hiển thị tên phòng
+        //                 roomContainer.appendChild(roomDiv);
+        //             });
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //             roomContainer.innerHTML = '<div>Lỗi tải phòng chiếu</div>';
+        //         });
+        // }
+        //
+        // function fetchShowtimes() {
+        //     const dateSelect = document.getElementById('date-select');
+        //     const showtimesContainer = document.getElementById('showtimes-container');
+        //     const selectedDate = dateSelect.value;
+        //     // const movieId = ;
+        //
+        //
+        //     // Xóa nội dung cũ trong showtimes-container
+        //     showtimesContainer.innerHTML = '<div>Đang tải...</div>';
+        //
+        //     // Gọi API lấy giờ chiếu
+        //     fetch(`/api/schedule/start-times?movieId=[[${movieId}]]&startDate=${selectedDate}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Không thể lấy giờ chiếu');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(startTimes => {
+        //             // Làm sạch container và thêm giờ chiếu mới
+        //             showtimesContainer.innerHTML = '';
+        //             startTimes.forEach(time => {
+        //                 const timeDiv = document.createElement('div');
+        //                 timeDiv.className = 'item';
+        //                 timeDiv.textContent = time;
+        //                 // Thêm sự kiện click để gọi fetchRooms
+        //                 timeDiv.addEventListener('click', () => {
+        //                     fetchRooms(time); // Gọi API lấy phòng chiếu khi chọn suất chiếu
+        //                 });
+        //                 showtimesContainer.appendChild(timeDiv);
+        //             });
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //             showtimesContainer.innerHTML = '<div>Lỗi tải giờ chiếu</div>';
+        //         });
+        // }
 
-            // Gọi API để lấy danh sách suất chiếu
-            fetch(`/show-times?movieId=${movieId}&startDate=${startDate}&roomId=0`)
-                .then(response => response.json())
-                .then(data => {
-                    const showtimesContainer = document.getElementById('showtimes-container');
-                    showtimesContainer.style.display = 'block';
-                    // Render danh sách suất chiếu
-                    showtimesContainer.innerHTML = data.map(showtime => `
-                <div class="item">
-                    <button onclick="loadRooms(${showtime.roomId}, '${startDate}')">
-                        ${showtime.time}
-                    </button>
-                </div>
-            `).join('');
+        // let selectedDate = null;
+        // let selectedTime = null;
+        // let selectedRoom = null;
+        //
+        // function fetchRooms(startTime) {
+        //     const dateSelect = document.getElementById('date-select');
+        //     const selectedDate = dateSelect.value;
+        //     const roomContainer = document.getElementById('rooms-container');
+        //
+        //     const movieId = [[${movieId}]];
+        //
+        //     roomContainer.innerHTML = '<div>Đang tải...</div>';
+        //
+        //     fetch(`/api/rooms?movieId=${movieId}&startDate=${selectedDate}&startTime=${startTime}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Không thể lấy phòng chiếu');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(rooms => {
+        //             roomContainer.innerHTML = '';
+        //             rooms.forEach(room => {
+        //                 const roomDiv = document.createElement('div');
+        //                 roomDiv.className = 'item';
+        //                 roomDiv.textContent = room.cinemaRoomNum; // Hiển thị tên phòng
+        //                 roomDiv.dataset.roomId = room.id; // Lưu ID phòng vào thuộc tính dữ liệu
+        //                 roomDiv.addEventListener('click', () => {
+        //                     selectRoom(roomDiv, room.id); // Truyền ID phòng vào
+        //                 });
+        //                 roomContainer.appendChild(roomDiv);
+        //             });
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //             roomContainer.innerHTML = '<div>Lỗi tải phòng chiếu</div>';
+        //         });
+        // }
+        //
+        // function fetchShowtimes() {
+        //     const dateSelect = document.getElementById('date-select');
+        //     const showtimesContainer = document.getElementById('showtimes-container');
+        //     selectedDate = dateSelect.value; // Lưu ngày đã chọn
+        //
+        //     showtimesContainer.innerHTML = '<div>Đang tải...</div>';
+        //
+        //     const movieId = [[${movieId}]];
+        //
+        //     fetch(`/api/schedule/start-times?movieId=${movieId}&startDate=${selectedDate}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Không thể lấy giờ chiếu');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(startTimes => {
+        //             showtimesContainer.innerHTML = '';
+        //             startTimes.forEach(time => {
+        //                 const timeDiv = document.createElement('div');
+        //                 timeDiv.className = 'item';
+        //                 timeDiv.textContent = time;
+        //                 timeDiv.addEventListener('click', () => {
+        //                     selectTime(timeDiv, time); // Lưu giờ đã chọn
+        //                     fetchRooms(time);
+        //                 });
+        //                 showtimesContainer.appendChild(timeDiv);
+        //             });
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //             showtimesContainer.innerHTML = '<div>Lỗi tải giờ chiếu</div>';
+        //         });
+        // }
+        //
+        // function selectTime(element, time) {
+        //     document.querySelectorAll('#showtimes-container .item').forEach(item => {
+        //         item.classList.remove('selected');
+        //     });
+        //     element.classList.add('selected');
+        //     selectedTime = time; // Lưu giờ đã chọn
+        //
+        //     // Kiểm tra nếu đủ dữ liệu
+        //     checkSelectionComplete();
+        // }
+        //
+        // function selectRoom(element, roomId) {
+        //     document.querySelectorAll('#rooms-container .item').forEach(item => {
+        //         item.classList.remove('selected');
+        //     });
+        //     element.classList.add('selected');
+        //     selectedRoom = roomId; // Lưu ID phòng
+        //     checkSelectionComplete();
+        // }
+        //
+        //
+        // function checkSelectionComplete() {
+        //     if (selectedDate && selectedTime && selectedRoom) {
+        //         openConfirmationWindow();
+        //     }
+        // }
+        //
+        // function openConfirmationWindow() {
+        //     const warningWindow = document.querySelector('.window-warning');
+        //     const subtitle = warningWindow.querySelector('.subtitle');
+        //     const title = warningWindow.querySelector('.title');
+        //
+        //     // Cập nhật thông tin trong cửa sổ
+        //     subtitle.textContent = "Bạn đã chọn:";
+        //     title.textContent = `Ngày: ${selectedDate}, Giờ: ${selectedTime}, Phòng: ${selectedRoom}`;
+        //
+        //     // Hiển thị cửa sổ
+        //     warningWindow.classList.remove('inActive');
+        //
+        //     // Xử lý nút Seat Plans
+        //     const seatPlanButton = document.querySelector('.seatPlanButton');
+        //     seatPlanButton.addEventListener('click', (event) => {
+        //         event.preventDefault();
+        //         saveSelectionAndRedirect();
+        //     });
+        // }
+        //
+        // function saveSelectionAndRedirect() {
+        //     const movieId = [[${movieId}]];
+        //
+        //     fetch('/api/booking/save-selection', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             movieId,
+        //             selectedDate,
+        //             selectedTime,
+        //             selectedRoom,
+        //         }),
+        //     })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Không thể lưu dữ liệu');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(() => {
+        //             // Chuyển hướng đến trang chọn ghế
+        //             window.location.href = `/seat-selection?movieId=${movieId}&startDate=${selectedDate}&startTime=${selectedTime}&roomId=${selectedRoom}`;
+        //         })
+        //         .catch(error => {
+        //             console.error('Lỗi khi lưu dữ liệu:', error);
+        //         });
+        // }
+
+        let selectedDate = null;
+        let selectedTime = null;
+        let selectedRoom = null;
+
+        function fetchRooms(startTime) {
+            const dateSelect = document.getElementById('date-select');
+            const selectedDate = dateSelect.value;
+            const roomContainer = document.getElementById('rooms-container');
+
+            const movieId = [[${movieId}]];
+
+            roomContainer.innerHTML = '<div>Đang tải...</div>';
+
+            // Gọi API để lấy danh sách phòng chiếu
+            fetch(`/api/rooms?movieId=${movieId}&startDate=${selectedDate}&startTime=${startTime}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Không thể lấy phòng chiếu');
+                    }
+                    return response.json();
+                })
+                .then(rooms => {
+                    roomContainer.innerHTML = '';
+                    rooms.forEach(room => {
+                        const roomDiv = document.createElement('div');
+                        roomDiv.className = 'item';
+                        roomDiv.textContent = room.cinemaRoomNum; // Hiển thị tên phòng
+                        roomDiv.dataset.roomId = room.id; // Lưu ID phòng vào thuộc tính dữ liệu
+                        roomDiv.addEventListener('click', () => {
+                            selectRoom(roomDiv, room.id); // Truyền ID phòng vào
+                        });
+                        roomContainer.appendChild(roomDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    roomContainer.innerHTML = '<div>Lỗi tải phòng chiếu</div>';
                 });
         }
 
-        function loadRooms(roomId, startDate) {
-            // Gọi API để lấy danh sách phòng chiếu
-            fetch(`/cinema-rooms?movieId=${movieId}&startDate=${startDate}`)
-                .then(response => response.json())
-                .then(data => {
-                    const roomsContainer = document.getElementById('rooms-container');
-                    roomsContainer.style.display = 'block';
-                    // Render danh sách phòng chiếu
-                    roomsContainer.innerHTML = data.map(room => `
-                <div class="movie-name">
-                    <a href="#0">${room.name}</a>
-                </div>
-            `).join('');
+        function fetchShowtimes() {
+            const dateSelect = document.getElementById('date-select');
+            const showtimesContainer = document.getElementById('showtimes-container');
+            selectedDate = dateSelect.value; // Lưu ngày đã chọn
+
+            showtimesContainer.innerHTML = '<div>Đang tải...</div>';
+
+            const movieId = [[${movieId}]];
+
+            // Gọi API lấy giờ chiếu
+            fetch(`/api/schedule/start-times?movieId=${movieId}&startDate=${selectedDate}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Không thể lấy giờ chiếu');
+                    }
+                    return response.json();
+                })
+                .then(startTimes => {
+                    showtimesContainer.innerHTML = '';
+                    startTimes.forEach(time => {
+                        const timeDiv = document.createElement('div');
+                        timeDiv.className = 'item';
+                        timeDiv.textContent = time;
+                        timeDiv.addEventListener('click', () => {
+                            selectTime(timeDiv, time); // Lưu giờ đã chọn
+                            fetchRooms(time);
+                        });
+                        showtimesContainer.appendChild(timeDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    showtimesContainer.innerHTML = '<div>Lỗi tải giờ chiếu</div>';
                 });
+        }
+
+        function selectTime(element, time) {
+            document.querySelectorAll('#showtimes-container .item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedTime = time; // Lưu giờ đã chọn
+
+            checkSelectionComplete();
+        }
+
+        function selectRoom(element, roomId) {
+            document.querySelectorAll('#rooms-container .item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedRoom = roomId; // Lưu ID phòng
+
+            checkSelectionComplete();
+        }
+
+        function checkSelectionComplete() {
+            if (selectedDate && selectedTime && selectedRoom) {
+                openConfirmationWindow();
+            }
+        }
+
+        function openConfirmationWindow() {
+            const warningWindow = document.querySelector('.window-warning');
+            const subtitle = warningWindow.querySelector('.subtitle');
+            const title = warningWindow.querySelector('.title');
+
+            // Cập nhật thông tin trong cửa sổ
+            subtitle.textContent = "Bạn đã chọn:";
+            title.textContent = `Ngày: ${selectedDate}, Giờ: ${selectedTime}, Phòng: ${selectedRoom}`;
+
+            // Hiển thị cửa sổ
+            warningWindow.classList.remove('inActive');
+
+            // Xử lý nút Seat Plans
+            const seatPlanButton = document.querySelector('.seatPlanButton');
+            seatPlanButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                redirectToSeatSelection();
+            });
+        }
+
+        function redirectToSeatSelection() {
+            const movieId = [[${movieId}]];
+
+            // Chuyển hướng trực tiếp đến SeatController
+            window.location.href = `/seat-selection?movieId=${movieId}&startDate=${selectedDate}&startTime=${selectedTime}&roomId=${selectedRoom}`;
         }
 
     </script>
+
+    </script>
+
     <!-- ==========Movie-Section========== -->
 
     <!-- ==========Newslater-Section========== -->
     <footer class="footer-section">
         <div class="newslater-section padding-bottom">
             <div class="container">
-                <div class="newslater-container bg_img" data-background="assets/images/newslater/newslater-bg01.jpg">
+                <div class="newslater-container bg_img" data-th-background="@{images/newslater/newslater-bg01.jpg}">
                     <div class="newslater-wrapper">
                         <h5 class="cate">subscribe to Boleto </h5>
                         <h3 class="title">to get exclusive benifits</h3>
@@ -336,7 +663,7 @@
             <div class="footer-top">
                 <div class="logo">
                     <a href="index-1.html">
-                        <img src="assets/images/footer/footer-logo.png" alt="footer">
+                        <img th:src="@{images/footer/footer-logo.png}" alt="footer">
                     </a>
                 </div>
                 <ul class="social-icons">

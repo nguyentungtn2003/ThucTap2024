@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class InvoiceService implements IInvoiceService {
@@ -70,5 +71,11 @@ public class InvoiceService implements IInvoiceService {
         // Cập nhật trạng thái hóa đơn
         createdInvoice.setStatus("COMPLETED");
         invoiceRepository.save(createdInvoice);
+    }
+
+    @Override
+    // Phương thức lấy hóa đơn theo ID
+    public Optional<InvoiceEntity> getInvoiceById(int invoiceId) {
+        return invoiceRepository.findById(invoiceId);
     }
 }

@@ -17,5 +17,5 @@ public class PromotionDTO {
 
     private Date endDate;
 
-    private InvoiceEntity invoiceEntity;
+    private InvoiceDTO invoiceEntity;
 }

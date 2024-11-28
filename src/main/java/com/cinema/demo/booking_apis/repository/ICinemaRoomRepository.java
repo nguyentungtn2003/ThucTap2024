@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ICinemaRoomRepository extends JpaRepository<CinemaRoomEntity, Integer> {
 
@@ -21,5 +22,6 @@ public interface ICinemaRoomRepository extends JpaRepository<CinemaRoomEntity, I
             @Param("movieId") Integer movieId,
             @Param("startDate") LocalDate startDate,
             @Param("startTime") LocalTime startTime);
+    Optional<CinemaRoomEntity> getCinemaRoomEntityById(Integer id);
 
 }

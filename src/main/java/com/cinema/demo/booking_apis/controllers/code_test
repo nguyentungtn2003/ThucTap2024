@@ -1,0 +1,347 @@
+        // let selectedSeats = [];  // Lưu danh sách ghế đã chọn
+        // let totalAmount = 0;  // Tổng số tiền cho các ghế đã chọn
+        //
+        // function selectSeat(event) {
+        //     let seatElement = event.target.closest('.single-seat');  // Lấy phần tử ghế đã click
+        //     if (!seatElement) return;  // Nếu không phải phần tử ghế, thoát
+        //
+        //     let seatId = seatElement.getAttribute('data-seat-id');
+        //     let seatPosition = seatElement.getAttribute('data-seat-position');
+        //     let seatPrice = parseFloat(seatElement.getAttribute('data-seat-price'));
+        //     let isOccupied = seatElement.getAttribute('data-seat-occupied') === "1";  // Kiểm tra nếu ghế đã được đặt
+        //
+        //     // Nếu ghế đã được đặt (isOccupied == 1), không thay đổi trạng thái
+        //     if (isOccupied) {
+        //         return;  // Không làm gì nếu ghế đã đặt
+        //     }
+        //
+        //     // Nếu ghế chưa được chọn, đánh dấu ghế là đã chọn (chuyển sang booked)
+        //     if (!selectedSeats.includes(seatPosition)) {
+        //         selectedSeats.push(seatPosition);  // Thêm ghế vào danh sách đã chọn
+        //         totalAmount += seatPrice;  // Cộng giá ghế vào tổng tiền
+        //         seatElement.querySelector('img').setAttribute('src', './assets/images/movie/seat01-booked.png');  // Đánh dấu ghế là booked
+        //         seatElement.setAttribute('data-seat-occupied', '1');  // Cập nhật trạng thái ghế thành đã đặt
+        //     } else {
+        //         // Nếu ghế đã được chọn, bỏ chọn ghế và giảm tổng tiền
+        //         selectedSeats = selectedSeats.filter(position => position !== seatPosition);
+        //         totalAmount -= seatPrice;
+        //         seatElement.querySelector('img').setAttribute('src', './assets/images/movie/seat01-free.png');  // Đánh dấu ghế là free
+        //         seatElement.setAttribute('data-seat-occupied', '0');  // Cập nhật trạng thái ghế thành chưa đặt
+        //     }
+        //
+        //     // Cập nhật giao diện hiển thị danh sách ghế đã chọn
+        //     document.getElementById('selected-seats').textContent = selectedSeats.join(', ') || 'No seat selected';
+        //
+        //     // Cập nhật giao diện hiển thị tổng tiền
+        //     document.getElementById('total-price').textContent = `$${totalAmount.toFixed(2)}`;
+        // }
+        //
+        // // Gán sự kiện cho các ghế khi trang được tải
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const seatElements = document.querySelectorAll('.single-seat');
+        //     seatElements.forEach(seatElement => {
+        //         seatElement.addEventListener('click', selectSeat);  // Thêm sự kiện click cho mỗi ghế
+        //     });
+        // });
+
+            <script>
+                // Sự kiện khi người dùng click vào ghế
+                // let selectedSeats = [];
+                // let totalAmount = 0;
+                //
+                // function selectSeat(event) {
+                //     let seatElement = event.target.closest('.single-seat');  // Lấy phần tử ghế đã chọn
+                //     let seatId = seatElement.getAttribute('data-seat-id');
+                //     let seatPosition = seatElement.getAttribute('data-seat-position');
+                //     let seatPrice = parseFloat(seatElement.getAttribute('data-seat-price'));
+                //
+                //     // Kiểm tra nếu ghế chưa được chọn
+                //     if (!selectedSeats.includes(seatId)) {
+                //         selectedSeats.push(seatId);
+                //         totalAmount += seatPrice;
+                //     } else {
+                //         // Nếu ghế đã được chọn, bỏ chọn ghế đó và giảm tổng tiền
+                //         selectedSeats = selectedSeats.filter(id => id !== seatId);
+                //         totalAmount -= seatPrice;
+                //     }
+                //
+                //     // Cập nhật giao diện
+                //     document.getElementById('selected-seats').textContent = selectedSeats.join(', ') || 'No seat selected';
+                //     document.getElementById('total-price').textContent = `$${totalAmount.toFixed(2)}`;
+                // }
+                // Sự kiện khi người dùng click vào ghế
+                // let selectedSeats = [];
+                // let totalAmount = 0;
+                //
+                // function selectSeat(event) {
+                //     let seatElement = event.target.closest('.single-seat');  // Lấy phần tử 'li' chứa ghế
+                //     if (!seatElement) return;  // Nếu không phải phần tử ghế, thoát
+                //
+                //     let seatId = seatElement.getAttribute('data-seat-id');
+                //     let seatPosition = seatElement.getAttribute('data-seat-position');
+                //     let seatPrice = parseFloat(seatElement.getAttribute('data-seat-price'));
+                //     let seatOccupied = seatElement.querySelector('img').getAttribute('src') === './assets/images/movie/seat01-booked.png';  // Kiểm tra nếu ghế đã được đặt
+                //
+                //     // Nếu ghế đã được đặt, không cho phép thay đổi trạng thái và không thực hiện thêm hoặc bỏ chọn ghế
+                //     if (seatOccupied) {
+                //         return; // Dừng lại, không làm gì nếu ghế đã được đặt
+                //     }
+                //
+                //     // Kiểm tra nếu ghế chưa được chọn
+                //     if (!selectedSeats.includes(seatPosition)) {
+                //         selectedSeats.push(seatPosition);  // Thêm seatPosition vào danh sách đã chọn
+                //         totalAmount += seatPrice;  // Cộng giá ghế vào tổng tiền
+                //         seatElement.querySelector('img').setAttribute('src', './assets/images/movie/seat01-booked.png');  // Đánh dấu ghế là booked
+                //     } else {
+                //         // Nếu ghế đã được chọn, bỏ chọn ghế đó và giảm tổng tiền
+                //         selectedSeats = selectedSeats.filter(position => position !== seatPosition);
+                //         totalAmount -= seatPrice;
+                //         seatElement.querySelector('img').setAttribute('src', './assets/images/movie/seat01-free.png');  // Đánh dấu ghế là free
+                //     }
+                //
+                //     // Cập nhật giao diện hiển thị danh sách ghế đã chọn
+                //     document.getElementById('selected-seats').textContent = selectedSeats.join(', ') || 'No seat selected';
+                //
+                //     // Cập nhật giao diện hiển thị tổng tiền
+                //     document.getElementById('total-price').textContent = `$${totalAmount.toFixed(2)}`;
+                // }
+                //
+                // // Gán sự kiện cho các ghế khi trang được tải
+                // document.addEventListener('DOMContentLoaded', function () {
+                //     const seatElements = document.querySelectorAll('.single-seat');
+                //     seatElements.forEach(seatElement => {
+                //         seatElement.addEventListener('click', selectSeat);  // Thêm sự kiện click cho mỗi ghế
+                //     });
+                // });
+            </script>
+
+            @PostMapping("/book-ticket")
+            public String bookTicket(@RequestParam List<Integer> seatIds, // Danh sách ghế đã chọn
+                                     @RequestParam Integer movieId,
+                                     @RequestParam Integer showtimeId,
+                                     @RequestParam BigDecimal bookingFee,
+                                     HttpServletRequest request,
+                                     Model model) {
+
+                List<SeatDTO> selectedSeats = new ArrayList<>();
+                BigDecimal totalAmount = BigDecimal.ZERO;
+
+                // Lấy thông tin ghế từ DB dựa trên seatId
+                for (Integer seatId : seatIds) {
+                    SeatDTO seat = seatService.getSeatById(seatId);
+                    if (seat == null) {
+                        model.addAttribute("error", "Seat not found");
+                        return "boleto/demo/404";
+                    }
+
+                    // Cập nhật trạng thái ghế là "đã đặt"
+                    seat.setIsOccupied(2);  // Đánh dấu ghế đã được đặt
+                    seatService.updateSeatStatus(seat);  // Cập nhật trạng thái ghế trong DB
+
+                    // Lấy giá ghế từ DB theo loại ghế (Silver, Gold, Platinum)
+                    BigDecimal seatPrice = seatService.getPriceBySeatType(seat.getSeatType().getSeatName());
+                    totalAmount = totalAmount.add(seatPrice);  // Cộng dồn giá của ghế vào tổng tiền
+
+                    selectedSeats.add(seat);
+                }
+
+                // Tạo BookingDTO
+                BookingDTO booking = new BookingDTO();
+                booking.setTotalFoodTicketAmount(totalAmount);
+                booking.setBookingFee(bookingFee);
+                booking.setStatus("Pending");
+                booking.setCreatedDateTime(LocalDateTime.now());  // Sử dụng LocalDateTime để ghi lại thời gian tạo booking
+
+                // Liên kết Booking với Seat
+                SeatBookingDTO seatBooking = new SeatBookingDTO();
+                seatBooking.setBooking(booking);
+                seatBookingService.saveSeatBooking(seatBooking); // Lưu SeatBooking vào DB
+
+                // Lấy thông tin suất chiếu từ showtimeId
+                ShowtimeDTO showtime = showtimeService.getShowtimeById(showtimeId);
+
+                // Tạo vé (TicketDTO)
+                TicketDTO ticket = new TicketDTO();
+                ticket.setSeat(seatService.getSeatById(seatIds.get(0)));  // Chọn ghế đầu tiên làm đại diện
+                ticket.setShowtime(showtime);
+                ticket.setPrice(totalAmount);
+                ticket.setStatus("Not Used");
+
+                // Lưu vé vào DB
+                ticketService.saveTicket(ticket);
+
+                // Trả về thông tin vé và ghế đã chọn vào model
+                model.addAttribute("ticket", ticket);
+                model.addAttribute("selectedSeats", selectedSeats);
+                model.addAttribute("totalAmount", totalAmount);
+
+                return "boleto/demo/movie-checkout";  // Trả về trang thanh toán
+            }
+
+
+            <!--                                        <li th:each="seat : ${row.value}" class="single-seat seat-free" th:classappend="${seatTypes[row.key]}">-->
+            <!--&lt;!&ndash;                                            <img th:src="@{assets/images/movie/seat01-${seat.isOccupied == 1 ? 'booked' : 'free'}.png}" alt="seat">&ndash;&gt;-->
+            <!--                                            &lt;!&ndash; If isOccupied is 1, set the src to booked image &ndash;&gt;-->
+            <!--                                            <img th:if="${seat.isOccupied == 1}" th:src="@{assets/images/movie/seat01-booked.png}" alt="seat">-->
+
+            <!--                                            &lt;!&ndash; If isOccupied is 0, set the src to free image &ndash;&gt;-->
+            <!--                                            <img th:if="${seat.isOccupied == 0}" th:src="@{assets/images/movie/seat01-free.png}" alt="seat">-->
+
+            <!--                                            <span class="sit-num" th:text="${seat.seatPosition}" th:data-seat-id="${seat.seatId}" th:data-seat-type="${seat.seatType.seatName}"></span>-->
+            <!--&lt;!&ndash;                                            <input type="hidden" th:text="${seat.seatId}">&ndash;&gt;-->
+            <!--                                        </li>-->
+
+
+
+            @PostMapping("/book-ticket")
+                public String bookTicket(@RequestParam List<Integer> seatIds, // Danh sách ghế đã chọn
+                                         @RequestParam Integer movieId,
+                                         @RequestParam Integer showtimeId,
+                                         @RequestParam BigDecimal bookingFee,
+                                         HttpServletRequest request,
+                                         Model model) {
+
+                    List<SeatDTO> selectedSeats = new ArrayList<>();
+                    BigDecimal totalAmount = BigDecimal.ZERO;
+
+                    // Lấy thông tin ghế từ DB dựa trên seatId
+                    for (Integer seatId : seatIds) {
+                        SeatDTO seat = seatService.getSeatById(seatId);
+                        if (seat == null) {
+                            model.addAttribute("error", "Seat not found");
+                            return "boleto/demo/404";
+                        }
+
+                        // Cập nhật trạng thái ghế là "đã đặt"
+                        seat.setIsOccupied(2);  // Đánh dấu ghế đã được đặt
+                        seatService.updateSeatStatus(seat);  // Cập nhật trạng thái ghế trong DB
+
+                        // Lấy giá ghế từ DB theo loại ghế (Silver, Gold, Platinum)
+                        BigDecimal seatPrice = seatService.getPriceBySeatType(seat.getSeatType().getSeatName());
+                        totalAmount = totalAmount.add(seatPrice);  // Cộng dồn giá của ghế vào tổng tiền
+
+                        selectedSeats.add(seat);
+                    }
+
+                    // Tạo BookingDTO
+                    BookingDTO booking = new BookingDTO();
+                    booking.setTotalFoodTicketAmount(totalAmount);
+                    booking.setBookingFee(bookingFee);
+                    booking.setStatus("Pending");
+                    booking.setCreatedDateTime(LocalDateTime.now());  // Sử dụng LocalDateTime để ghi lại thời gian tạo booking
+
+                    // Liên kết Booking với Seat
+                    SeatBookingDTO seatBooking = new SeatBookingDTO();
+                    seatBooking.setBooking(booking);
+                    seatBookingService.saveSeatBooking(seatBooking); // Lưu SeatBooking vào DB
+
+                    // Lấy thông tin suất chiếu từ showtimeId
+                    ShowtimeDTO showtime = showtimeService.getShowtimeById(showtimeId);
+
+                    // Tạo vé (TicketDTO)
+                    TicketDTO ticket = new TicketDTO();
+                    ticket.setSeat(seatService.getSeatById(seatIds.get(0)));  // Chọn ghế đầu tiên làm đại diện
+                    ticket.setShowtime(showtime);
+                    ticket.setPrice(totalAmount);
+                    ticket.setStatus("Not Used");
+
+                    // Lưu vé vào DB
+                    ticketService.saveTicket(ticket);
+
+                    // Trả về thông tin vé và ghế đã chọn vào model
+                    model.addAttribute("ticket", ticket);
+                    model.addAttribute("selectedSeats", selectedSeats);
+                    model.addAttribute("totalAmount", totalAmount);
+
+                    return "boleto/demo/movie-checkout";  // Trả về trang hiển thị thông tin ghế đã chọn và tổng tiền
+                }
+
+                //    @PostMapping("/book-ticket")
+                //    public String bookTicket(@RequestParam List<Integer> seatIds, // List of selected seat IDs
+                //                             @RequestParam Integer movieId,
+                //                             @RequestParam Integer showtimeId,
+                //                             @RequestParam BigDecimal bookingFee,
+                //                             HttpServletRequest request,
+                //                             Model model) {
+                //
+                //        // Initialize Variables
+                //        List<SeatDTO> selectedSeats = new ArrayList<>();
+                //        BigDecimal totalAmount = BigDecimal.ZERO;
+                //
+                //        // Retrieve Movie and Showtime Information
+                //        MovieDTO movie = movieService.getById(movieId);
+                //        ShowtimeDTO showtime = showtimeService.getShowtimeById(showtimeId);
+                //        if (movie == null || showtime == null) {
+                //            model.addAttribute("error", "Invalid movie or showtime selected.");
+                //            return "boleto/demo/404";
+                //        }
+                //
+                //        // Validate and Process Each Selected Seat
+                //        for (Integer seatId : seatIds) {
+                //            SeatDTO seat = seatService.getSeatById(seatId);
+                //            if (seat == null) {
+                //                model.addAttribute("error", "Seat not found.");
+                //                return "boleto/demo/404";
+                //            }
+                //
+                //            if (seat.getIsOccupied() != 0) { // Check if Seat is Available
+                //                model.addAttribute("error", "Seat " + seat.getSeatPosition() + " is no longer available.");
+                //                return "boleto/demo/404";
+                //            }
+                //
+                //            // Update Seat Status to "Held" (1)
+                //            seat.setIsOccupied(1);
+                //            seatService.updateSeatStatus(seat);
+                //
+                //            // Calculate Total Amount
+                //            BigDecimal seatPrice = seatService.getPriceBySeatType(seat.getSeatType().getSeatName());
+                //            totalAmount = totalAmount.add(seatPrice);
+                //
+                //            // Add to Selected Seats List
+                //            selectedSeats.add(seat);
+                //        }
+                //
+                //        // Create Booking Entity
+                //        BookingDTO booking = new BookingDTO();
+                //        booking.setTotalFoodTicketAmount(totalAmount);
+                //        booking.setBookingFee(bookingFee);
+                //        booking.setStatus("Pending");
+                //        booking.setCreatedDateTime(LocalDateTime.now());
+                //
+                //        // Save Booking to Database
+                //        bookingService.saveBooking(booking);
+                //
+                //        // Associate Seats with Booking
+                //        for (SeatDTO seat : selectedSeats) {
+                //            SeatBookingDTO seatBooking = new SeatBookingDTO();
+                //            seatBooking.setBooking(booking);
+                //            seatBooking.setSeat(seat); // Convert DTO to Entity
+                //            seatBookingService.saveSeatBooking(seatBooking);
+                //        }
+                //
+                //        // Create Tickets for Each Seat
+                //        List<TicketDTO> tickets = new ArrayList<>();
+                //        for (SeatDTO seat : selectedSeats) {
+                //            TicketDTO ticket = new TicketDTO();
+                //            ticket.setSeat(seat);
+                //            ticket.setShowtime(showtime);
+                //            ticket.setPrice(seatService.getPriceBySeatType(seat.getSeatType().getSeatName()));
+                //            ticket.setStatus("Not Used");
+                //            // Optionally, generate and set QR code URL
+                //            // ticket.setQrImageURL(generateQrCodeUrl(ticket));
+                //            ticketService.saveTicket(ticket);
+                //            tickets.add(ticket);
+                //        }
+                //
+                //        // Add Attributes to Model for Checkout Page
+                //        model.addAttribute("movie", movie);
+                //        model.addAttribute("showtime", showtime);
+                //        model.addAttribute("selectedSeats", selectedSeats);
+                //        model.addAttribute("totalAmount", totalAmount);
+                //        model.addAttribute("booking", booking);
+                //        model.addAttribute("tickets", tickets);
+                //        model.addAttribute("bookingFee", bookingFee);
+                //
+                //        // Navigate to Checkout Page
+                //        return "boleto/demo/movie-checkout";
+                //    }

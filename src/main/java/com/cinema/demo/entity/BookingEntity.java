@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -20,5 +22,5 @@ public class BookingEntity {
 
     private String status;
 
-    private Date createdDateTime;
+    private LocalDateTime createdDateTime;
 }

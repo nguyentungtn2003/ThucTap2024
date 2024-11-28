@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/rooms")
+@RequestMapping(value = "/api/rooms", produces = "application/json")
 public class RoomApi {
     @Autowired
     private IRoomService roomService;

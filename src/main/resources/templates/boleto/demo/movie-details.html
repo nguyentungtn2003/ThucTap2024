@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
 
 
 <!-- Mirrored from pixner.net/boleto/demo/movie-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Nov 2024 13:24:36 GMT -->
@@ -281,7 +281,7 @@
                         <p><a href="#0">Rate It</a></p>
                     </div>
                 </div>
-                <a th:href="@{/schedule(movieId=${movieId})}"
+                <a th:href="@{'/ticket-plan?movieId=' + ${movie.movieId}}"
                    class="custom-button">
                     Book Tickets
                 </a>

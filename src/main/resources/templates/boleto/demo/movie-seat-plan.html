@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
 
 
 <!-- Mirrored from pixner.net/boleto/demo/movie-seat-plan.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Nov 2024 13:24:49 GMT -->
@@ -8,18 +8,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet" href="assets/css/flaticon.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/odometer.css">
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="assets/css/nice-select.css">
-    <link rel="stylesheet" href="assets/css/main.css">
+<!--    <link rel="stylesheet" href="assets/css/bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="assets/css/all.min.css">-->
+<!--    <link rel="stylesheet" href="assets/css/animate.css">-->
+<!--    <link rel="stylesheet" href="assets/css/flaticon.css">-->
+<!--    <link rel="stylesheet" href="assets/css/magnific-popup.css">-->
+<!--    <link rel="stylesheet" href="assets/css/odometer.css">-->
+<!--    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">-->
+<!--    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">-->
+<!--    <link rel="stylesheet" href="assets/css/nice-select.css">-->
+<!--    <link rel="stylesheet" href="assets/css/main.css">-->
 
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+<!--    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">-->
+    <link rel="stylesheet" data-th-href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/all.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/animate.css}">
+    <link rel="stylesheet" data-th-href="@{css/flaticon.css}">
+    <link rel="stylesheet" data-th-href="@{css/magnific-popup.css}">
+    <link rel="stylesheet" data-th-href="@{css/odometer.css}">
+    <link rel="stylesheet" data-th-href="@{css/owl.carousel.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/owl.theme.default.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/nice-select.css}">
+    <link rel="stylesheet" data-th-href="@{css/jquery.animatedheadline.css}">
+    <link rel="stylesheet" data-th-href="@{css/main.css}">
+
+    <link rel="shortcut icon" data-th-href="@{images/favicon.png}" type="image/x-icon">
 
     <title>Boleto  - Online Ticket Booking Website HTML Template</title>
 
@@ -184,10 +197,10 @@
         <div class="container">
             <div class="details-banner-wrapper">
                 <div class="details-banner-content style-two">
-                    <h3 class="title">Venus</h3>
+                    <h3 class="title" th:text="${movie.title}">Venus</h3>
                     <div class="tags">
-                        <a href="#0">City Walk</a>
-                        <a href="#0">English - 2D</a>
+                        <a href="#0" th:text="${movie.actor}">City Walk</a>
+                        <a href="#0" th:text="${#dates.format(movie.releaseDate, 'yyyy')}"></a>
                     </div>
                 </div>
             </div>
@@ -195,401 +208,239 @@
     </section>
     <!-- ==========Banner-Section========== -->
 
+    <input type="hidden" id="movieId" th:value="${movieId}">
+
+    <section class="window-warning inActive" id="warning-modal">
+        <div class="lay" onclick="redirectToTicketPlan()"></div>
+        <div class="warning-item">
+            <h6 class="subtitle">Welcome!</h6>
+            <h4 class="title">Time's Up! Select Your Seats</h4>
+            <div class="thumb">
+                <img th:src="@{assets/images/movie/seat-plan.png}" alt="movie">
+            </div>
+            <a id="redirect-button" class="custom-button seatPlanButton">
+                Go Back to Ticket Plan <i class="fas fa-angle-right"></i>
+            </a>
+        </div>
+    </section>
+
     <!-- ==========Page-Title========== -->
     <section class="page-title bg-one">
         <div class="container">
             <div class="page-title-area">
                 <div class="item md-order-1">
-                    <a href="movie-ticket-plan.html" class="custom-button back-button">
+                    <a th:href="@{'/ticket-plan?movieId=' + ${movieId}}" class="custom-button back-button">
                         <i class="flaticon-double-right-arrows-angles"></i>back
                     </a>
                 </div>
                 <div class="item date-item">
-                    <span class="date">MON, SEP 09 2020</span>
+                    <span class="date" th:text="${startDate}">MON, SEP 09 2020</span>
                     <select class="select-bar">
-                        <option value="sc1">09:40</option>
-                        <option value="sc2">13:45</option>
-                        <option value="sc3">15:45</option>
-                        <option value="sc4">19:50</option>
+                        <option th:each="time : ${startTime}"
+                                th:value="${time}"
+                                th:text="${time}">
+                            09:40
+                        </option>
                     </select>
                 </div>
                 <div class="item">
-                    <h5 class="title">05:00</h5>
+                    <h5 class="title" id="countdown-timer">05:00</h5>
                     <p>Mins Left</p>
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+        let countdownTime = 5 * 60;
+
+        function updateCountdown() {
+            const timerElement = document.getElementById('countdown-timer');
+            const minutes = Math.floor(countdownTime / 60);
+            const seconds = countdownTime % 60;
+
+            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            countdownTime--;
+
+            if (countdownTime < 0) {
+                clearInterval(timerInterval);
+
+                const warningModal = document.getElementById('warning-modal');
+                warningModal.classList.remove('inActive');
+
+                const movieId = document.getElementById('movieId').value;
+                const redirectButton = document.getElementById('redirect-button');
+                redirectButton.href = `/ticket-plan?movieId=${movieId}`;
+            }
+        }
+
+        function redirectToTicketPlan() {
+            const movieId = document.getElementById('movieId').value;
+            window.location.href = `/ticket-plan?movieId=${movieId}`;
+        }
+
+        const timerInterval = setInterval(updateCountdown, 1000);
+
+        updateCountdown();
+    </script>
     <!-- ==========Page-Title========== -->
 
     <!-- ==========Movie-Section========== -->
     <div class="seat-plan-section padding-bottom padding-top">
         <div class="container">
-            <div class="screen-area">
+            <!-- Booking Form -->
+            <form id="booking-form" th:action="@{/api/booking/book-ticket}" method="post">
+                <!-- Hidden Fields for Movie, Showtime, and Booking Fee -->
+                <input type="hidden" name="movieId" id="movie-id" th:value="${movie.movieId}">
+                <input type="hidden" name="showtimeId" id="showtime-id" th:value="${showtime.showtimeId}">
+                <!-- Hidden Field for Booking Fee (Total Price) -->
+                <input type="hidden" name="bookingFee" id="booking-fee" value="0">
+
+                <div class="screen-area">
+                    <h4 class="subtitle" th:text="${showtime.cinemaRoom.cinemaRoomNum}">Cinema Room</h4>
                 <h4 class="screen">screen</h4>
                 <div class="screen-thumb">
-                    <img src="assets/images/movie/screen-thumb.png" alt="movie">
+                    <img th:src="@{assets/images/movie/screen-thumb.png}" alt="movie">
                 </div>
                 <h5 class="subtitle">silver plus</h5>
                 <div class="screen-wrapper">
                     <ul class="seat-area">
-                        <li class="seat-line">
-                            <span>G</span>
+                        <li th:each="row : ${seatsByRow}" class="seat-line">
+                            <span th:text="${row.key}"></span>
                             <ul class="seat--area">
                                 <li class="front-seat">
                                     <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
+                                        <li th:each="seat : ${row.value}" class="single-seat" th:classappend="${seatTypes[row.key]}"
+                                            th:data-seat-id="${seat.seatId}"
+                                            th:data-seat-price="${seat.seatType.seatPrice}"
+                                            th:data-seat-position="${seat.seatPosition}"
+                                            th:data-seat-occupied="${seat.isOccupied}"
+                                            onclick="selectSeat(event)">
+
+                                            <!-- Hiển thị trạng thái ghế -->
+                                            <img th:if="${seat.isOccupied == 1}" th:src="@{assets/images/movie/seat01-booked.png}" alt="seat">
+                                            <img th:if="${seat.isOccupied == 0}" th:src="@{assets/images/movie/seat01-free.png}" alt="seat">
+                                            <img th:if="${seat.isOccupied == 2}" th:src="@{assets/images/movie/seat01-unavailable.png}" alt="seat">
+
+                                            <span class="sit-num" th:text="${seat.seatPosition}" th:data-seat-id="${seat.seatId}" th:data-seat-type="${seat.seatType.seatName}"></span>
                                         </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                    </ul>
+
+                            </ul>
                                 </li>
                             </ul>
-                            <span>G</span>
-                        </li>
-                        <li class="seat-line">
-                            <span>f</span>
-                            <ul class="seat--area">
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat seat-free">
-                                            <img src="assets/images/movie/seat01-free.png" alt="seat">
-                                            <span class="sit-num">f7</span>
-                                        </li>
-                                        <li class="single-seat seat-free">
-                                            <img src="assets/images/movie/seat01-free.png" alt="seat">
-                                            <span class="sit-num">f8</span>
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat seat-free">
-                                            <img src="assets/images/movie/seat01-free.png" alt="seat">
-                                            <span class="sit-num">f9</span>
-                                        </li>
-                                        <li class="single-seat seat-free">
-                                            <img src="assets/images/movie/seat01-free.png" alt="seat">
-                                            <span class="sit-num">f10</span>
-                                        </li>
-                                        <li class="single-seat seat-free">
-                                            <img src="assets/images/movie/seat01-free.png" alt="seat">
-                                            <span class="sit-num">f11</span>
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat01.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <span>f</span>
-                        </li>
-                    </ul>
-                </div>
-                <h5 class="subtitle">silver plus</h5>
-                <div class="screen-wrapper">
-                    <ul class="seat-area couple">
-                        <li class="seat-line">
-                            <span>e</span>
-                            <ul class="seat--area">
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <span>e</span>
-                        </li>
-                        <li class="seat-line">
-                            <span>d</span>
-                            <ul class="seat--area">
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-booked.png" alt="seat">
-                                            <span class="sit-num">D7 D8</span>
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <span>d</span>
-                        </li>
-                        <li class="seat-line">
-                            <span>c</span>
-                            <ul class="seat--area">
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-free.png" alt="seat">
-                                            <span class="sit-num">f11 f12</span>
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <span>c</span>
-                        </li>
-                        <li class="seat-line">
-                            <span>b</span>
-                            <ul class="seat--area">
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-free.png" alt="seat">
-                                            <span class="sit-num">b7 b8</span>
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                        <li class="single-seat">
-                                            <img src="assets/images/movie/seat02.png" alt="seat">
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <span>b</span>
-                        </li>
-                        <li class="seat-line">
-                            <span>a</span>
-                            <ul class="seat--area">
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-free.png" alt="seat">
-                                            <span class="sit-num">a1 a2</span>
-                                        </li>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-free.png" alt="seat">
-                                            <span class="sit-num">a3 a4</span>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-free.png" alt="seat">
-                                            <span class="sit-num">a5 a6</span>
-                                        </li>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-free.png" alt="seat">
-                                            <span class="sit-num">a7 a8</span>
-                                        </li>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-free.png" alt="seat">
-                                            <span class="sit-num">a9 a10</span>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="front-seat">
-                                    <ul>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-free.png" alt="seat">
-                                            <span class="sit-num">a11</span>
-                                        </li>
-                                        <li class="single-seat seat-free-two">
-                                            <img src="assets/images/movie/seat02-free.png" alt="seat">
-                                            <span class="sit-num">a12</span>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <span>a</span>
+                            <span th:text="${row.key}"></span>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="proceed-book bg_img" data-background="assets/images/movie/movie-bg-proceed.jpg">
+                <div class="proceed-book bg_img" data-background="assets/images/movie/movie-bg-proceed.jpg">
                 <div class="proceed-to-book">
                     <div class="book-item">
                         <span>You have Choosed Seat</span>
-                        <h3 class="title">d9, d10</h3>
+<!--                        <h3 class="title" th:text="${#strings.arrayJoin(selectedSeats, ', ')}"></h3>-->
+                        <h3 class="title" id="selected-seats">No seat selected</h3>
                     </div>
                     <div class="book-item">
                         <span>total price</span>
-                        <h3 class="title">$150</h3>
+<!--                        <h3 class="title" th:text="${totalAmount}"></h3>-->
+                        <h3 class="title" id="total-price">$0</h3>
                     </div>
                     <div class="book-item">
-                        <a href="movie-checkout.html" class="custom-button">proceed</a>
+                        <!-- Proceed Button as Submit -->
+                        <button type="submit" class="custom-button">Proceed</button>
                     </div>
+                    <!-- Hidden Input to Hold Selected Seat IDs -->
+                    <div id="selected-seat-inputs"></div>
                 </div>
             </div>
+            </form>
         </div>
     </div>
     <!-- ==========Movie-Section========== -->
 
+    <script>
+        // Hàm để chọn ghế
+        // Biến toàn cục để lưu trữ ghế đã chọn và tổng giá
+        let selectedSeats = [];
+        let totalPrice = 0;
+
+        // Hàm để chọn ghế
+        function selectSeat(event) {
+            const seatElement = event.currentTarget;
+            const seatId = seatElement.getAttribute('data-seat-id');
+            const seatPrice = parseFloat(seatElement.getAttribute('data-seat-price'));
+            const isOccupied = parseInt(seatElement.getAttribute('data-seat-occupied'));
+
+            // Kiểm tra trạng thái ghế
+            if (isOccupied === 0) {
+                // Ghế chưa được đặt, chuyển sang trạng thái giữ chỗ
+                seatElement.setAttribute('data-seat-occupied', 1);
+                seatElement.querySelector('img').src = 'assets/images/movie/seat01-booked.png'; // Cập nhật ảnh
+                selectedSeats.push({ id: seatId, position: seatElement.querySelector('.sit-num').innerText, price: seatPrice }); // Thêm ghế vào danh sách đã chọn
+                totalPrice += seatPrice; // Cập nhật tổng giá
+            } else if (isOccupied === 1) {
+                // Ghế đang giữ chỗ, chuyển lại thành chưa đặt
+                seatElement.setAttribute('data-seat-occupied', 0);
+                seatElement.querySelector('img').src = 'assets/images/movie/seat01-free.png'; // Cập nhật ảnh
+                // Xóa ghế khỏi danh sách đã chọn
+                selectedSeats = selectedSeats.filter(seat => seat.id !== seatId);
+                totalPrice -= seatPrice; // Cập nhật tổng giá
+            } else if (isOccupied === 2) {
+                // Ghế đã được đặt, không làm gì cả
+                alert("Ghế này đã được đặt và không thể thay đổi.");
+            }
+
+            // Cập nhật hiển thị vị trí ghế và tổng giá
+            updateDisplay();
+        }
+
+        // Hàm để cập nhật hiển thị vị trí ghế và tổng giá
+        function updateDisplay() {
+            const selectedSeatsElement = document.getElementById('selected-seats');
+            const totalPriceElement = document.getElementById('total-price');
+            const selectedSeatInputsContainer = document.getElementById('selected-seat-inputs');
+            const bookingFeeInput = document.getElementById('booking-fee');
+
+            // Update Selected Seats Text
+            if (selectedSeats.length > 0) {
+                const seatPositions = selectedSeats.map(seat => seat.position).join(', ');
+                selectedSeatsElement.innerText = seatPositions;
+            } else {
+                selectedSeatsElement.innerText = 'No seat selected';
+            }
+
+            // Update Total Price Text
+            totalPriceElement.innerText = `$${totalPrice.toFixed(2)}`;
+
+            // Update Booking Fee Hidden Input
+            bookingFeeInput.value = totalPrice.toFixed(2);
+
+            // Update Hidden Inputs for Selected Seats
+            selectedSeatInputsContainer.innerHTML = ''; // Clear previous inputs
+            selectedSeats.forEach(seat => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'seatIds'; // Ensure backend expects List<Integer> seatIds
+                input.value = seat.id;
+                selectedSeatInputsContainer.appendChild(input);
+            });
+        }
+
+        /**
+         * Form Submission Handling
+         */
+        document.getElementById('booking-form').addEventListener('submit', function(event) {
+            // Prevent Default Form Submission if No Seats Selected
+            if (selectedSeats.length === 0) {
+                event.preventDefault();
+                alert("Please select at least one seat to proceed.");
+            }
+            // Else, allow form to submit normally
+        });
+    </script>
+
+    <script></script>
     <!-- ==========Newslater-Section========== -->
     <footer class="footer-section">
         <div class="newslater-section padding-bottom">
@@ -671,19 +522,19 @@
     <!-- ==========Newslater-Section========== -->
 
 
-    <script src="assets/js/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/modernizr-3.6.0.min.js"></script>
-    <script src="assets/js/plugins.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <script src="assets/js/magnific-popup.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/countdown.min.js"></script>
-    <script src="assets/js/odometer.min.js"></script>
-    <script src="assets/js/viewport.jquery.js"></script>
-    <script src="assets/js/nice-select.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/js/modernizr-3.6.0.min.js}"></script>
+    <script th:src="@{/js/plugins.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/isotope.pkgd.min.js}"></script>
+    <script th:src="@{/js/magnific-popup.min.js}"></script>
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/wow.min.js}"></script>
+    <script th:src="@{/js/countdown.min.js}"></script>
+    <script th:src="@{/js/odometer.min.js}"></script>
+    <script th:src="@{/js/viewport.jquery.js}"></script>
+    <script th:src="@{/js/nice-select.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 </body>
 
 

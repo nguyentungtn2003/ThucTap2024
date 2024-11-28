@@ -1,12 +1,11 @@
 package com.cinema.demo.security.form;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -38,9 +37,13 @@ public class UserForm {
     @NotBlank(message = "Address should not be empty")
     private String address;
 
+    @NotNull(message = "Date of birth should not be empty")
+    @Past(message = "Date of birth cannot be in the future")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
 
     private String status;
 
+    @NotBlank(message = "Gender should not be empty")
     private Character sex;
 }

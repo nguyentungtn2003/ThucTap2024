@@ -141,14 +141,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         // configuration
         // urls configure kiay hai ki koun se public rangenge aur koun se private
         // rangenge
         httpSecurity.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/register", "/services").permitAll();
-            authorize.requestMatchers("/api/movies/**").permitAll();
-            authorize.requestMatchers("/home").hasRole("USER");
+            authorize.requestMatchers("/home","/register", "/services").permitAll();
+            authorize.requestMatchers("/list-movies/**", "/movie-details/**").permitAll();
+            authorize.requestMatchers("/ticket-plan/**", "/seat-selection/**", "/api/booking/**").hasRole("USER");
             authorize.requestMatchers("/admin/**").hasRole("ADMIN");
             authorize.anyRequest().permitAll();
         });
@@ -195,7 +195,7 @@ public class SecurityConfig {
 
         });
 
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
         // oauth configurations
 
         httpSecurity.oauth2Login(oauth -> {

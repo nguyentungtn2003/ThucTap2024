@@ -3,7 +3,8 @@ package com.cinema.demo.booking_apis.dtos;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class BookingDTO {
@@ -15,5 +16,5 @@ public class BookingDTO {
 
     private String status;
 
-    private Date createdDateTime;
+    private LocalDateTime createdDateTime;
 }

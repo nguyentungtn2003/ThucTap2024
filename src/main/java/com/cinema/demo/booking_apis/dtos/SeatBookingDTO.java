@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class SeatBookingDTO {
     private int id;
-    private SeatEntity seat;
-    private BookingEntity booking;
+    private SeatDTO seat;
+    private BookingDTO booking;
 }
