@@ -1,8 +1,5 @@
-//<<<<<<<< HEAD:src/main/java/com/cinema/demo/dto/UserDto.java
+
 package com.cinema.demo.dto;
-//========
-//package com.cinema.demo.security.form;
-//>>>>>>>> refs/heads/thai:src/main/java/com/cinema/demo/security/form/UserForm.java
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +9,7 @@ import lombok.*;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +19,7 @@ import java.util.List;
 @ToString
 public class UserDto {
 
-//    private Long id;
+    private Long id;
     @NotBlank(message = "Username is required")
     @Size(min = 3, message = "Min 3 Characters is required")
     private String name;
@@ -49,11 +47,9 @@ public class UserDto {
     private String status;
 
     private Character sex;
-//<<<<<<<< HEAD:src/main/java/com/cinema/demo/dto/UserDto.java
 
 
-    private List<String> roles;
+
+    private Set<String> roles;
 }
-//========
-//}
-//>>>>>>>> refs/heads/thai:src/main/java/com/cinema/demo/security/form/UserForm.java
+

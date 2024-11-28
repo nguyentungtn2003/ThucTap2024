@@ -5,7 +5,7 @@ import com.cinema.demo.dto.UserDto;
 import com.cinema.demo.entity.NotificationEntity;
 import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.service.IUserService;
-import com.cinema.demo.service.NotificationService;
+import com.cinema.demo.service.impl.NotificationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.util.List;
 public class NotificationController {
 
     @Autowired
-    private NotificationService notificationService;
+    private NotificationServiceImpl notificationService;
 
     @Autowired
     private IUserService userService;
@@ -56,18 +56,34 @@ public class NotificationController {
 
     // API lấy thông tin người dùng
     @GetMapping("/notification/info")
-    public ResponseEntity<UserDto> getUserInfo(Authentication authentication) {
+    public ResponseEntity<?> getUserInfo(Authentication authentication) {
         try {
-            String email = authentication.getName(); // Lấy email từ Authentication
+            // Kiểm tra authentication có null không
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Người dùng chưa đăng nhập hoặc phiên làm việc đã hết hạn.");
+            }
+
+            // Lấy email từ authentication
+            String email = authentication.getName();
+            System.out.println("Authenticated email: " + email); // Debug email
+
+            // Tìm thông tin người dùng qua email
             UserDto userDto = userService.findUserDtoByEmail(email);
 
+            // Kiểm tra userDto có null không
             if (userDto != null) {
-                return ResponseEntity.ok(userDto); // Trả về thông tin người dùng
+                return ResponseEntity.ok(userDto); // Trả về thông tin người dùng nếu tìm thấy
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Người dùng không tồn tại
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Không tìm thấy thông tin người dùng với email: " + email);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Trả về HTTP 500 nếu có lỗi
+            // Log lỗi và trả về HTTP 500
+            e.printStackTrace(); // Debug lỗi
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Đã xảy ra lỗi khi xử lý yêu cầu.");
         }
     }
+
 }

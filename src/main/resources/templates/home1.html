@@ -1022,7 +1022,7 @@
             notifications.forEach(notification => {
                 const li = document.createElement("li");
                 li.innerHTML = `<a href="${notification.link}">${notification.message}</a>`;
-                dropdown.appendChild(li);
+                dropdown.appendChild(li); // Thêm từng thông báo vào danh sách
             });
         }
         console.log("Rendering notifications:", notifications);

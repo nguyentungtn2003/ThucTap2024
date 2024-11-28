@@ -3,6 +3,7 @@ package com.cinema.demo.controller;
 import com.cinema.demo.dto.InvoiceDetailsDTO;
 import com.cinema.demo.entity.InvoiceEntity;
 import com.cinema.demo.service.InvoiceService;
+import com.cinema.demo.service.NotificationService;
 import com.cinema.demo.service.VNPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,9 @@ public class InvoiceController {
 
     @Autowired
     private VNPayService vnPayService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("/invoices")
     public String listInvoices(Model model, Principal principal) {
@@ -62,20 +66,38 @@ public class InvoiceController {
     }
 
     @GetMapping("/invoices/vnpay-return")
-    public String handleVNPayReturn(@RequestParam Map<String, String> allParams, Model model) {
+    public String handleVNPayReturn(@RequestParam Map<String, String> allParams, Principal principal, Model model) {
         try {
             logger.info("Handling VNPay return URL...");
             String result = vnPayService.processReturnUrl(allParams);
 
-            // Sau khi xử lý xong, chuyển hướng về trang danh sách hóa đơn
-            return "redirect:/invoices";  // Đây là cách sử dụng redirect trong Spring MVC để chuyển hướng đến trang "/invoices"
+            // Kiểm tra kết quả thanh toán
+            if ("success".equalsIgnoreCase(result)) {
+                // Lấy email người dùng từ Principal
+                String email = principal.getName();
+                Long userId = (long) invoiceService.getUserIdByEmail(email);
 
+                // Lấy thông tin hóa đơn từ tham số (giả sử invoiceId được trả về từ VNPay)
+                int invoiceId = Integer.parseInt(allParams.get("invoiceId"));
+
+                // Tạo thông báo mới
+                String message = "Hóa đơn #" + invoiceId + " đã được thanh toán thành công!";
+                String link = "/invoices/" + invoiceId + "/details"; // Liên kết đến chi tiết hóa đơn
+                notificationService.createNotification(userId, message, link);
+
+                // Chuyển hướng về danh sách hóa đơn
+                return "redirect:/invoices";
+            } else {
+                model.addAttribute("error", "Thanh toán không thành công.");
+                return "error-page";
+            }
         } catch (Exception e) {
             logger.severe("Error while handling VNPay return: " + e.getMessage());
             model.addAttribute("error", "An error occurred while processing the payment result.");
-            return "error-page";  // Nếu có lỗi, hiển thị trang lỗi
+            return "error-page";
         }
     }
+
 
     // Hiển thị chi tiết hóa đơn
     @GetMapping("/invoices/{id}/details")

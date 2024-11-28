@@ -6,12 +6,20 @@
   <title>Admin Interface - Quản lý Nhân Viên</title>
 <!--  <link rel="stylesheet" href="../styles.css">-->
   <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-      }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      /* Top Header */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #18191a;
+      color: #fff;
+      display: flex;
+    }
+
+    /* Top Header */
       .header {
         background-color: black;
         color: white;
@@ -24,29 +32,34 @@
       }
 
       /* Sidebar */
-      .sidebar {
-        width: 200px;
-        background-color: white;
-        padding-top: 20px;
-        border-right: 1px solid lightgray;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        margin-top: 45px; /* to align with the header */
-      }
+    .sidebar {
+      width: 250px;
+      background-color: #242526;
+      height: 100vh;
+      padding: 20px 0;
+      position: fixed;
+    }
 
-      .sidebar a {
-        display: block;
-        color: black;
-        padding: 10px 15px;
-        text-decoration: none;
-        font-weight: bold;
-      }
+    .sidebar a {
+      display: block;
+      color: #ddd;
+      padding: 15px 25px;
+      text-decoration: none;
+    }
 
-      .sidebar a:hover {
-        background-color: #f0f0f0;
-      }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #e50914;
+      color: #fff;
+    }
+
+    .sidebar .logo {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #e50914;
+    }
 
       /* Main Content */
       .main-content {
@@ -77,6 +90,7 @@
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
+        color: black;
       }
 
       .form-group input[type="text"],
@@ -274,8 +288,8 @@
       </div>
       <div class="form-group">
         <label>Họ Tên:</label>
-        <input type="text" id="fullName" required>
-        <div id="fullNameError" class="error-message"></div>
+        <input type="text" id="name" required>
+        <div id="nameError" class="error-message"></div>
       </div>
       <div class="form-group">
         <label>Mật Khẩu:</label>
@@ -325,7 +339,7 @@
       <thead>
       <tr>
         <th>ID</th>
-        <th>Fullname</th>
+        <th>name</th>
         <th>Email</th>
         <th>Role</th>
         <th>Dob</th>
@@ -347,7 +361,7 @@
   <div id="editStaffModal" style="display: none;">
     <form id="editStaffForm">
       <label>Họ Tên:</label>
-      <input type="text" id="editFullName" required><br>
+      <input type="text" id="editname" required><br>
       <label>Số Điện Thoại:</label>
       <input type="text" id="editPhoneNumber" required><br>
       <label>Địa Chỉ:</label>
@@ -375,7 +389,7 @@
   // Hàm thêm nhân viên
   function addStaff() {
     const email = document.getElementById("email").value;
-    const fullName = document.getElementById("fullName").value;
+    const name = document.getElementById("name").value;
     const password = document.getElementById("password").value;
     const phoneNumber = document.getElementById("phoneNumber").value;
     const address = document.getElementById("address").value;
@@ -393,8 +407,8 @@
       document.getElementById("emailError").textContent = "Email không được để trống.";
       isValid = false;
     }
-    if (!fullName) {
-      document.getElementById("fullNameError").textContent = "Họ tên không được để trống.";
+    if (!name) {
+      document.getElementById("nameError").textContent = "Họ tên không được để trống.";
       isValid = false;
     }
     if (!password) {
@@ -430,8 +444,8 @@
     }
 
     // Kiểm tra tên đầy đủ
-    if (fullName.trim().length < 3) {
-      document.getElementById("fullNameError").textContent = "Họ tên phải có ít nhất 3 ký tự.";
+    if (name.trim().length < 3) {
+      document.getElementById("nameError").textContent = "Họ tên phải có ít nhất 3 ký tự.";
       isValid = false;
     }
 
@@ -462,7 +476,7 @@
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: new URLSearchParams({
-        email, fullName, password, phoneNumber, address, dob, sex, status
+        email, name, password, phoneNumber, address, dob, sex, status
       })
     })
             .then(response => response.text())
@@ -482,17 +496,16 @@
   }
 
 
-  // Tải danh sách nhân viên khi trang được tải
-  document.addEventListener("DOMContentLoaded", loadStaffList);
-
   // Hàm tải danh sách nhân viên
   let currentPage = 0;
   const pageSize = 4;
 
   function loadStaffList(page = 0) {
+    console.log("Page number:", page);
     fetch(`/admin/staff?page=${page}&size=${pageSize}`)
             .then(response => response.json())
             .then(data => {
+              console.log(data);
               const staffTableBody = document.getElementById("staffTableBody");
               staffTableBody.innerHTML = ""; // Xóa nội dung cũ
 
@@ -500,7 +513,7 @@
                 const row = document.createElement("tr");
                 row.innerHTML = `
           <td>${staff.id}</td>
-          <td>${staff.fullName}</td>
+          <td>${staff.name}</td>
           <td>${staff.email}</td>
           <td>${staff.roles.map(role => role.roleName).join(", ")}</td>
           <td>${staff.dob}</td>
@@ -563,7 +576,7 @@
             .then(response => response.json())
             .then(staff => {
               // Điền thông tin vào các trường trong modal
-              document.getElementById("editFullName").value = staff.fullName;
+              document.getElementById("editname").value = staff.name;
               document.getElementById("editPhoneNumber").value = staff.phoneNumber;
               document.getElementById("editAddress").value = staff.address;
               document.getElementById("editDob").value = staff.dob;
@@ -587,7 +600,7 @@
   // Hàm để lưu thay đổi thông tin nhân viên
   function saveStaffChanges() {
     const id = document.getElementById("editStaffForm").getAttribute("data-id");
-    const fullName = document.getElementById("editFullName").value;
+    const name = document.getElementById("editname").value;
     const phoneNumber = document.getElementById("editPhoneNumber").value;
     const address = document.getElementById("editAddress").value;
     const dob = document.getElementById("editDob").value;
@@ -601,7 +614,7 @@
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: new URLSearchParams({
-        fullName, phoneNumber, address, dob, sex, status
+        name, phoneNumber, address, dob, sex, status
       })
     })
             .then(response => response.text())

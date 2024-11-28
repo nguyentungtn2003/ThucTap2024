@@ -6,9 +6,17 @@
     <title>Admin Interface - Quản lý Nhân Viên</title>
     <!--  <link rel="stylesheet" href="../styles.css">-->
     <style>
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             font-family: Arial, sans-serif;
+            background-color: #18191a;
+            color: #fff;
+            display: flex;
         }
 
         /* Top Header */
@@ -25,27 +33,32 @@
 
         /* Sidebar */
         .sidebar {
-            width: 200px;
-            background-color: white;
-            padding-top: 20px;
-            border-right: 1px solid lightgray;
+            width: 250px;
+            background-color: #242526;
             height: 100vh;
+            padding: 20px 0;
             position: fixed;
-            top: 0;
-            left: 0;
-            margin-top: 45px; /* to align with the header */
         }
 
         .sidebar a {
             display: block;
-            color: black;
-            padding: 10px 15px;
+            color: #ddd;
+            padding: 15px 25px;
             text-decoration: none;
-            font-weight: bold;
         }
 
-        .sidebar a:hover {
-            background-color: #f0f0f0;
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #e50914;
+            color: #fff;
+        }
+
+        .sidebar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #e50914;
         }
 
         /* Main Content */
@@ -77,6 +90,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            color: black;
         }
 
         .form-group input[type="text"],

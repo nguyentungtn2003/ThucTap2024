@@ -36,7 +36,7 @@ public class UpdateUserDto {
     private String status;
 
     @NotEmpty(message = "Full name should not be empty")
-    private String fullName;
+    private String name;
 
     private Character sex;
 

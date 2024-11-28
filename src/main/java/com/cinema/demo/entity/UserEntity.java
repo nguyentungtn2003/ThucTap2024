@@ -1,5 +1,6 @@
 package com.cinema.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -79,5 +80,9 @@ public class UserEntity {
 
     @Column(name = "email_token")
     private String emailToken;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference // Dùng khi ánh xạ hai chiều
+    private List<NotificationEntity> notifications = new ArrayList<>();
 }
 

@@ -13,10 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -94,7 +91,7 @@ public class IUserServiceImpl implements IUserService {
 
         if (userEntity != null) {
             // Cập nhật thông tin người dùng
-            userEntity.setName(UpdateUserDto.getFullName());
+            userEntity.setName(UpdateUserDto.getName());
             userEntity.setAddress(UpdateUserDto.getAddress());
             userEntity.setPhoneNumber(UpdateUserDto.getPhoneNumber());
             userEntity.setSex(UpdateUserDto.getSex());
@@ -136,7 +133,7 @@ public class IUserServiceImpl implements IUserService {
     private UserDto convertEntityToDto(UserEntity user) {
         UserDto userDto = new UserDto();
 
-//        userDto.setId((long) user.getId());
+        userDto.setId(user.getId());
         userDto.setPhoneNumber(user.getPhoneNumber());
         userDto.setAddress(user.getAddress());
         userDto.setDob(user.getDob());
@@ -146,12 +143,12 @@ public class IUserServiceImpl implements IUserService {
         userDto.setName(user.getName());
         userDto.setSex(user.getSex());
 
-        List<String> roleNames = new ArrayList<>();
+        Set<String> roleNames = new HashSet<>();
         for (RoleEntity role : user.getRoles()) {
             roleNames.add(role.getRoleName());
         }
         userDto.setRoles(roleNames);
-
+        System.out.println("UserDto: " + userDto);
         return userDto;
     }
 

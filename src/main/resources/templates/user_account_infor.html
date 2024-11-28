@@ -233,8 +233,8 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="full-name">* Họ tên</label>
-                    <input type="text" id="full-name" placeholder="Họ tên" th:field="*{fullName}" required>
-                    <p th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="error-message"></p>
+                    <input type="text" id="full-name" placeholder="Họ tên" th:field="*{name}" required>
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="email">* Email</label>
