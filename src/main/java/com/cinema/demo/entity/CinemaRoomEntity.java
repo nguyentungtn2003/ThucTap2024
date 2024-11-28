@@ -19,4 +19,9 @@ public class CinemaRoomEntity {
 
     @Column(length = 1000)
     private String imgURL;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @ToString.Exclude // Loại bỏ khỏi toString
+    @JsonManagedReference
+    private List<CinemaRoomDetailEntity> roomDetails;
 }
