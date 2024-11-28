@@ -252,7 +252,7 @@
                      : (room.status == 1 ? 'active' : 'off')}">
                     </td>
 
-                    <td><a th:href="@{/admins/room-management/details/{idRoom}(idRoom=${room.getId()})}">Xem</a></td>
+                    <td><a th:href="@{/admin/room-management/details/{idRoom}(idRoom=${room.getId()})}">Xem</a></td>
                     <td th:text="${room.getDate()}"></td>
                 </tr>
                 </tbody>
