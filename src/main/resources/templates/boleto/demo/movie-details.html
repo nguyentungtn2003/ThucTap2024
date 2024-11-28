@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
 
 
 <!-- Mirrored from pixner.net/boleto/demo/movie-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Nov 2024 13:24:36 GMT -->
@@ -8,18 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet" href="assets/css/flaticon.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/odometer.css">
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="assets/css/nice-select.css">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" data-th-href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/all.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/animate.css}">
+    <link rel="stylesheet" data-th-href="@{css/flaticon.css}">
+    <link rel="stylesheet" data-th-href="@{css/magnific-popup.css}">
+    <link rel="stylesheet" data-th-href="@{css/odometer.css}">
+    <link rel="stylesheet" data-th-href="@{css/owl.carousel.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/owl.theme.default.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/nice-select.css}">
+    <link rel="stylesheet" data-th-href="@{css/main.css}">
 
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" data-th-href="@{images/favicon.png}" type="image/x-icon">
 
     <title>Boleto  - Online Ticket Booking Website HTML Template</title>
 
@@ -184,27 +184,32 @@
         <div class="container">
             <div class="details-banner-wrapper">
                 <div class="details-banner-thumb">
-                    <img src="assets/images/movie/venus.jpg" alt="movie">
-                    <a href="https://www.youtube.com/embed/KGeBMAgc46E" class="video-popup">
+                    <img th:src="${movie.largeImageURL}" alt="movie">
+                    <a th:href="${movie.trailerURL}" class="video-popup">
                         <img src="assets/images/movie/video-button.png" alt="movie">
                     </a>
                 </div>
                 <div class="details-banner-content offset-lg-3">
-                    <h3 class="title">Venus</h3>
+                    <h3 class="title" th:text="${movie.title}"></h3>
                     <div class="tags">
-                        <a href="#0">English</a>
-                        <a href="#0">Hindi</a>
-                        <a href="#0">Telegu</a>
-                        <a href="#0">Tamil</a>
+                        <a th:text="${movie.language}"></a>
                     </div>
-                    <a href="#0" class="button">horror</a>
+                    <div class="genres">
+                        <!-- Hiển thị danh sách thể loại -->
+                        <ul>
+                            <li th:each="type : ${movie.types}">
+                                <a th:text="${type}" class="button"></a>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="social-and-duration">
                         <div class="duration-area">
                             <div class="item">
-                                <i class="fas fa-calendar-alt"></i><span>06 Dec, 2020</span>
+                                <i class="fas fa-calendar-alt"></i>
+                                <span th:text="${#dates.format(movie.releaseDate, 'dd MMM, yyyy')}"></span>
                             </div>
                             <div class="item">
-                                <i class="far fa-clock"></i><span>2 hrs 50 mins</span>
+                                <i class="far fa-clock"></i><span th:text="${movie.runningTime + ' mins'}"></span>
                             </div>
                         </div>
                         <ul class="social-share">
@@ -276,7 +281,11 @@
                         <p><a href="#0">Rate It</a></p>
                     </div>
                 </div>
-                <a href="#0" class="custom-button">book tickets</a>
+                <a th:href="@{'/ticket-plan?movieId=' + ${movie.movieId}}"
+                   class="custom-button">
+                    Book Tickets
+                </a>
+
             </div>
         </div>
     </section>
@@ -395,8 +404,8 @@
                             <div class="tab-area">
                                 <div class="tab-item active">
                                     <div class="item">
-                                        <h5 class="sub-title">Synopsis</h5>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula eros sit amet est tincidunt aliquet. Fusce laoreet ligula ac ultrices eleifend. Donec hendrerit fringilla odio, ut feugiat mi convallis nec. Fusce elit ex, blandit vitae mattis sit amet, iaculis ac elit. Ut diam mauris, viverra sit amet dictum vel, aliquam ac quam. Ut mi nisl, fringilla sit amet erat et, convallis porttitor ligula. Sed auctor, orci id luctus venenatis, dui dolor euismod risus, et pharetra orci lectus quis sapien. Duis blandit ipsum ac consectetur scelerisque. </p>
+                                        <h5 class="sub-title">SUMMARY</h5>
+                                        <p th:text="${movie.shortDescription}"></p>
                                     </div>
                                     <div class="item">
                                         <div class="header">
@@ -752,19 +761,19 @@
     <!-- ==========Newslater-Section========== -->
 
 
-    <script src="assets/js/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/modernizr-3.6.0.min.js"></script>
-    <script src="assets/js/plugins.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <script src="assets/js/magnific-popup.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/countdown.min.js"></script>
-    <script src="assets/js/odometer.min.js"></script>
-    <script src="assets/js/viewport.jquery.js"></script>
-    <script src="assets/js/nice-select.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/js/modernizr-3.6.0.min.js}"></script>
+    <script th:src="@{/js/plugins.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/isotope.pkgd.min.js}"></script>
+    <script th:src="@{/js/magnific-popup.min.js}"></script>
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/wow.min.js}"></script>
+    <script th:src="@{/js/countdown.min.js}"></script>
+    <script th:src="@{/js/odometer.min.js}"></script>
+    <script th:src="@{/js/viewport.jquery.js}"></script>
+    <script th:src="@{/js/nice-select.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 </body>
 
 

@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class MovieDTO {
@@ -40,4 +41,9 @@ public class MovieDTO {
     private String language;
 
     private String rated;
+
+    private int isShowing;
+
+    private List<String> types;
+
 }

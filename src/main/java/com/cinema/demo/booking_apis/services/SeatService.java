@@ -2,14 +2,17 @@ package com.cinema.demo.booking_apis.services;
 
 import com.cinema.demo.booking_apis.dtos.SeatDTO;
 import com.cinema.demo.booking_apis.repository.ISeatRepository;
+import com.cinema.demo.booking_apis.repository.ISeatTypeRepository;
 import com.cinema.demo.booking_apis.repository.IShowTimeRepository;
 import com.cinema.demo.booking_apis.repository.ITicketRepository;
 import com.cinema.demo.entity.CinemaRoomEntity;
 import com.cinema.demo.entity.SeatEntity;
+import com.cinema.demo.entity.SeatTypeEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +20,10 @@ import java.util.stream.Collectors;
 public class SeatService implements ISeatService {
     @Autowired
     private ISeatRepository seatRepository;
+
+    @Autowired
+    private ISeatTypeRepository seatTypeRepository;
+
     @Autowired
     private IShowTimeRepository showTimeRepository;
     @Autowired
@@ -45,11 +52,45 @@ public class SeatService implements ISeatService {
             if(occupiedSeats.stream()
                     .map(occupiedSeat->occupiedSeat.getSeatId())
                     .collect(Collectors.toList()).contains(seat.getSeatId())){
-                seatDTO.setIsOccupied(1); // Nếu ghế nào nằm trong list ghế đã được occupied thì set = 1
+                seatDTO.setIsOccupied(2); // Nếu ghế nào nằm trong list ghế đã được occupied thì set = 1
             }
             return seatDTO;
         }).collect(Collectors.toList());
 
         return  filteredSeats;
+    }
+
+    @Override
+    public SeatDTO getSeatById(Integer seatId) {
+        SeatEntity seatEntity = seatRepository.findById(seatId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy ghế với ID: " + seatId)); // Xử lý lỗi nếu không tìm thấy ghế
+
+        return modelMapper.map(seatEntity, SeatDTO.class);
+    }
+
+    @Override
+    public void updateSeatStatus(SeatDTO seatDTO) {
+        SeatEntity seatEntity = seatRepository.findById(seatDTO.getSeatId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy ghế với ID: " + seatDTO.getSeatId()));  // Xử lý khi ghế không tìm thấy
+
+        seatEntity.setIsOccupied(seatDTO.getIsOccupied());  // Cập nhật trạng thái ghế
+
+        seatRepository.save(seatEntity);
+    }
+
+    @Override
+    public BigDecimal getPriceBySeatType(String seatName) {
+        // Truy vấn loại ghế theo tên
+        SeatTypeEntity seatTypeEntity = seatTypeRepository.findBySeatName(seatName)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy loại ghế với tên: " + seatName));  // Ném lỗi nếu không tìm thấy
+
+        // Trả về giá của loại ghế
+        return seatTypeEntity.getSeatPrice();
+    }
+
+    @Override
+    public SeatEntity getSeatEntityById(Integer seatId) {
+        return seatRepository.findById(seatId)
+                .orElse(null);
     }
 }

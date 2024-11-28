@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
 
 
 <!-- Mirrored from pixner.net/boleto/demo/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Nov 2024 13:23:35 GMT -->
@@ -8,19 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet" href="assets/css/flaticon.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/odometer.css">
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="assets/css/nice-select.css">
-    <link rel="stylesheet" href="assets/css/jquery.animatedheadline.css">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" data-th-href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/all.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/animate.css}">
+    <link rel="stylesheet" data-th-href="@{css/flaticon.css}">
+    <link rel="stylesheet" data-th-href="@{css/magnific-popup.css}">
+    <link rel="stylesheet" data-th-href="@{css/odometer.css}">
+    <link rel="stylesheet" data-th-href="@{css/owl.carousel.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/owl.theme.default.min.css}">
+    <link rel="stylesheet" data-th-href="@{css/nice-select.css}">
+    <link rel="stylesheet" data-th-href="@{css/jquery.animatedheadline.css}">
+    <link rel="stylesheet" data-th-href="@{css/main.css}">
 
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" data-th-href="@{images/favicon.png}" type="image/x-icon">
+
 
     <title>Boleto  - Online Ticket Booking Website HTML Template</title>
 
@@ -70,7 +71,7 @@
                         <a href="#0">movies</a>
                         <ul class="submenu">
                             <li>
-                                <a href="movie-grid.html">Movie Grid</a>
+                                <a th:href="@{'/list-movies'}" type="button" class="active">Movie Grid</a>
                             </li>
                             <li>
                                 <a href="movie-list.html">Movie List</a>
@@ -167,7 +168,10 @@
                         <a href="contact.html">contact</a>
                     </li>
                     <li class="header-button pr-0">
-                        <a href="sign-up.html">join us</a>
+                        <a th:if="${#authorization == null}" data-th-href="@{'/login'}"
+                           type="button" >Join Us</a>
+                        <a th:if="${#authorization != null}" data-th-href="@{'/do-logout'}"
+                           type="button">Logout</a>
                     </li>
                 </ul>
                 <div class="header-bar d-lg-none">
@@ -1430,20 +1434,21 @@
     <!-- ==========Newslater-Section========== -->
 
 
-    <script src="assets/js/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/modernizr-3.6.0.min.js"></script>
-    <script src="assets/js/plugins.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/heandline.js"></script>
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <script src="assets/js/magnific-popup.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/countdown.min.js"></script>
-    <script src="assets/js/odometer.min.js"></script>
-    <script src="assets/js/viewport.jquery.js"></script>
-    <script src="assets/js/nice-select.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script data-th-src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script data-th-src="@{/js/modernizr-3.6.0.min.js}"></script>
+    <script data-th-src="@{/js/plugins.js}"></script>
+    <script data-th-src="@{/js/bootstrap.min.js}"></script>
+    <script data-th-src="@{/js/heandline.js}"></script>
+    <script data-th-src="@{/js/isotope.pkgd.min.js}"></script>
+    <script data-th-src="@{/js/magnific-popup.min.js}"></script>
+    <script data-th-src="@{/js/owl.carousel.min.js}"></script>
+    <script data-th-src="@{/js/wow.min.js}"></script>
+    <script data-th-src="@{/js/countdown.min.js}"></script>
+    <script data-th-src="@{/js/odometer.min.js}"></script>
+    <script data-th-src="@{/js/viewport.jquery.js}"></script>
+    <script data-th-src="@{/js/nice-select.js}"></script>
+    <script data-th-src="@{/js/main.js}"></script>
+
 </body>
 
 

@@ -5,9 +5,13 @@ import com.cinema.demo.security.form.UserForm;
 import com.cinema.demo.security.helpers.Message;
 import com.cinema.demo.security.helpers.MessageType;
 import com.cinema.demo.security.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,18 +31,28 @@ public class PageController {
         return "redirect:/home";
     }
 
+//    @RequestMapping("/home")
+//    public String home(Model model) {
+//        return "boleto/demo/index-2";
+//    }
+
+
     @RequestMapping("/home")
-    public String home(Model model) {
-        model.addAttribute("name", "Substring Technologies");
-        model.addAttribute("youtubeChannel", "Learn Code With Durgesh");
-        model.addAttribute("githubRepo", "https://github.com/learncodewithdurgesh/");
-        return "home";
+    public String home(Model model, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("isLoggedIn", true);
+            model.addAttribute("username", authentication.getName());
+        } else {
+            model.addAttribute("isLoggedIn", false);
+        }
+        return "boleto/demo/index-2";
     }
+
 
     @RequestMapping("/about")
     public String aboutPage(Model model) {
         model.addAttribute("isLogin", true);
-        return "about";
+        return "boleto/demo/about";
     }
 
     @RequestMapping("/services")
@@ -48,12 +62,12 @@ public class PageController {
 
     @GetMapping("/contact")
     public String contact() {
-        return "contact";
+        return "boleto/demo/contact";
     }
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "boleto/demo/sign-in";
     }
 
     // registration page
@@ -66,7 +80,7 @@ public class PageController {
         // userForm.setAbout("This is about : Write something about yourself");
         model.addAttribute("userForm", userForm);
 
-        return "register";
+        return "boleto/demo/sign-up";
     }
 
     // processing register
@@ -81,7 +95,7 @@ public class PageController {
 
         // validate form data
         if (rBindingResult.hasErrors()) {
-            return "register";
+            return "boleto/demo/sign-up";
         }
 
         // TODO::Validate userForm[Next Video]

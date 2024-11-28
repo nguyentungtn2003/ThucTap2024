@@ -4,16 +4,25 @@ import com.cinema.demo.security.service.oauth2.security.CustomOAuth2UserDetails;
 import com.cinema.demo.security.service.oauth2.security.handler.CustomOAuth2FailureHandler;
 import com.cinema.demo.security.service.oauth2.security.handler.CustomOAuth2SuccessHandler;
 import com.cinema.demo.security.service.security.UserDetailsServiceCustom;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -132,12 +141,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         // configuration
         // urls configure kiay hai ki koun se public rangenge aur koun se private
         // rangenge
         httpSecurity.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/home", "/register", "/services").permitAll();
-            authorize.requestMatchers("/user/**").hasRole("USER");
+            authorize.requestMatchers("/home","/register", "/services").permitAll();
+            authorize.requestMatchers("/list-movies/**", "/movie-details/**").permitAll();
+            authorize.requestMatchers("/ticket-plan/**", "/seat-selection/**", "/api/booking/**").hasRole("USER");
             authorize.requestMatchers("/admin/**").hasRole("ADMIN");
             authorize.requestMatchers("/index").permitAll()
                     .requestMatchers("/upload/**").permitAll()
@@ -174,7 +185,7 @@ public class SecurityConfig {
             //
             formLogin.loginPage("/login");
             formLogin.loginProcessingUrl("/authenticate");
-            formLogin.successForwardUrl("/user/profile");
+            formLogin.successForwardUrl("/home");
             formLogin.failureForwardUrl("/login?error=true");
             formLogin.defaultSuccessUrl("/postLogin");
             formLogin.usernameParameter("email");
@@ -209,7 +220,7 @@ public class SecurityConfig {
 
         });
 
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
         // oauth configurations
 
         httpSecurity.oauth2Login(oauth -> {
@@ -220,7 +231,11 @@ public class SecurityConfig {
         httpSecurity.logout(logoutForm -> {
             logoutForm.logoutUrl("/do-logout");
             logoutForm.logoutSuccessUrl("/login?logout=true");
+            logoutForm.invalidateHttpSession(true);
+            logoutForm.deleteCookies("JSESSIONID");
         });
+
+        httpSecurity.headers(headers -> headers.cacheControl(cacheControl -> cacheControl.disable()));
 
         return httpSecurity.build();
 

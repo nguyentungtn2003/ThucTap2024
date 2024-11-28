@@ -14,7 +14,7 @@ public class ConcessionOrderDTO {
 
     private BigDecimal price;
 
-    private TypeOfConcessionEntity concessionType;
+    private TypeOfConcessionDTO concessionType;
 
-    private InvoiceEntity invoice;
+    private InvoiceDTO invoice;
 }

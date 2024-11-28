@@ -1,5 +1,6 @@
 package com.cinema.demo.booking_apis.repository;
 
+import com.cinema.demo.booking_apis.dtos.TicketDTO;
 import com.cinema.demo.entity.TicketEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,6 @@ public interface ITicketRepository extends JpaRepository<TicketEntity, Integer> 
     @Query("SELECT t FROM TicketEntity t WHERE t.invoiceEntity.id IN (SELECT b.id FROM InvoiceEntity b WHERE b.user.id=:userId) ORDER BY t.ticketId DESC")
     List<TicketEntity> findTicketsByUserId(@Param("userId") Long userId);
 
+    @Query("SELECT mt.ticketId FROM TicketEntity mt WHERE mt.ticketId = :ticketId")
+    TicketDTO getTicketByTicketId(@Param("ticketId")int ticketId);
 }

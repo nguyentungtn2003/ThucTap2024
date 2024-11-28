@@ -2,6 +2,7 @@ package com.cinema.demo.booking_apis.dtos;
 
 import com.cinema.demo.entity.CinemaRoomEntity;
 import com.cinema.demo.entity.MovieEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalTime;
@@ -10,9 +11,10 @@ import java.time.LocalTime;
 public class ShowtimeDTO {
     private int showtimeId;
 
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime startTime;
 
-    private CinemaRoomEntity cinemaRoom;
+    private CinemaRoomDTO cinemaRoom;
 
-    private MovieEntity movie;
+    private MovieDTO movie;
 }

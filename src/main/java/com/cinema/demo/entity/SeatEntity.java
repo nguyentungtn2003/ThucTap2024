@@ -24,4 +24,6 @@ public class SeatEntity {
     @ManyToOne
     @JoinColumn(name = "showtimeId")
     private ShowtimeEntity showtime;
+
+    private int isOccupied;
 }

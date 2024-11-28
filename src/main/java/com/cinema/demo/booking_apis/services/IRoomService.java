@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface IRoomService {
     List<CinemaRoomDTO> getRooms(Integer movieId, String startDate, String startTime);
+    CinemaRoomDTO getById(Integer roomId);
 }

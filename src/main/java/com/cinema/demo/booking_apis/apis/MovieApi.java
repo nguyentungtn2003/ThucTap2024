@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -39,5 +40,14 @@ public class MovieApi {
     @PostMapping
     public void updateMovie(@RequestBody MovieEntity movie){
         movieRepository.save(movie);
+    }
+
+    @GetMapping("/{movieId}/types")
+    public ResponseEntity<List<String>> findTypesByMovieId(@PathVariable int movieId) {
+        List<String> types = movieRepository.findTypesByMovieId(movieId)
+                .stream()
+                .map(type -> type.getTypeName()) // Chỉ lấy tên thể loại
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(types, HttpStatus.OK);
     }
 }

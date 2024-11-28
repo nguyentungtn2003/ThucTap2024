@@ -11,11 +11,11 @@ public class SeatDTO {
 
     private String seatPosition;
 
-    private CinemaRoomEntity cinemaRoom;
+    private CinemaRoomDTO cinemaRoom;
 
-    private SeatTypeEntity seatType;
+    private SeatTypeDTO seatType;
 
-    private ShowtimeEntity showtime;
+    private ShowtimeDTO showtime;
 
     private int isOccupied;
 }

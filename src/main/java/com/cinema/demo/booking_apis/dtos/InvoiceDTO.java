@@ -1,6 +1,7 @@
 package com.cinema.demo.booking_apis.dtos;
 
 import com.cinema.demo.entity.UserEntity;
+import com.cinema.demo.security.request.UserDTO;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,5 +14,5 @@ public class InvoiceDTO {
     private BigDecimal totalAmount;
     private LocalDateTime createdTime;
     private String status;
-    private UserEntity user;
+    private UserDTO user;
 }

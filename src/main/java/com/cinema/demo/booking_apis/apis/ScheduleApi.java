@@ -16,14 +16,15 @@ public class ScheduleApi {
     private IShowTimeService scheduleService;
 
     @GetMapping("/start-times")
-    public List<String> getStartTimes(@RequestParam Integer movieId, @RequestParam Integer branchId,
+    public List<String> getStartTimes(@RequestParam Integer movieId,
                                          @RequestParam String startDate) {
         return scheduleService.getStartTimes(movieId,LocalDate.parse(startDate));
     }
 
-    @GetMapping
-    public List<ShowtimeDTO> getSchedules(@RequestParam Integer movieId, @RequestParam Integer branchId,
-                                          @RequestParam String startDate, @RequestParam String startTime,
+    @GetMapping("/schedule-times")
+    public List<ShowtimeDTO> getSchedules(@RequestParam Integer movieId,
+                                          @RequestParam String startDate,
+                                          @RequestParam String startTime,
                                           @RequestParam Integer roomId){
         return scheduleService.getSchedules(movieId,startDate,startTime,roomId);
     }

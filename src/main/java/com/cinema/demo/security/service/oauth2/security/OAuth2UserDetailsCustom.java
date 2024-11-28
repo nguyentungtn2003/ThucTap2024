@@ -28,12 +28,12 @@ public class OAuth2UserDetailsCustom implements OAuth2User, UserDetails {
 
     private boolean credentialsNonExpired;
 
-    public OAuth2UserDetailsCustom(Long id, String username, String password, List<GrantedAuthority> authorities) {
+    public OAuth2UserDetailsCustom(Long id, String username, String password, List<GrantedAuthority> authorities, Map<String, Object> attributes) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
-//        this.attributes = attributes;
+        this.attributes = attributes;
     }
 
     @Override

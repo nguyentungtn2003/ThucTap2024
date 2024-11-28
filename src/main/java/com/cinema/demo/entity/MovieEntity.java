@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @Entity
@@ -29,7 +29,6 @@ public class MovieEntity {
 
     private String image;
 
-    private int is_showing;  // 1 = Đang chiếu, 0 = Không chiếu
 
     private String trailerurl;
 
@@ -55,12 +54,14 @@ public class MovieEntity {
     }
 
     public int getIsShowing() {
-        return is_showing;
+        return isShowing;
     }
 
     public void setIsShowing(int is_showing) {
-        this.is_showing = is_showing;
+        this.isShowing = is_showing;
     }
 
+
+    private int isShowing;
 
 }

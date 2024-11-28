@@ -10,13 +10,14 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/seats")
+@RequestMapping(value = "/api/seats", produces = "application/json")
 public class SeatApi {
     @Autowired
     private ISeatService seatService;
 
     @GetMapping
-    public List<SeatDTO> getSeatsByScheduleId(@RequestParam Integer scheduleId){
-        return seatService.getSeatsByShowTimeId(scheduleId);
+    public List<SeatDTO> getSeatsByShowtimeId(@RequestParam Integer showtimeId){
+        return seatService.getSeatsByShowTimeId(showtimeId);
     }
 }
+
