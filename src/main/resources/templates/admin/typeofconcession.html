@@ -24,29 +24,85 @@
         }
 
         /* Sidebar */
+        h1 {
+            display: block;
+            font-size: 2em;
+            margin-block-start: 0.67em;
+            margin-block-end: 0.67em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-weight: bold;
+            unicode-bidi: isolate;
+            align-content: center;
+            margin-left: 100px;
+        }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+
         .sidebar {
-            width: 270px;
-            background-color: white;
-            padding-top: 20px;
-            border-right: 1px solid lightgray;
+            width: 250px;
+            background-color: #161b22;
             height: 100vh;
             position: fixed;
             top: 0;
             left: 0;
-            margin-top: 60px; /* to align with the header */
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .sidebar h1 {
+            color: #58a6ff;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .sidebar .admin-info .name {
+            color: #c9d1d9;
+            font-size: 1rem;
+        }
+
+        .sidebar .admin-info .role {
+            font-size: 0.9rem;
+            color: #8b949e;
         }
 
         .sidebar a {
-            display: block;
-            color: black;
-            padding: 15px 30px;
             text-decoration: none;
-            font-weight: bold;
-            border-bottom: 1px solid #ddd;
+            color: #c9d1d9;
+            padding: 15px 20px;
+            display: block;
+            border-radius: 5px;
+            margin: 5px 10px;
         }
 
-        .sidebar a:hover {
-            background-color: #f0f0f0;
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #21262d;
         }
 
         /* Main Content */
@@ -80,15 +136,11 @@
 
         /* Row colors */
         tr:nth-child(odd) {
-            background-color: #d9a5a5; /* Red color for odd rows */
+            background-color: gray; /* Red color for odd rows */
         }
 
         tr:nth-child(even) {
-            background-color: #c3d0d9; /* Blue color for even rows */
-        }
-
-        tr:nth-child(4) {
-            background-color: #9bc29b; /* Green color for specific rows */
+            background-color: darkgray; /* Blue color for even rows */
         }
 
         /* Icons */
@@ -203,6 +255,26 @@
         #close-form:hover {
             color: #0056b3;
         }
+        .pagination {
+            display: flex;
+            list-style-type: none;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination li a {
+            padding: 8px 12px;
+            background-color: white;
+            color: black;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .pagination li a.active {
+            background-color: white;
+        }
 
     </style>
 </head>
@@ -216,17 +288,24 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
-    <a href="/admin/showtime-management">QUẢN LÍ SUẤT CHIẾU</a>
-    <a href="/admin/ad2_room_mana">QUẢN LÍ PHÒNG CHIẾU</a>
-    <a href="/admin/ad2_cus_mana">QUẢN LÍ KHÁCH HÀNG</a>
-    <a href="/admin/ad2_addcus">THÊM MỚI KHÁCH HÀNG</a>
-    <a href="/admin/tickets">QUẢN LÍ VÉ</a>
-    <a href="/admin/typeofconcession/types">QUẢN LÍ Đồ Ăn </a>
-    <a href="/admin/ad2_addtick">THÊM VÉ</a>
-    <a href="/admin/ad2_mv_mana">QUẢN LÍ PHIM</a>
-    <a href="/admin/ad2_addmovie">THÊM PHIM</a>
-    <a href="/admin/admin2">THÔNG TIN CÁ NHÂN</a>
+    <h1>ADMIN 1</h1>
+    <!-- Admin Info -->
+    <div class="admin-info">
+        <img src="admin1.jpg" alt="Admin Avatar">
+        <div>
+            <div class="name">John Doe</div>
+            <div class="role">Admin</div>
+        </div>
+    </div>
+    <!-- Sidebar Menu -->
+    <a href="ad1_mainboard.html">Adminboard</a>
+    <a href="/admin/staff-management">Quản lý nhân viên</a>
+    <a href="/admin/showtime-management">Quản lý suất chiếu</a>
+    <a href="ad1_cus.html">Quản lý khách hàng</a>
+    <a href="/admin/tickets">Quản lý vé</a>
+    <a href="/admin/typeofconcession/types">Quản lý đồ ăn</a>
+    <a href="ad1_promotion.html">Quản lý khuyến mãi</a>
+    <a href="admin1.html"class="active">Thông tin cá nhân</a>
 </div>
 
 <!-- Main Content -->
@@ -249,61 +328,74 @@
         </form>
     </div>
 
-    <!-- Table for Types -->
-    <div class="table-container">
-        <table>
-            <thead>
-            <tr>
-                <th>Product Type</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Example rows (you can populate this dynamically) -->
-            <tr>
-                <td>Popcorn</td>
-                <td>100</td>
-                <td>50,000 VND</td>
-                <td>
-                    <span class="icon">🖊️</span>
-                    <span class="icon delete-btn">🗑️</span>
-                </td>
-            </tr>
-            <tr>
-                <td>Coke</td>
-                <td>200</td>
-                <td>30,000 VND</td>
-                <td>
-                    <span class="icon">🖊️</span>
-                    <span class="icon delete-btn">🗑️</span>
-                </td>
-            </tr>
-            <tr>
-                <td>Hot Dog</td>
-                <td>150</td>
-                <td>25,000 VND</td>
-                <td>
-                    <span class="icon">🖊️</span>
-                    <span class="icon delete-btn">🗑️</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+    <!-- Types Table -->
+    <table>
+        <thead>
+        <tr>
+            <th>Product Type</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="type : ${types}">
+            <td th:text="${type.productType}"></td>
+            <td th:text="${type.quantity}"></td>
+            <td th:text="${type.price}"></td>
+            <td>
+            <span class="edit-btn"
+                  th:data-id="${type.concessionTypeId}"
+                  th:data-product="${type.productType}"
+                  th:data-quantity="${type.quantity}"
+                  th:data-price="${type.price}">Edit</span>
 
-<script>
-    // Show form when Add button is clicked
-    document.getElementById('add-btn').addEventListener('click', function() {
-        document.getElementById('form-container').style.display = 'block';
-    });
+                <form th:action="@{/admin/typeofconcession/type/delete/{id}(id=${type.concessionTypeId})}" method="post" style="display:inline;">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
 
-    // Close form when the close button is clicked
-    document.getElementById('close-form').addEventListener('click', function() {
-        document.getElementById('form-container').style.display = 'none';
-    });
+
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <ul class="pagination">
+        <li th:if="${currentPage > 0}">
+            <a th:href="@{/admin/typeofconcession/types(page=${currentPage - 1})}">&laquo; Previous</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/admin/typeofconcession/types(page=${i})}" th:text="${i + 1}" th:classappend="${i == currentPage ? 'active' : ''}"></a>
+        </li>
+        <li th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/admin/typeofconcession/types(page=${currentPage + 1})}">Next &raquo;</a>
+        </li>
+    </ul>
+
+    <script>
+        // Show form when Add button is clicked
+        document.getElementById('add-btn').addEventListener('click', function() {
+            document.getElementById('form-container').style.display = 'block';
+        });
+
+        // Close form when the close button is clicked
+        document.getElementById('close-form').addEventListener('click', function() {
+            document.getElementById('form-container').style.display = 'none';
+        });
+
+        // Show data in form when Edit button is clicked
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.getElementById('form-title').textContent = 'Edit Concession Type';
+                document.getElementById('concessionTypeId').value = this.dataset.id;
+                document.getElementById('productType').value = this.dataset.product;
+                document.getElementById('quantity').value = this.dataset.quantity;
+                document.getElementById('price').value = this.dataset.price;
+                document.getElementById('form-container').style.display = 'block';
+            });
+        });
 </script>
 
 </body>

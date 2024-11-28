@@ -12,34 +12,85 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Arial', sans-serif;
-
-            color: rgb(255, 255, 255); /* Màu trắng */
+        h1 {
+            display: block;
+            font-size: 2em;
+            margin-block-start: 0.67em;
+            margin-block-end: 0.67em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-weight: bold;
+            unicode-bidi: isolate;
+            align-content: center;
+            margin-left: 100px;
         }
-        /* Sidebar */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+
         .sidebar {
-            width: 200px;
-            background-color: white;
-            padding-top: 20px;
-            border-right: 1px solid lightgray;
+            width: 250px;
+            background-color: #161b22;
             height: 100vh;
             position: fixed;
             top: 0;
             left: 0;
-            margin-top: 45px; /* to align with the header */
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .sidebar h1 {
+            color: #58a6ff;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .sidebar .admin-info .name {
+            color: #c9d1d9;
+            font-size: 1rem;
+        }
+
+        .sidebar .admin-info .role {
+            font-size: 0.9rem;
+            color: #8b949e;
         }
 
         .sidebar a {
-            display: block;
-            color: black;
-            padding: 10px 15px;
             text-decoration: none;
-            font-weight: bold;
+            color: #c9d1d9;
+            padding: 15px 20px;
+            display: block;
+            border-radius: 5px;
+            margin: 5px 10px;
         }
 
-        .sidebar a:hover {
-            background-color: #f0f0f0;
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #21262d;
         }
 
 
@@ -182,17 +233,24 @@
 </div>
 <!-- Sidebar -->
 <div class="sidebar">
-    <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
-    <a href="/admin/showtime-management">QUẢN LÍ SUẤT CHIẾU</a>
-    <a href="/admin/ad2_room_mana">QUẢN LÍ PHÒNG CHIẾU</a>
-    <a href="/admin/ad2_cus_mana">QUẢN LÍ KHÁCH HÀNG</a>
-    <a href="/admin/ad2_addcus">THÊM MỚI KHÁCH HÀNG</a>
-    <a href="/admin/tickets">QUẢN LÍ VÉ</a>
-    <a href="/admin/typeofconcession/types">QUẢN LÍ Đồ Ăn </a>
-    <a href="/admin/ad2_addtick">THÊM VÉ</a>
-    <a href="/admin/ad2_mv_mana">QUẢN LÍ PHIM</a>
-    <a href="/admin/ad2_addmovie">THÊM PHIM</a>
-    <a href="/admin/admin2">THÔNG TIN CÁ NHÂN</a>
+    <h1>ADMIN 1</h1>
+    <!-- Admin Info -->
+    <div class="admin-info">
+        <img src="admin1.jpg" alt="Admin Avatar">
+        <div>
+            <div class="name">John Doe</div>
+            <div class="role">Admin</div>
+        </div>
+    </div>
+    <!-- Sidebar Menu -->
+    <a href="ad1_mainboard.html">Adminboard</a>
+    <a href="/admin/staff-management">Quản lý nhân viên</a>
+    <a href="/admin/showtime-management">Quản lý suất chiếu</a>
+    <a href="ad1_cus.html">Quản lý khách hàng</a>
+    <a href="/admin/tickets">Quản lý vé</a>
+    <a href="/admin/typeofconcession/types">Quản lý đồ ăn</a>
+    <a href="ad1_promotion.html">Quản lý khuyến mãi</a>
+    <a href="admin1.html"class="active">Thông tin cá nhân</a>
 </div>
 
 

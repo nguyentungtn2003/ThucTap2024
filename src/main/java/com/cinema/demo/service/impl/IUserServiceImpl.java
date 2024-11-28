@@ -91,7 +91,7 @@ public class IUserServiceImpl implements IUserService {
 
         if (userEntity != null) {
             // Cập nhật thông tin người dùng
-            userEntity.setName(UpdateUserDto.getFullName());
+            userEntity.setName(UpdateUserDto.getName());
             userEntity.setAddress(UpdateUserDto.getAddress());
             userEntity.setPhoneNumber(UpdateUserDto.getPhoneNumber());
             userEntity.setSex(UpdateUserDto.getSex());
