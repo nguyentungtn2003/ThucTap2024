@@ -6,7 +6,7 @@ import com.cinema.demo.booking_apis.repository.ISeatRepository;
 import com.cinema.demo.booking_apis.repository.IShowTimeRepository;
 import com.cinema.demo.booking_apis.repository.ITicketRepository;
 import com.cinema.demo.entity.*;
-import com.cinema.demo.security.repository.IUserRepository;
+import com.cinema.demo.security.repository.UserRepositorySecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ public class InvoiceService implements IInvoiceService {
     @Autowired
     private ITicketRepository ticketRepository;
     @Autowired
-    private IUserRepository IUserRepository;
+    private UserRepositorySecurity UserRepositorySecurity;
     @Autowired
     private ISeatRepository seatRepository;
     @Autowired
@@ -35,7 +35,7 @@ public class InvoiceService implements IInvoiceService {
         //Lấy ra lịch
         ShowtimeEntity showtime = showTimeRepository.getById(bookingRequestDTO.getShowtimeId());
         //Lấy ra người dùng
-        UserEntity user = IUserRepository.getById(bookingRequestDTO.getUserId());
+        UserEntity user = UserRepositorySecurity.getById(bookingRequestDTO.getUserId());
 
         //Lưu Bill gồm thông tin người dùng xuống trước
         InvoiceEntity invoiceToCreate = new InvoiceEntity();

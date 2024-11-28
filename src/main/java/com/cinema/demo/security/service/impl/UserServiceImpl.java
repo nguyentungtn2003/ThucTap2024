@@ -1,17 +1,17 @@
 package com.cinema.demo.security.service.impl;
 
-import com.cinema.demo.security.helpers.Helper;
-import com.cinema.demo.security.service.EmailService;
-import lombok.RequiredArgsConstructor;
 import com.cinema.demo.entity.Provider;
-import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.entity.RoleEntity;
+import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.security.exception.BaseException;
-import com.cinema.demo.security.repository.IRoleRepository;
-import com.cinema.demo.security.repository.IUserRepository;
+import com.cinema.demo.security.helpers.Helper;
+import com.cinema.demo.security.repository.RoleRepositorySecurity;
+import com.cinema.demo.security.repository.UserRepositorySecurity;
 import com.cinema.demo.security.request.UserDTO;
 import com.cinema.demo.security.response.BaseResponse;
+import com.cinema.demo.security.service.EmailService;
 import com.cinema.demo.security.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,10 +26,10 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private final IRoleRepository IRoleRepository;
+    private final RoleRepositorySecurity roleRepositorySecurity;
 
     @Autowired
-    private final IUserRepository IUserRepository;
+    private final UserRepositorySecurity userRepositorySecurity;
 
     @Autowired
     private final BCryptPasswordEncoder passwordEncoder;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         UserEntity user = insertUser(userDTO);
 
         try {
-            IUserRepository.save(user);
+            userRepositorySecurity.save(user);
             response.setCode(String.valueOf(HttpStatus.CREATED.value()));
             response.setMessage("Register account successfully!!!");
         }catch (Exception e){
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public UserEntity saveUser(UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        RoleEntity userRole = IRoleRepository.findByRoleName("ROLE_USER")
+        RoleEntity userRole = roleRepositorySecurity.findByRoleName("ROLE_USER")
                 .orElseThrow(() -> new BaseException("500", "Role USER not found"));
 
         user.setRoles(new HashSet<>());
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
         String emailToken = UUID.randomUUID().toString();
         user.setEmailToken(emailToken);
-        UserEntity savedUser = IUserRepository.save(user);
+        UserEntity savedUser = userRepositorySecurity.save(user);
         String emailLink = helper.getLinkForEmailVerificatiton(emailToken);
         emailService.sendEmail(savedUser.getEmail(), "Verify Account : Smart  Contact Manager", emailLink);
 
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
             user.setSex(userDTO.getSex());
         }
 
-        RoleEntity userRole = IRoleRepository.findByRoleName("ROLE_USER")
+        RoleEntity userRole = roleRepositorySecurity.findByRoleName("ROLE_USER")
                 .orElseThrow(() -> new BaseException("500", "Role USER not found"));
 
         user.setRoles(new HashSet<>());
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getUserByEmail(String email) {
-        return IUserRepository.findByEmail(email);
+        return userRepositorySecurity.findByEmail(email);
 
     }
 

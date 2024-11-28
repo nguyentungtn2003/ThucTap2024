@@ -2,7 +2,7 @@ package com.cinema.demo.security.service.security;
 
 import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.security.exception.BaseException;
-import com.cinema.demo.security.repository.IUserRepository;
+import com.cinema.demo.security.repository.UserRepositorySecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class UserDetailsServiceCustom implements UserDetailsService {
 
     @Autowired
-    private IUserRepository IUserRepository;
+    private UserRepositorySecurity userRepositorySecurity;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -31,7 +31,7 @@ public class UserDetailsServiceCustom implements UserDetailsService {
     }
 
     private UserDetailsCustom getUserDetailsCustom(String username){
-        UserEntity user = IUserRepository.findByEmail(username);
+        UserEntity user = userRepositorySecurity.findByEmail(username);
 
         if(ObjectUtils.isEmpty(user)){
             throw new BaseException(String.valueOf(HttpStatus.BAD_REQUEST), "User not found");

@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,8 +55,11 @@ public class ShowtimeController {
 
     // Thêm suất chiếu mới
     @PostMapping("/showtime")
-    public ResponseEntity<String> addShowtime(@RequestParam int movieId, @RequestParam int cinemaRoomId, @RequestParam String showDates) {
-        // Tìm phòng chiếu và phim dựa trên ID
+    public ResponseEntity<String> addShowtime(
+            @RequestParam int movieId,
+            @RequestParam int cinemaRoomId,
+            @RequestParam String showDates) {
+
         CinemaRoomEntity cinemaRoom = cinemaRoomRepository.findById(cinemaRoomId).orElse(null);
         MovieEntity movie = movieRepository.findById(movieId).orElse(null);
 
@@ -63,20 +67,17 @@ public class ShowtimeController {
             return ResponseEntity.badRequest().body("Phòng chiếu hoặc phim không tồn tại.");
         }
 
-        // Tạo suất chiếu
         ShowtimeEntity showtime = new ShowtimeEntity();
         showtime.setCinemaRoom(cinemaRoom);
         showtime.setMovie(movie);
 
-        // Lưu suất chiếu vào database
         showtimeRepository.save(showtime);
 
-        // Lưu các ngày chiếu vào bảng ShowDate
         String[] dates = showDates.split(",");
         for (String date : dates) {
             ShowDateEntity showDateEntity = new ShowDateEntity();
-            showDateEntity.setDate(java.sql.Date.valueOf(date.trim())); // Chuyển đổi từ String sang Date
-            showDateEntity.setShowtime(showtime);
+            showDateEntity.setStartDate(LocalDate.parse(date.trim())); // Use LocalDate.parse
+            showDateEntity.setShowtime(List.of(showtime)); // Use List.of for single element
             showDateRepository.save(showDateEntity);
         }
 
@@ -93,7 +94,6 @@ public class ShowtimeController {
             return ResponseEntity.badRequest().body("Không tìm thấy suất chiếu.");
         }
 
-        // Tìm phòng chiếu và phim mới
         CinemaRoomEntity cinemaRoom = cinemaRoomRepository.findById(showtimeDTO.getCinemaRoomId()).orElse(null);
         MovieEntity movie = movieRepository.findById(showtimeDTO.getMovieId()).orElse(null);
 
@@ -101,33 +101,33 @@ public class ShowtimeController {
             return ResponseEntity.badRequest().body("Phòng chiếu hoặc phim không tồn tại.");
         }
 
-        // Cập nhật thông tin
         showtime.setCinemaRoom(cinemaRoom);
         showtime.setMovie(movie);
 
-        // Lưu lại thay đổi của suất chiếu
         showtimeRepository.save(showtime);
 
-        // Xóa các ngày chiếu cũ và lưu lại các ngày mới
-        showDateRepository.deleteByShowtime_ShowtimeId(id); // Xóa các ngày chiếu cũ
+        // Delete old show dates
+        showDateRepository.deleteByShowtime_ShowtimeId(id);
+
+        // Add new show dates
         for (String showDate : showtimeDTO.getShowDates()) {
             if (showDate == null || showDate.trim().isEmpty()) {
                 throw new IllegalArgumentException("Ngày chiếu không hợp lệ.");
             }
+
             try {
-                java.sql.Date sqlDate = java.sql.Date.valueOf(showDate);
+                LocalDate parsedDate = LocalDate.parse(showDate.trim());
                 ShowDateEntity showDateEntity = new ShowDateEntity();
-                showDateEntity.setDate(sqlDate);
-                showDateEntity.setShowtime(showtime);
+                showDateEntity.setStartDate(parsedDate); // Use setStartDate
+                showDateEntity.setShowtime(List.of(showtime)); // Use List.of for single element
                 showDateRepository.save(showDateEntity);
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
                 throw new IllegalArgumentException("Định dạng ngày chiếu không đúng: " + showDate);
             }
         }
 
         return ResponseEntity.ok("Cập nhật suất chiếu thành công.");
     }
-
 
     //Xóa suất chiếu
     @DeleteMapping("/showtime/{id}")

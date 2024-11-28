@@ -4,25 +4,16 @@ import com.cinema.demo.security.service.oauth2.security.CustomOAuth2UserDetails;
 import com.cinema.demo.security.service.oauth2.security.handler.CustomOAuth2FailureHandler;
 import com.cinema.demo.security.service.oauth2.security.handler.CustomOAuth2SuccessHandler;
 import com.cinema.demo.security.service.security.UserDetailsServiceCustom;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -146,9 +137,8 @@ public class SecurityConfig {
         // urls configure kiay hai ki koun se public rangenge aur koun se private
         // rangenge
         httpSecurity.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/home","/register", "/services").permitAll();
-            authorize.requestMatchers("/list-movies/**", "/movie-details/**").permitAll();
-            authorize.requestMatchers("/ticket-plan/**", "/seat-selection/**", "/api/booking/**").hasRole("USER");
+            authorize.requestMatchers("/home", "/register", "/services").permitAll();
+            authorize.requestMatchers("/user/**").hasRole("USER");
             authorize.requestMatchers("/admin/**").hasRole("ADMIN");
             authorize.requestMatchers("/index").permitAll()
                     .requestMatchers("/upload/**").permitAll()
@@ -177,6 +167,7 @@ public class SecurityConfig {
                     .anyRequest().permitAll();
         });
 
+
         // form default login
         // agar hame kuch bhi change karna hua to hama yaha ayenge: form login se
         // related
@@ -185,9 +176,9 @@ public class SecurityConfig {
             //
             formLogin.loginPage("/login");
             formLogin.loginProcessingUrl("/authenticate");
-            formLogin.successForwardUrl("/home");
-            formLogin.failureForwardUrl("/login?error=true");
             formLogin.defaultSuccessUrl("/postLogin");
+//            formLogin.successForwardUrl("/home");
+            formLogin.failureForwardUrl("/login?error=true");
             formLogin.usernameParameter("email");
             formLogin.passwordParameter("password");
 

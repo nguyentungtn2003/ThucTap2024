@@ -16,7 +16,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/show-times")
-public class ShowtimeController {
+public class ShowtimeControllerUser {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${server.baseUrl}")
@@ -24,7 +24,7 @@ public class ShowtimeController {
 
     private final ShowTimeService showtimeService;
 
-    public ShowtimeController(ShowTimeService showtimeService) {
+    public ShowtimeControllerUser(ShowTimeService showtimeService) {
         this.showtimeService = showtimeService;
     }
     @GetMapping

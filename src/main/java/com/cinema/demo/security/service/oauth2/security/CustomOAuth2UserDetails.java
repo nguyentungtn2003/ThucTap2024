@@ -1,13 +1,13 @@
 package com.cinema.demo.security.service.oauth2.security;
 
 import com.cinema.demo.entity.RoleEntity;
-import lombok.RequiredArgsConstructor;
 import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.security.exception.BaseException;
-import com.cinema.demo.security.repository.RoleRepository;
-import com.cinema.demo.security.repository.UserRepository;
+import com.cinema.demo.security.repository.RoleRepositorySecurity;
+import com.cinema.demo.security.repository.UserRepositorySecurity;
 import com.cinema.demo.security.service.oauth2.OAuth2UserDetails;
 import com.cinema.demo.security.service.oauth2.OAuth2UserDetailsFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,9 +26,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomOAuth2UserDetails extends DefaultOAuth2UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepositorySecurity userRepositorySecurity;
 
-    private final RoleRepository roleRepository;
+    private final RoleRepositorySecurity roleRepositorySecurity;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -51,7 +51,7 @@ public class CustomOAuth2UserDetails extends DefaultOAuth2UserService {
             throw new BaseException("400", "Can't find any OAuth2 user");
         }
 
-        Optional<UserEntity> user = userRepository.findByEmailAndProviderId(
+        Optional<UserEntity> user = userRepositorySecurity.findByEmailAndProviderId(
                 oAuth2UserDetails.getEmail(),
                 oAuth2UserRequest.getClientRegistration().getRegistrationId());
         UserEntity userDetails;
@@ -70,8 +70,8 @@ public class CustomOAuth2UserDetails extends DefaultOAuth2UserService {
                 userDetails.getEmail(),
                 userDetails.getPassword(),
                 userDetails.getRoles().stream()
-                        .filter(role -> role != null && role.getName() != null)
-                        .map(role -> new SimpleGrantedAuthority(role.getName()))
+                        .filter(role -> role != null && role.getRoleName() != null)
+                        .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
                         .collect(Collectors.toList()),
                 oAuth2User.getAttributes()
         );
@@ -87,19 +87,19 @@ public class CustomOAuth2UserDetails extends DefaultOAuth2UserService {
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
 
-        RoleEntity userRole = roleRepository.findByName("ROLE_USER")
+        RoleEntity userRole = roleRepositorySecurity.findByRoleName("ROLE_USER")
                 .orElseThrow(() -> new BaseException("500", "Role USER not found"));
 
         user.setRoles(new HashSet<>());
         user.getRoles().add(userRole);
 
         user.setStatus("Active");
-        return userRepository.save(user);
+        return userRepositorySecurity.save(user);
     }
 
 
     public UserEntity updateOAuth2UserDetails(UserEntity user, OAuth2UserDetails oAuth2UserDetails){
         user.setEmail(oAuth2UserDetails.getEmail());
-        return userRepository.save(user);
+        return userRepositorySecurity.save(user);
     }
 }

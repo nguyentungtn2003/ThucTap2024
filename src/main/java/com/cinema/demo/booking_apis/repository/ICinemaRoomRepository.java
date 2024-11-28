@@ -16,7 +16,7 @@ public interface ICinemaRoomRepository extends JpaRepository<CinemaRoomEntity, I
             "JOIN ShowtimeEntity st ON cr.id = st.cinemaRoom.id " +
             "JOIN ShowDateEntity sd ON st.showDate.showtimeDateId = sd.showtimeDateId " +
             "WHERE st.movie.movieId = :movieId " +
-            "AND sd.date = :startDate " +
+            "AND sd.startDate = :startDate " +
             "AND st.startTime = :startTime")
     List<CinemaRoomEntity> getCinemaRoomEntityByMovieAndShowDateAndShowTime(
             @Param("movieId") Integer movieId,

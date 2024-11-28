@@ -222,7 +222,7 @@ public class MovieServiceImpl implements IMovieService {
         dto.setActor(entity.getActor());
         dto.setReleaseDate(entity.getReleaseDate());
         dto.setRunningTime(entity.getRunningTime());
-        dto.setIsShowing(entity.getIs_showing());
+        dto.setIsShowing(entity.getIsShowing());
         return dto;
     }
 
@@ -240,7 +240,7 @@ public class MovieServiceImpl implements IMovieService {
         entity.setActor(dto.getActor());
         entity.setReleaseDate(dto.getReleaseDate());
         entity.setRunningTime(dto.getRunningTime());
-        entity.setIs_showing(dto.getIsShowing());
+        entity.setIsShowing(dto.getIsShowing());
         return entity;
     }
     @Override

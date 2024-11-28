@@ -15,7 +15,7 @@ public class ConcessionOrderEntity {
 
     private int quantity;
 
-    private BigDecimal price;
+    private int price;
 
     @ManyToOne
     @JoinColumn(name = "concessionTypeId")

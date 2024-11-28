@@ -1,4 +1,4 @@
-//package com.cinema.demo.security.config;
+package com.cinema.demo.security.config;//package com.cinema.demo.security.config;
 //
 //import com.cinema.demo.booking_apis.repository.*;
 //import com.cinema.demo.entity.*;

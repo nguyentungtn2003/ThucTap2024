@@ -28,7 +28,7 @@ public class PostLoginController {
             if ("ROLE_ADMIN".equals(role)) {
                 return "redirect:/admin"; // Chuyển hướng đến trang admin
             } else if ("ROLE_USER".equals(role)) {
-                return "redirect:/home1"; // Chuyển hướng đến trang user
+                return "redirect:/home"; // Chuyển hướng đến trang user
             }
         }
         // Trường hợp không có vai trò phù hợp
