@@ -1,37 +1,37 @@
-    package com.cinema.demo.controller;
+package com.cinema.demo.controller;
 
-    import com.cinema.demo.dto.BooKingDetailsDTO;
-    import com.cinema.demo.dto.RoomDetailDTO;
-    import com.cinema.demo.entity.CinemaRoomDetailEntity;
-    import com.cinema.demo.entity.CinemaRoomEntity;
-    import com.cinema.demo.entity.RoleEntity;
-    import com.cinema.demo.entity.UserEntity;
-    import com.cinema.demo.repository.RoleRepository;
-    import com.cinema.demo.repository.UserRepository;
-    import com.cinema.demo.service.BookingService;
-    import com.cinema.demo.service.CinemaRoomDetailService;
-    import com.cinema.demo.service.ManagerRoomService;
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.data.domain.Page;
-    import org.springframework.data.domain.PageRequest;
-    import org.springframework.data.domain.Pageable;
-    import org.springframework.data.domain.Sort;
-    import org.springframework.http.HttpStatus;
-    import org.springframework.http.ResponseEntity;
-    import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-    import org.springframework.stereotype.Controller;
-    import org.springframework.transaction.annotation.Transactional;
-    import org.springframework.ui.Model;
-    import org.springframework.web.bind.annotation.*;
+import com.cinema.demo.dto.BooKingDetailsDTO;
+import com.cinema.demo.dto.RoomDetailDTO;
+import com.cinema.demo.entity.CinemaRoomDetailEntity;
+import com.cinema.demo.entity.CinemaRoomEntity;
+import com.cinema.demo.entity.RoleEntity;
+import com.cinema.demo.entity.UserEntity;
+import com.cinema.demo.repository.RoleRepository;
+import com.cinema.demo.repository.UserRepository;
+import com.cinema.demo.service.BookingService1;
+import com.cinema.demo.service.CinemaRoomDetailService;
+import com.cinema.demo.service.ManagerRoomService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-    import java.sql.Date;
-    import java.util.*;
+import java.sql.Date;
+import java.util.*;
 
     @Controller
-    @RequestMapping("/admins")
+    @RequestMapping("/admin")
     public class AdminController {
         @Autowired
-        private BookingService bookingService;
+        private BookingService1 bookingService;
 
         @Autowired
         private ManagerRoomService managerRoomService;
@@ -48,14 +48,14 @@
         @Autowired
         private BCryptPasswordEncoder passwordEncoder; // Để mã hóa mật khẩu
 
-//        // Trang chủ admin
-//        @GetMapping
-//        public String getAdminHome() {
-//            return "/admin/admin";
-//        }
-
         // Trang chủ admin
         @GetMapping
+        public String getAdminHome() {
+            return "/admin/admin";
+        }
+
+        // Trang chủ admin
+        @GetMapping("/ad1_mainboard")
         public String getAdminHomes(Model model) {
             model.addAttribute("totalAmount", bookingService.formatTotalAmount(bookingService.getTotalAmount()));
             model.addAttribute("startDate", bookingService.getMonthYear());
@@ -162,7 +162,6 @@
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Room Detail không tồn tại.");
         }
-
         // Quản lý nhân viên
         @GetMapping("/staff-management")
         public String staffManagement() {
@@ -196,7 +195,7 @@
         @PostMapping("/staff")
         public ResponseEntity<String> addStaff(
                 @RequestParam String email,
-                @RequestParam String fullName,
+                @RequestParam String name,
                 @RequestParam String password,
                 @RequestParam String phoneNumber,
                 @RequestParam String address,
@@ -221,7 +220,7 @@
             // Tạo mới nhân viên và gán vai trò ROLE_STAFF
             UserEntity newStaff = new UserEntity();
             newStaff.setEmail(email);
-            newStaff.setName(fullName);
+            newStaff.setName(name);
             newStaff.setPassword(passwordEncoder.encode(password)); // Mã hóa mật khẩu
             newStaff.setPhoneNumber(phoneNumber);
             newStaff.setAddress(address);
@@ -229,7 +228,7 @@
             newStaff.setSex(sex);
             newStaff.setStatus(status);
 //            newStaff.setRoles(List.of(staffRole)); // Gán vai trò STAFF cho nhân viên mới
-            RoleEntity userRole = roleRepository.findByRoleName("STAFF");
+            RoleEntity userRole = roleRepository.findByRoleName("ROLE_STAFF");
             newStaff.setRoles(new HashSet<>());
             newStaff.getRoles().add(userRole);
 
@@ -241,7 +240,7 @@
         @PutMapping("/staff/{id}")
         public ResponseEntity<String> updateStaff(
                 @PathVariable Long id,
-                @RequestParam String fullName,
+                @RequestParam String name,
                 @RequestParam String phoneNumber,
                 @RequestParam String address,
                 @RequestParam Date dob,
@@ -255,7 +254,7 @@
             }
 
             UserEntity staff = optionalStaff.get();
-            staff.setName(fullName);
+            staff.setName(name);
             staff.setPhoneNumber(phoneNumber);
             staff.setAddress(address);
             staff.setDob(dob);
