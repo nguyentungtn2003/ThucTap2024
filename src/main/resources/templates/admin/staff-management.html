@@ -13,55 +13,82 @@
     }
 
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #18191a;
-      color: #fff;
-      display: flex;
+      background-color: #0d1117;
+      color: #c9d1d9;
     }
 
-    /* Top Header */
-      .header {
-        background-color: black;
-        color: white;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 3px solid purple;
-        border-bottom: 1px solid black;
-      }
-
-      /* Sidebar */
     .sidebar {
       width: 250px;
-      background-color: #242526;
+      background-color: #161b22;
       height: 100vh;
-      padding: 20px 0;
       position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+    }
+
+    h1 {
+      display: block;
+      font-size: 2em;
+      margin-block-start: 0.67em;
+      margin-block-end: 0.67em;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      font-weight: bold;
+      unicode-bidi: isolate;
+      align-content: center;
+      margin-left: 100px;
+    }
+
+    .sidebar h1 {
+      color: #58a6ff;
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .admin-info {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .admin-info img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+
+    .sidebar .admin-info .name {
+      color: #c9d1d9;
+      font-size: 1rem;
+    }
+
+    .sidebar .admin-info .role {
+      font-size: 0.9rem;
+      color: #8b949e;
     }
 
     .sidebar a {
-      display: block;
-      color: #ddd;
-      padding: 15px 25px;
       text-decoration: none;
+      color: #c9d1d9;
+      padding: 15px 20px;
+      display: block;
+      border-radius: 5px;
+      margin: 5px 10px;
     }
 
-    .sidebar a:hover,
-    .sidebar a.active {
-      background-color: #e50914;
-      color: #fff;
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #21262d;
     }
 
-    .sidebar .logo {
-      font-size: 24px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 30px;
-      color: #e50914;
-    }
-
-      /* Main Content */
+    /* Main Content */
       .main-content {
         margin-left: 200px; /* Width of the sidebar */
         padding: 20px;
@@ -76,6 +103,7 @@
         border-radius: 5px;
         max-width: 500px;
         margin-bottom: 20px;
+        margin-left: 50px;
       }
 
       .form-container h2 {
@@ -261,16 +289,24 @@
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
-    <a href="/admin/showtime-management">QUẢN LÍ SUẤT CHIẾU</a>
-      <a href="/admin/ad2_room_mana.html">QUẢN LÍ PHÒNG CHIẾU</a>
-    <a href="/admin/ad2_cus_mana.html">QUẢN LÍ KHÁCH HÀNG</a>
-    <a href="/admin/ad2_addcus.html">THÊM MỚI KHÁCH HÀNG</a>
-    <a href="/admin/ad2_ticket_mana.html">QUẢN LÍ VÉ</a>
-    <a href="/admin/ad2_addtick.html">THÊM VÉ</a>
-    <a href="/admin/ad2_mv_mana.html">QUẢN LÍ PHIM</a>
-    <a href="/admin/ad2_addmovie.html">THÊM PHIM</a>
-    <a href="/admin/admin2.html">THÔNG TIN CÁ NHÂN</a>
+    <h1>ADMIN 1</h1>
+    <!-- Admin Info -->
+    <div class="admin-info">
+      <img src="admin1.jpg" alt="Admin Avatar">
+      <div>
+        <div class="name">John Doe</div>
+        <div class="role">Admin</div>
+      </div>
+    </div>
+    <!-- Sidebar Menu -->
+    <a href="ad1_mainboard.html">Adminboard</a>
+    <a href="/admin/staff-management"">Quản lý nhân viên</a>
+    <a href="/admin/showtime-management">Quản lý suất chiếu</a>
+    <a href="ad1_cus.html">Quản lý khách hàng</a>
+    <a href="ad1_ticket.html">Quản lý vé</a>
+    <a href="ad1_movie.html">Quản lý phim</a>
+    <a href="ad1_promotion.html">Quản lý khuyến mãi</a>
+    <a href="admin1.html"class="active">Thông tin cá nhân</a>
   </div>
 
 <!-- Main Content Area -->

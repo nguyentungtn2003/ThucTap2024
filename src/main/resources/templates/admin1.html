@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #161b22;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .sidebar h1 {
+            color: #58a6ff;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .admin-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .sidebar .admin-info .name {
+            color: #c9d1d9;
+            font-size: 1rem;
+        }
+
+        .sidebar .admin-info .role {
+            font-size: 0.9rem;
+            color: #8b949e;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #c9d1d9;
+            padding: 15px 20px;
+            display: block;
+            border-radius: 5px;
+            margin: 5px 10px;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #21262d;
+        }
+
+        .main-content {
+            padding: 20px;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-family: Arial, sans-serif;
+        }
+
+        .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.profile-header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.profile-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.profile-avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.profile-avatar h2 {
+    margin: 10px 0 0;
+    font-size: 1.5rem;
+    color: #58a6ff;
+}
+
+.profile-avatar p {
+    color: #8b949e;
+}
+
+/* Profile Details */
+.profile-details {
+    background-color: #161b22;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.profile-details h3 {
+    margin-bottom: 15px;
+    color: #58a6ff;
+    font-size: 1.2rem;
+}
+
+.profile-details table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.profile-details th, .profile-details td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #21262d;
+}
+
+.profile-details th {
+    font-weight: bold;
+    color: #c9d1d9;
+}
+
+.profile-details td {
+    color: #8b949e;
+}
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>ADMIN 1</h1>
+        <!-- Admin Info -->
+        <div class="admin-info">
+            <img src="admin1.jpg" alt="Admin Avatar">
+            <div>
+                <div class="name">John Doe</div>
+                <div class="role">Admin</div>
+            </div>
+        </div>
+        <!-- Sidebar Menu -->
+        <a href="ad1_mainboard.html">Adminboard</a>
+        <a href="ad1_mana.html"">Quản lý nhân viên</a>
+        <a href="ad1_room.html">Quản lý phòng chiếu</a>
+        <a href="ad1_cus.html">Quản lý khách hàng</a>
+        <a href="ad1_ticket.html">Quản lý vé</a>
+        <a href="ad1_movie.html">Quản lý phim</a>
+        <a href="ad1_promotion.html">Quản lý khuyến mãi</a>
+        <a href="admin1.html"class="active">Thông tin cá nhân</a>
+    </div>
+    <div class="main-content">
+        <div class="profile-header">
+            <h1>Thông Tin Cá Nhân</h1>
+            <div class="profile-avatar">
+                <img src="admin1.jpg" alt="Admin Avatar">
+                <h2>John Doe</h2>
+                <p>Admin 1</p>
+            </div>
+        </div>
+        <div class="profile-details">
+            <h3>Chi Tiết Cá Nhân</h3>
+            <table>
+                <tr>
+                    <th>Email:</th>
+                    <td>johndoe@example.com</td>
+                </tr>
+                <tr>
+                    <th>Địa chỉ:</th>
+                    <td>123 Phố ABC, Quận DEF, TP HCM</td>
+                </tr>
+                <tr>
+                    <th>Giới tính:</th>
+                    <td>Nam</td>
+                </tr>
+                <tr>
+                    <th>Ngày sinh:</th>
+                    <td>01/01/1980</td>
+                </tr>
+                <tr>
+                    <th>Số điện thoại:</th>
+                    <td>+84 123 456 789</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+</body>
+</html>
