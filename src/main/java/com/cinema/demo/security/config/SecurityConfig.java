@@ -141,7 +141,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
         // configuration
         // urls configure kiay hai ki koun se public rangenge aur koun se private
         // rangenge
@@ -195,7 +195,7 @@ public class SecurityConfig {
 
         });
 
-
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         // oauth configurations
 
         httpSecurity.oauth2Login(oauth -> {

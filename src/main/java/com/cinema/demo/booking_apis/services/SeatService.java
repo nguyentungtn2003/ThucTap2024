@@ -48,7 +48,7 @@ public class SeatService implements ISeatService {
             if(occupiedSeats.stream()
                     .map(occupiedSeat->occupiedSeat.getSeatId())
                     .collect(Collectors.toList()).contains(seat.getSeatId())){
-                seatDTO.setIsOccupied(2);
+//                seatDTO.setIsOccupied(1);
             }
             return seatDTO;
         }).collect(Collectors.toList());

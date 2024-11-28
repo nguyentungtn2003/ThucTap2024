@@ -38,8 +38,8 @@ public class UserForm {
     private String address;
 
     @NotNull(message = "Date of birth should not be empty")
-    @Past(message = "Date of birth cannot be in the future")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @Past(message = "Date of birth cannot be in the future")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
 
     private String status;

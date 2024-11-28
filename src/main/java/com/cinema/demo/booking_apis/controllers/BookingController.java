@@ -152,7 +152,7 @@ public class BookingController {
                 return "boleto/demo/404";
             }
 
-            if (seat.getIsOccupied() != 0) {
+            if (seat.getIsOccupied() == 2) {
                 model.addAttribute("error", "Seat " + seat.getSeatPosition() + " is no longer available.");
                 model.addAttribute("movie_Id", movie_Id);
                 model.addAttribute("start_Date", start_Date);
@@ -161,7 +161,7 @@ public class BookingController {
                 return "boleto/demo/404";
             }
 
-            seat.setIsOccupied(2);
+            seat.setIsOccupied(1);
             seatService.updateSeatStatus(seat);
             selectedSeats.add(seat);
 
@@ -263,6 +263,56 @@ public class BookingController {
     }
 
 
+    @PostMapping("/payment")
+    public String payment(@RequestParam("ticketId[]") List<Integer> tickets, HttpServletRequest request,Model model) {
+        HttpSession session = request.getSession();
+        Integer movie_Id = (Integer) session.getAttribute("movie_Id");
+        String start_Date = (String) session.getAttribute("start_Date");
+        String start_Time = (String) session.getAttribute("start_Time");
+        Integer room_Id = (Integer) session.getAttribute("room_Id");
+        if (tickets == null || tickets.isEmpty()) {
+            model.addAttribute("error", "Ticket IDs are required.");
+            return "boleto/demo/404";
+        }
+
+        for (Integer ticketId : tickets) {
+            TicketDTO ticketDTO = ticketService.getTicketById(ticketId);
+
+            if (ticketDTO == null) {
+                model.addAttribute("error", "Booking not found for ticket ID " + ticketId);
+                return "boleto/demo/404";
+            }
+
+            if ("Canceled".equals(ticketDTO.getStatus())) {
+                model.addAttribute("error", "This ticket has already been canceled.");
+                return "boleto/demo/404";
+            }
+            if (ticketDTO.getSeat().getIsOccupied() == 2) {
+                model.addAttribute("error", "Seat " + ticketDTO.getSeat().getSeatPosition() + " is no longer available.");
+                model.addAttribute("movie_Id", movie_Id);
+                model.addAttribute("start_Date", start_Date);
+                model.addAttribute("start_Time", start_Time);
+                model.addAttribute("room_Id", room_Id);
+                return "boleto/demo/404";
+            }
+
+            SeatDTO seat = ticketDTO.getSeat();
+            seat.setIsOccupied(2);
+            seatService.updateSeatStatus(seat);
+
+            ticketDTO.setStatus("Can use");
+            ticketService.saveTicket(ticketDTO);
+        }
+
+        model.addAttribute("ticketIds", tickets);
+        model.addAttribute("movie_Id", movie_Id);
+        model.addAttribute("start_Date", start_Date);
+        model.addAttribute("start_Time", start_Time);
+        model.addAttribute("room_Id", room_Id);
+        model.addAttribute("message", "Your booking(s) have been canceled, and the seats are now available.");
+        return "redirect:/invoices";
+//        return "boleto/demo/movie-checkout";
+    }
 
 //    @GetMapping("/food")
 //    public String showFoodPage(Model model) {

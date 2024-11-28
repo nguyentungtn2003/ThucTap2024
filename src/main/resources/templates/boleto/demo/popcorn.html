@@ -357,7 +357,17 @@
                     <div class="proceed-area  text-center">
                         <h6 class="subtitle"><span>Amount Payable</span><span id="amountPayable"></span></h6>
                         <!-- Nút thanh toán -->
-                        <form action="/payment/" method="POST">
+                        <div class="form-group check-group">
+                            <input id="card5" type="checkbox" checked>
+                            <label for="card5">
+                                <span class="title">Banking</span>
+<!--                                <span class="info">Save this card information to my Boleto  account and make faster payments.</span>-->
+                            </label>
+                        </div>
+                        <form action="/api/booking/payment" method="POST">
+                            <th:block th:each="ticket : ${tickets}">
+                                <input type="hidden" name="ticketId[]" th:value="${ticket.ticketId}">
+                            </th:block>
                             <button type="submit" class="custom-button back-button">Proceed</button>
                         </form>
 

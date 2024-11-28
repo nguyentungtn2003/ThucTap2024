@@ -418,7 +418,8 @@
             }
 
             // Cập nhật tổng giá
-            totalPriceElement.innerText = `$${totalPrice.toFixed(2)}`;
+            totalPriceElement.innerText = `${totalPrice.toFixed(2)}`;
+
 
             // Cập nhật giá trị phí đặt chỗ
             bookingFeeInput.value = totalPrice.toFixed(2);
@@ -436,7 +437,7 @@
 
         // Hàm gửi yêu cầu cập nhật trạng thái ghế tới backend
         function updateSeatStatus(seatId, status) {
-            fetch(`/api/seats/update-status`, {
+            fetch('/api/seats/update-status', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -446,7 +447,7 @@
                     isOccupied: status
                 })
             })
-                .then(response => response.json())
+        .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         console.log('Seat status updated successfully');
@@ -494,7 +495,7 @@
         /**
          * Form Submission Handling
          */
-        document.getElementById('booking-form').addEventListener('submit', function(event) {
+        document.getElementById('booking-form').addEventListener('submit', function (event) {
             // Prevent Default Form Submission if No Seats Selected
             if (selectedSeats.length === 0) {
                 event.preventDefault();
@@ -504,86 +505,6 @@
         });
     </script>
 
-<!--    <script>-->
-<!--        // Hàm để chọn ghế-->
-<!--        // Biến toàn cục để lưu trữ ghế đã chọn và tổng giá-->
-<!--        let selectedSeats = [];-->
-<!--        let totalPrice = 0;-->
-
-<!--        // Hàm để chọn ghế-->
-<!--        function selectSeat(event) {-->
-<!--            const seatElement = event.currentTarget;-->
-<!--            const seatId = seatElement.getAttribute('data-seat-id');-->
-<!--            const seatPrice = parseFloat(seatElement.getAttribute('data-seat-price'));-->
-<!--            const isOccupied = parseInt(seatElement.getAttribute('data-seat-occupied'));-->
-
-<!--            // Kiểm tra trạng thái ghế-->
-<!--            if (isOccupied === 0) {-->
-<!--                // Ghế chưa được đặt, chuyển sang trạng thái giữ chỗ-->
-<!--                seatElement.setAttribute('data-seat-occupied', 1);-->
-<!--                seatElement.querySelector('img').src = 'assets/images/movie/seat01-booked.png'; // Cập nhật ảnh-->
-<!--                selectedSeats.push({ id: seatId, position: seatElement.querySelector('.sit-num').innerText, price: seatPrice }); // Thêm ghế vào danh sách đã chọn-->
-<!--                totalPrice += seatPrice; // Cập nhật tổng giá-->
-<!--            } else if (isOccupied === 1) {-->
-<!--                // Ghế đang giữ chỗ, chuyển lại thành chưa đặt-->
-<!--                seatElement.setAttribute('data-seat-occupied', 0);-->
-<!--                seatElement.querySelector('img').src = 'assets/images/movie/seat01-free.png'; // Cập nhật ảnh-->
-<!--                // Xóa ghế khỏi danh sách đã chọn-->
-<!--                selectedSeats = selectedSeats.filter(seat => seat.id !== seatId);-->
-<!--                totalPrice -= seatPrice; // Cập nhật tổng giá-->
-<!--            } else if (isOccupied === 2) {-->
-<!--                // Ghế đã được đặt, không làm gì cả-->
-<!--                alert("Ghế này đã được đặt và không thể thay đổi.");-->
-<!--            }-->
-
-<!--            // Cập nhật hiển thị vị trí ghế và tổng giá-->
-<!--            updateDisplay();-->
-<!--        }-->
-
-<!--        // Hàm để cập nhật hiển thị vị trí ghế và tổng giá-->
-<!--        function updateDisplay() {-->
-<!--            const selectedSeatsElement = document.getElementById('selected-seats');-->
-<!--            const totalPriceElement = document.getElementById('total-price');-->
-<!--            const selectedSeatInputsContainer = document.getElementById('selected-seat-inputs');-->
-<!--            const bookingFeeInput = document.getElementById('booking-fee');-->
-
-<!--            // Update Selected Seats Text-->
-<!--            if (selectedSeats.length > 0) {-->
-<!--                const seatPositions = selectedSeats.map(seat => seat.position).join(', ');-->
-<!--                selectedSeatsElement.innerText = seatPositions;-->
-<!--            } else {-->
-<!--                selectedSeatsElement.innerText = 'No seat selected';-->
-<!--            }-->
-
-<!--            // Update Total Price Text-->
-<!--            totalPriceElement.innerText = `$${totalPrice.toFixed(2)}`;-->
-
-<!--            // Update Booking Fee Hidden Input-->
-<!--            bookingFeeInput.value = totalPrice.toFixed(2);-->
-
-<!--            // Update Hidden Inputs for Selected Seats-->
-<!--            selectedSeatInputsContainer.innerHTML = ''; // Clear previous inputs-->
-<!--            selectedSeats.forEach(seat => {-->
-<!--                const input = document.createElement('input');-->
-<!--                input.type = 'hidden';-->
-<!--                input.name = 'seatIds'; // Ensure backend expects List<Integer> seatIds-->
-<!--                input.value = seat.id;-->
-<!--                selectedSeatInputsContainer.appendChild(input);-->
-<!--            });-->
-<!--        }-->
-
-<!--        /**-->
-<!--         * Form Submission Handling-->
-<!--         */-->
-<!--        document.getElementById('booking-form').addEventListener('submit', function(event) {-->
-<!--            // Prevent Default Form Submission if No Seats Selected-->
-<!--            if (selectedSeats.length === 0) {-->
-<!--                event.preventDefault();-->
-<!--                alert("Please select at least one seat to proceed.");-->
-<!--            }-->
-<!--            // Else, allow form to submit normally-->
-<!--        });-->
-<!--    </script>-->
 
     <script></script>
     <!-- ==========Newslater-Section========== -->
