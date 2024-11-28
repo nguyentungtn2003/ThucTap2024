@@ -1,58 +1,83 @@
 package com.cinema.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.util.ArrayList;
+import java.util.*;
 
-import java.util.List;
-
+@Entity
+@Table(name = "user")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "User")
+@Builder
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false)
-    private String phoneNumber;
+    @Column(name = "user_name")
+    private String name;
 
-    @Column(nullable = false)
-    private String address;
-
-    @Column(nullable = false)
-    private Date dob;
-
-    @Column(nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(nullable = false)
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "phonenumber")
+    private String phoneNumber;
+
+    @Column(name = "dob")
+    private Date dob;
+
+    @Column(name = "status")
     private String status;
 
-    @Column(nullable = false)
-    private String fullName;
-
-    @Column(nullable = false)
+    @Column(name = "sex")
     private char sex;
 
-        @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Column(name = "provider_id")
+    private String providerId;
+
+    @Column(name = "account_non_expired")
+    private boolean accountNonExpired;
+
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
+
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked;
+
+    @Column(name = "credentials_non_expired")
+    private boolean credentialsNonExpired;
+
+    @Column(name = "email_verified")
+    private boolean emailVerified = false;
+
+    @Column(name = "phone_verified")
+    private boolean phoneVerified = false;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinTable(
-            name = "users_roles",
-            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
-        @JsonManagedReference
-        private List<RoleEntity> roles = new ArrayList<>();
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles = new HashSet<>();
+
+    @Column(name = "email_token")
+    private String emailToken;
 }
+

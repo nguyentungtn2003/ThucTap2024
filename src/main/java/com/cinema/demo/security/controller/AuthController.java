@@ -1,111 +1,59 @@
 package com.cinema.demo.security.controller;
 
-import jakarta.validation.Valid;
-import com.cinema.demo.dto.UserDto;
 import com.cinema.demo.entity.UserEntity;
-import com.cinema.demo.service.IUserService;
+import com.cinema.demo.security.helpers.Message;
+import com.cinema.demo.security.helpers.MessageType;
+import com.cinema.demo.security.repository.IUserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequestMapping("/auth")
 public class AuthController {
-    private IUserService IUserService;
-    //private MovieService movieService;
+
+    // verify email
 
     @Autowired
-    public void setUserService(IUserService IUserService) {
-        this.IUserService = IUserService;
-    }
+    private IUserRepository userRepo;
 
-    // handler method to handle home page request
-    @GetMapping("/home")
-    public String home() {
-//        List<MovieEntity> movies = movieService.getAllMovies();
-//        model.addAttribute("movies", movies);
-        return "home1";
-    }
+    @GetMapping("/verify-email")
+    public String verifyEmail(
+            @RequestParam("token") String token, HttpSession session) {
 
-    // handler method to handle user registration form request
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        // create model object to store form data
-        UserDto user = new UserDto();
-        model.addAttribute("user", user);
-        return "register";
-    }
+        UserEntity user = userRepo.findByEmailToken(token).orElse(null);
 
-    // handler method to handle user registration form submit request
-//    @PostMapping("/register/save")
-//    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
-//                               BindingResult result,
-//                               Model model) {
-//        UserEntity existingUser = userService.findUserByEmail(userDto.getEmail());
-//
-//        if (existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()) {
-//            result.rejectValue("email", null,
-//                    "There is already an account registered with the same email");
-//        }
-//
-//        if (result.hasErrors()) {
-//            model.addAttribute("user", userDto);
-//            return "/register";
-//        }
-//
-//        userService.saveUser(userDto);
-//        return "redirect:/register?success";
-//    }
-    @PostMapping("/register/save")
-    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
-                               BindingResult result,
-                               Model model) {
-        // Kiểm tra xem email đã tồn tại chưa
-        UserEntity existingUser = IUserService.findUserByEmail(userDto.getEmail());
-        if (existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()) {
-            result.rejectValue("email", null, "There is already an account registered with the same email");
-            System.out.println("Existing user found with email: " + userDto.getEmail());
+        if (user != null) {
+            // user fetch hua hai :: process karna hai
+
+            if (user.getEmailToken().equals(token)) {
+                user.setEmailVerified(true);
+                user.setEnabled(true);
+                userRepo.save(user);
+                session.setAttribute("message", Message.builder()
+                        .type(MessageType.green)
+                        .content("You email is verified. Now you can login  ")
+                        .build());
+                return "success_page";
+            }
+
+            session.setAttribute("message", Message.builder()
+                    .type(MessageType.red)
+                    .content("Email not verified ! Token is not associated with user .")
+                    .build());
+            return "error_page";
+
         }
 
-        // Kiểm tra xem có lỗi validate không
-        if (result.hasErrors()) {
-            System.out.println("Validation errors found: " + result.getAllErrors());
-            model.addAttribute("user", userDto);
-            return "/register";
-        }
+        session.setAttribute("message", Message.builder()
+                .type(MessageType.red)
+                .content("Email not verified ! Token is not associated with user .")
+                .build());
 
-        try {
-            IUserService.saveUser(userDto);
-            System.out.println("User saved successfully: " + userDto.getEmail());
-        } catch (Exception e) {
-            System.out.println("Error occurred while saving user: " + e.getMessage());
-            e.printStackTrace();
-            model.addAttribute("user", userDto);
-            return "/register";
-        }
-
-        return "redirect:/register?success";
+        return "error_page";
     }
-
-
-    // handler method to handle list of users
-    @GetMapping("/users")
-    public String users(Model model) {
-        List<UserDto> users = IUserService.findAllUsers();
-        model.addAttribute("users", users);
-        return "users";
-    }
-
-    // handler method to handle login request
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
 
 }

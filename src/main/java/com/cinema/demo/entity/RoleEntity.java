@@ -1,6 +1,5 @@
 package com.cinema.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,12 +17,12 @@ import java.util.List;
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "role_id")
+    private long id;
 
     @Column(nullable = false, unique = true)
     private String roleName;
 
     @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
     private List<UserEntity> users;
 }

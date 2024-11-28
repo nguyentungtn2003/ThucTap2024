@@ -6,6 +6,7 @@ import com.cinema.demo.entity.RoleEntity;
 import com.cinema.demo.entity.UserEntity;
 import com.cinema.demo.repository.RoleRepository;
 import com.cinema.demo.repository.UserRepository;
+import com.cinema.demo.security.exception.BaseException;
 import com.cinema.demo.service.IUserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +37,7 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public void saveUser(UserDto userDto) {
         UserEntity user = new UserEntity();
-        user.setFullName(userDto.getFullName());
+        user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setDob(userDto.getDob());
         user.setAddress(userDto.getAddress());
@@ -48,11 +50,10 @@ public class IUserServiceImpl implements IUserService {
         //encrypt the password using spring security
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        RoleEntity role = roleRepository.findByRoleName("ROLE_USER");
-        if (role == null) {
-            role = checkRoleExist();
-        }
-        user.setRoles(List.of(role));
+        RoleEntity userRole = roleRepository.findByRoleName("USER");
+
+        user.setRoles(new HashSet<>());
+        user.getRoles().add(userRole);
         userRepository.save(user);
     }
 
@@ -93,7 +94,7 @@ public class IUserServiceImpl implements IUserService {
 
         if (userEntity != null) {
             // Cập nhật thông tin người dùng
-            userEntity.setFullName(UpdateUserDto.getFullName());
+            userEntity.setName(UpdateUserDto.getFullName());
             userEntity.setAddress(UpdateUserDto.getAddress());
             userEntity.setPhoneNumber(UpdateUserDto.getPhoneNumber());
             userEntity.setSex(UpdateUserDto.getSex());
@@ -135,14 +136,14 @@ public class IUserServiceImpl implements IUserService {
     private UserDto convertEntityToDto(UserEntity user) {
         UserDto userDto = new UserDto();
 
-        userDto.setId((long) user.getId());
+//        userDto.setId((long) user.getId());
         userDto.setPhoneNumber(user.getPhoneNumber());
         userDto.setAddress(user.getAddress());
         userDto.setDob(user.getDob());
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         userDto.setStatus(user.getStatus());
-        userDto.setFullName(user.getFullName());
+        userDto.setName(user.getName());
         userDto.setSex(user.getSex());
 
         List<String> roleNames = new ArrayList<>();

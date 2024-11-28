@@ -8,6 +8,6 @@ import java.util.List;
 
 @RequestMapping
 public interface TicketRepository extends JpaRepository<TicketEntity, Integer> {
-    void deleteByInvoiceId(Integer invoiceId);
-    List<TicketEntity> findByInvoiceId(int invoiceId);
+    void deleteByInvoiceEntity_Id(Integer invoiceId);
+    List<TicketEntity> findByInvoiceEntity_Id(int invoiceId);
 }

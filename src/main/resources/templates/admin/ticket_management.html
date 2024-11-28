@@ -17,78 +17,31 @@
 
             color: rgb(255, 255, 255); /* Màu trắng */
         }
-
         /* Sidebar */
-        #sidebar {
-            width: 250px;
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            padding-top: 20px;
+            border-right: 1px solid lightgray;
             height: 100vh;
-            background-color: rgb(54, 54, 54); /* Màu xám đậm */
-            color: rgb(255, 255, 255); /* Màu trắng */
             position: fixed;
             top: 0;
-            left: -250px;
-            padding: 20px;
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000;
+            left: 0;
+            margin-top: 45px; /* to align with the header */
         }
 
-        #sidebar.open {
-            transform: translateX(250px);
-        }
-
-        #sidebar h2 {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-            color: rgb(255, 255, 255); /* Màu trắng */
-        }
-
-        #sidebar ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        #sidebar ul li {
-            margin: 20px 0;
-        }
-
-        #sidebar ul li a {
-            color: rgb(237, 237, 237); /* Gần màu trắng */
-            text-decoration: none;
-            font-size: 18px;
+        .sidebar a {
             display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        #sidebar ul li a:hover {
-            background-color: rgb(54, 54, 54); /* Màu xám đậm khi hover */
-        }
-
-        /* Nút mở sidebar */
-        #toggle-sidebar {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: rgb(223, 223, 223); /* Màu xám sáng */
-            color: rgb(0, 0, 0); /* Màu đen */
+            color: black;
             padding: 10px 15px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            z-index: 1001;
-            transition: background-color 0.3s ease;
+            text-decoration: none;
+            font-weight: bold;
         }
 
-        #toggle-sidebar.open {
-            left: 250px;
+        .sidebar a:hover {
+            background-color: #f0f0f0;
         }
 
-        #toggle-sidebar:hover {
-            background-color: rgb(237, 237, 237); /* Gần màu trắng khi hover */
-        }
 
         /* Nội dung trang */
         main {
@@ -151,7 +104,17 @@
             color: rgb(0, 0, 0); /* Màu đen */
         }
 
-        /* Hiệu ứng pagination */
+        /* Top Header */
+        .header {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 3px solid purple;
+            border-bottom: 1px solid black;
+        }
         /* Hiệu ứng pagination */
         #pagination {
             margin-top: 20px;
@@ -212,22 +175,26 @@
     </style>
 </head>
 <body>
-
+<!-- Top Header -->
+<div class="header">
+    <div>ADMIN 2</div>
+    <div><a href="../login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
+</div>
 <!-- Sidebar -->
-<div id="sidebar">
-    <h2>Menu Quản Lý</h2>
-    <ul>
-        <li><a href="/admin/tickets">Danh Sách Vé</a></li>
-        <li><a href="#">Quản Lý Đơn Hàng</a></li>
-        <li><a href="#">Quản Lý Phim</a></li>
-        <li><a href="/admin/typeofconcession/types">Quản Lý Đồ Ăn</a></li>
-        <li><a href="#">Cài Đặt</a></li>
-        <li><a href="/login">Đăng Xuất</a></li>
-    </ul>
+<div class="sidebar">
+    <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
+    <a href="/admin/showtime-management">QUẢN LÍ SUẤT CHIẾU</a>
+    <a href="/admin/ad2_room_mana">QUẢN LÍ PHÒNG CHIẾU</a>
+    <a href="/admin/ad2_cus_mana">QUẢN LÍ KHÁCH HÀNG</a>
+    <a href="/admin/ad2_addcus">THÊM MỚI KHÁCH HÀNG</a>
+    <a href="/admin/tickets">QUẢN LÍ VÉ</a>
+    <a href="/admin/typeofconcession/types">QUẢN LÍ Đồ Ăn </a>
+    <a href="/admin/ad2_addtick">THÊM VÉ</a>
+    <a href="/admin/ad2_mv_mana">QUẢN LÍ PHIM</a>
+    <a href="/admin/ad2_addmovie">THÊM PHIM</a>
+    <a href="/admin/admin2">THÔNG TIN CÁ NHÂN</a>
 </div>
 
-<!-- Nút mở sidebar -->
-<button id="toggle-sidebar">Mở Menu</button>
 
 <main>
     <h1>Danh sách vé</h1>
@@ -238,9 +205,9 @@
     </div>
 
     <!-- Chọn số lượng sản phẩm mỗi trang -->
-    <label for="pageSize" style="color: black;">Số sản phẩm mỗi trang:</label>
+    <label for="pageSize" style="color: black;">Số hóa đơn mỗi trang:</label>
     <form action="/admin/tickets" method="get">
-        <select name="size" id="pageSize" onchange="this.form.submit()" style="width: 50px;height: 50px;font-size: 30px">
+        <select name="size" id="pageSize" onchange="this.form.submit()" style="width: 50px;height: 35px;font-size: 30px">
             <option value="2" th:selected="${pageSize == 2}">2</option>
             <option value="5" th:selected="${pageSize == 5}">5</option>
             <option value="10" th:selected="${pageSize == 10}">10</option>
@@ -303,22 +270,6 @@
 
 </main>
 
-<script>
-    // Đóng mở sidebar khi nhấn nút
-    const sidebar = document.getElementById('sidebar');
-    const toggleSidebarButton = document.getElementById('toggle-sidebar');
-
-    toggleSidebarButton.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-        toggleSidebarButton.classList.toggle('open');
-    });
-
-    function confirmDelete(event) {
-        if (!confirm('Bạn có chắc chắn muốn xóa không?')) {
-            event.preventDefault();
-        }
-    }
-</script>
 
 </body>
 </html>

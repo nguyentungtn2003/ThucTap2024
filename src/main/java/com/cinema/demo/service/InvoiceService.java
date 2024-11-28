@@ -7,7 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public interface InvoiceService {
@@ -52,6 +56,5 @@ public interface InvoiceService {
      * @return userId tương ứng
      */
     int getUserIdByEmail(String email);
-
-    List<InvoiceDetailsDTO> getInvoiceDetailsById(int invoiceId);
+    Optional<InvoiceDetailsDTO> getInvoiceDetailsById(int invoiceId);
 }

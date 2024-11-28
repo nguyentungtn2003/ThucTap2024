@@ -41,7 +41,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepositoryCustom {
         JOIN
             movie m ON s.movie_id = m.movie_id
         JOIN
-            user u ON i.user_id = u.id
+            user u ON i.user_id = u.user_id
         JOIN
             seat st ON st.showtime_id = s.showtime_id
         GROUP BY
@@ -62,7 +62,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepositoryCustom {
         JOIN
             movie m ON s.movie_id = m.movie_id
         JOIN
-            user u ON i.user_id = u.id
+            user u ON i.user_id = u.user_id
         JOIN
             seat st ON st.showtime_id = s.showtime_id;
     """;

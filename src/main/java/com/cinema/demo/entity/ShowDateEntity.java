@@ -1,8 +1,10 @@
 package com.cinema.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Date;
+
+import java.sql.Date;
 
 @Data
 @Entity
@@ -16,5 +18,6 @@ public class ShowDateEntity {
 
     @ManyToOne
     @JoinColumn(name = "showtimeId")
+    @JsonBackReference
     private ShowtimeEntity showtime;
 }

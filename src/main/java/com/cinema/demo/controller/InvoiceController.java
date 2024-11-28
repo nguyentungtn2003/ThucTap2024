@@ -11,14 +11,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Controller
 public class InvoiceController {
@@ -77,22 +79,69 @@ public class InvoiceController {
         }
     }
 
-    // Hiển thị chi tiết hóa đơn
-    @GetMapping("/invoices/{id}/details")
-    public String invoiceDetails(@PathVariable int id, Model model) {
-        try {
-            // Gọi service để lấy chi tiết hóa đơn
-            List<InvoiceDetailsDTO> invoiceDetails = invoiceService.getInvoiceDetailsById(id);
-            if (invoiceDetails.isEmpty()) {
-                model.addAttribute("error", "No invoice found with the given ID.");
-                return "error-page";
-            }
+//    // Hiển thị chi tiết hóa đơn
+//    @GetMapping("/invoices/{id}/details")
+//    public String invoiceDetails(@PathVariable int id, Model model) {
+//        try {
+//            // Gọi service để lấy chi tiết hóa đơn
+//            List<InvoiceDetailsDTO> invoiceDetails = invoiceService.getInvoiceDetailsById(id);
+//            if (invoiceDetails.isEmpty()) {
+//                model.addAttribute("error", "No invoice found with the given ID.");
+//                return "error-page";
+//            }
+//
+//            model.addAttribute("invoiceDetails", invoiceDetails.get(0)); // Hiển thị thông tin hóa đơn chi tiết
+//            return "invoice-details"; // Trả về trang chi tiết hóa đơn
+//        } catch (Exception e) {
+//            logger.severe("Error fetching invoice details: " + e.getMessage());
+//            model.addAttribute("error", "Unable to fetch invoice details.");
+//            return "error-page";
+//        }
+//    }
+@GetMapping("/invoices/{id}/details")
+public String invoiceDetails(@PathVariable int id, Model model) {
+    try {
+        // Gọi service để lấy chi tiết hóa đơn
+        Optional<InvoiceDetailsDTO> invoiceDetails = invoiceService.getInvoiceDetailsById(id);
 
-            model.addAttribute("invoiceDetails", invoiceDetails.get(0)); // Hiển thị thông tin hóa đơn chi tiết
-            return "invoice-details"; // Trả về trang chi tiết hóa đơn
+        if (invoiceDetails.isEmpty()) {
+            model.addAttribute("error", "No invoice found with the given ID.");
+            return "error-page";
+        }
+
+        model.addAttribute("invoiceDetails", invoiceDetails.get()); // Trả về thông tin hóa đơn chi tiết
+        return "invoice-details"; // Trả về trang chi tiết hóa đơn
+    } catch (Exception e) {
+        logger.severe("Error fetching invoice details: " + e.getMessage());
+        model.addAttribute("error", "Unable to fetch invoice details.");
+        return "error-page";
+    }
+}
+
+
+
+
+    // Hiển thị các hóa đơn đã hoàn thành
+    @GetMapping("/invoices/completed")
+    public String listCompletedInvoices(Model model, Principal principal) {
+        try {
+            String email = principal.getName();
+            int userId = invoiceService.getUserIdByEmail(email);
+
+            List<InvoiceEntity> invoices = invoiceService.getInvoicesByUserId(userId);
+
+            // Lọc các hóa đơn có vé với trạng thái "Completed"
+            List<InvoiceEntity> completedInvoices = invoices.stream()
+                    .filter(invoice -> invoice.getTickets().stream()
+                            .anyMatch(ticket -> "COMPLETED".equals(ticket.getStatus())))
+                    .collect(Collectors.toList());
+
+            model.addAttribute("invoices", completedInvoices); // Gửi danh sách hóa đơn có vé đã hoàn thành
+
+            return "invoices";
         } catch (Exception e) {
-            logger.severe("Error fetching invoice details: " + e.getMessage());
-            model.addAttribute("error", "Unable to fetch invoice details.");
+            logger.severe("Error fetching completed invoices: " + e.getMessage());
+            model.addAttribute("error", "Unable to fetch completed invoices.");
             return "error-page";
         }
     }

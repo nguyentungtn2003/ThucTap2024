@@ -108,6 +108,44 @@
             background-color: #45a049;
         }
 
+        /* Modal */
+        .modal {
+            display: none; /* Ẩn modal ban đầu */
+            position: fixed;
+            z-index: 1; /* Đặt modal trên tất cả các phần tử khác */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             table {
@@ -130,7 +168,10 @@
 <a href="/home1" class="back-home">Quay về trang Home</a>
 
 <h1>Invoices</h1>
-<table>
+
+<!-- Hiển thị bảng hóa đơn tất cả -->
+<h2>Tất cả hóa đơn</h2>
+<table id="allInvoicesTable">
     <thead>
     <tr>
         <th>ID</th>
@@ -148,12 +189,59 @@
             <span th:class="'status ' + ${invoice.status.toLowerCase()}" th:text="${invoice.status}"></span>
         </td>
         <td class="action-buttons">
-            <a th:if="${invoice.status == 'PENDING'}"
+            <a th:if="${invoice.status == 'Pending'}"
                th:href="@{/invoices/{id}/pay(id=${invoice.id})}" class="pay-button">Pay</a>
             <a th:href="@{/invoices/{id}/details(id=${invoice.id})}" class="details-button">Details</a>
         </td>
     </tr>
     </tbody>
 </table>
+
+<!-- Nút "Xem hóa đơn đã hoàn thành" -->
+<a href="javascript:void(0);" class="back-home" onclick="openModal()">My Tickets</a>
+
+<!-- Modal -->
+<div id="completedInvoicesModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Hóa đơn đã hoàn thành</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="invoice : ${invoices}" th:if="${invoice.status == 'COMPLETED'}">
+                <td th:text="${invoice.id}"></td>
+                <td th:text="${invoice.totalAmount + ' VNĐ'}"></td>
+
+                <td>
+                    <span class="status completed" th:text="${invoice.status}"></span>
+                </td>
+                <td class="action-buttons">
+                    <a th:href="@{/invoices/{id}/details(id=${invoice.id})}" class="details-button">Details</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Mở modal
+    function openModal() {
+        document.getElementById("completedInvoicesModal").style.display = "block";
+    }
+
+    // Đóng modal
+    function closeModal() {
+        document.getElementById("completedInvoicesModal").style.display = "none";
+    }
+</script>
+
 </body>
 </html>

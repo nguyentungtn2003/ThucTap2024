@@ -3,332 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concession Types Management</title>
+    <title>Admin Interface</title>
+    <link rel="stylesheet" href="../styles.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            color: #333;
-            background-color: #f4f4f9;
-            padding: 20px;
-            margin-left: 270px;
         }
 
-        h1 {
-            margin-bottom: 20px;
-            color: #363636;
-            font-size: 28px;
+        /* Top Header */
+        .header {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 3px solid purple;
+            border-bottom: 1px solid black;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 270px;
+            background-color: white;
+            padding-top: 20px;
+            border-right: 1px solid lightgray;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin-top: 60px; /* to align with the header */
+        }
+
+        .sidebar a {
+            display: block;
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
             font-weight: bold;
+            border-bottom: 1px solid #ddd;
         }
 
-        #add-btn, button[type="submit"], #toggle-sidebar {
-            padding: 10px 15px;
-            background-color: black;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            font-size: 16px;
+        .sidebar a:hover {
+            background-color: #f0f0f0;
         }
 
-        #add-btn:hover, button[type="submit"]:hover, #toggle-sidebar:hover {
-            background-color: black;
+        /* Main Content */
+        .main-content {
+            margin-left: 300px; /* Width of the sidebar */
+            padding: 20px;
+            height: calc(100vh - 60px); /* Adjust for header height */
         }
 
-        form input[type="text"], form input[type="number"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
+        /* Table */
+        .table-container {
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
-            margin-top: 20px;
             border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
+            margin-top: 20px;
         }
 
         th, td {
-            padding: 15px;
+            padding: 12px 20px;
             text-align: left;
-            border-bottom: 1px solid #eee;
         }
 
         th {
             background-color: black;
-            color: #fff;
+            color: white;
             font-weight: bold;
         }
 
-        td {
-            font-size: 16px;
+        /* Row colors */
+        tr:nth-child(odd) {
+            background-color: #d9a5a5; /* Red color for odd rows */
         }
 
-        .edit-btn, .delete-btn {
-            color: black;
+        tr:nth-child(even) {
+            background-color: #c3d0d9; /* Blue color for even rows */
+        }
+
+        tr:nth-child(4) {
+            background-color: #9bc29b; /* Green color for specific rows */
+        }
+
+        /* Icons */
+        .icon {
+            margin: 0 5px;
             cursor: pointer;
-            font-weight: bold;
-            margin-right: 8px;
         }
 
-        .delete-btn {
-            color: #dc3545;
+        .icon:hover {
+            opacity: 0.7;
         }
 
-        .pagination {
-            display: flex;
-            list-style-type: none;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .pagination li a {
-            padding: 8px 12px;
-            background-color: black;
-            color: #fff;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .pagination li a.active {
-            background-color: black;
-        }
-
-        #sidebar {
-            width: 250px;
-            height: 100vh;
-            background-color: #343a40;
-            color: #e9ecef;
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding: 20px;
-            transition: transform 0.3s ease;
-            transform: translateX(-100%);
-        }
-
-        #sidebar h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #e9ecef;
-        }
-
-        #sidebar ul {
-            list-style-type: none;
-        }
-
-        #sidebar ul li {
-            margin: 20px 0;
-        }
-
-        #sidebar ul li a {
-            color: #adb5bd;
-            text-decoration: none;
-            font-size: 18px;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        #sidebar ul li a:hover {
-            background-color: #495057;
-        }
-
-        #toggle-sidebar {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
-            font-size: 18px;
-            border-radius: 5px;
-        }
-
+        /* Add Concession Type Form */
         #form-container {
+            display: none;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
-            display: none;
-            position: relative;
         }
 
         #form-title {
             font-size: 22px;
             margin-bottom: 15px;
-            color: #333;
         }
 
-        #form-container .close-btn {
+        /* Close button for the form */
+        #close-form {
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 20px;
             cursor: pointer;
+            margin-top: 150px;
+            font-size: 45px;
             color: #007bff;
         }
+        /* Style cho Form */
+        #form-container {
+            display: none;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            width: 400px;
+            max-width: 100%;
+            position: relative;
+        }
 
-        #search-form {
+        /* Tiêu đề Form */
+        #form-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Form */
+        #concession-form {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            flex-direction: column;
         }
 
-        #search-form input[type="text"] {
+        /* Các ô input trong form */
+        #concession-form input {
+            margin-bottom: 15px;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
             font-size: 16px;
-            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        #search-form button[type="submit"] {
-            padding: 10px 15px;
+        /* Xử lý input số */
+        #concession-form input[type="number"] {
+            -moz-appearance: textfield; /* Xóa nút spin trong Firefox */
         }
-        #add-btn, button[type="submit"], #toggle-sidebar {
-            padding: 10px 15px;
-            background-color: #000; /* Set to black */
-            color: #fff;
+
+        /* Nút Save */
+        #concession-form button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #000000;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            font-size: 16px;
+            transition: background-color 0.3s;
         }
 
-        #add-btn:hover, button[type="submit"]:hover, #toggle-sidebar:hover {
-            background-color: #333; /* Darker shade on hover */
+        /* Hover cho nút Save */
+        #concession-form button:hover {
+            background-color: #0056b3;
         }
 
-        .edit-btn, .delete-btn {
-            color: #000; /* Set to black */
+        /* Nút đóng form */
+        #close-form {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
             cursor: pointer;
+            color: #000000;
             font-weight: bold;
-            margin-right: 8px;
+            margin-top: -25px;
+            margin-right: -18px;
         }
 
-        .delete-btn {
-            color: #dc3545; /* Keep delete button red for better UX */
-        }
-
-        th {
-            background-color: #000; /* Set table header to black */
-            color: #fff;
-            font-weight: bold;
+        /* Hover cho nút đóng */
+        #close-form:hover {
+            color: #0056b3;
         }
 
     </style>
 </head>
 <body>
 
-<h1>Concession Types Management</h1>
-
-<!-- Search Form -->
-<form action="/admin/typeofconcession/types" method="get" >
-    <!-- Ô input để người dùng nhập tìm kiếm mới -->
-    <input type="text" name="search" placeholder="Search..." />
-
-    <button type="submit" style="
-    margin-bottom: 30px;
-">Search</button>
-</form>
-
-
-
-
-<div id="sidebar"style="padding-top: 100px">
-    <h2>Menu Quản Lý</h2>
-    <ul>
-        <li><a href="/admin/tickets">Danh Sách Vé</a></li>
-        <li><a href="#">Quản Lý Đơn Hàng</a></li>
-        <li><a href="#">Quản Lý Phim</a></li>
-        <li><a href="/admin/typeofconcession/types">Quản Lý Đồ Ăn</a></li>
-        <li><a href="#">Cài Đặt</a></li>
-        <li><a href="/login">Đăng Xuất</a></li>
-    </ul>
+<!-- Top Header -->
+<div class="header">
+    <div>ADMIN 2</div>
+    <div><a href="../login.html" style="color: white; text-decoration: none;">Đăng xuất</a></div>
 </div>
 
-<!-- Button to Toggle Sidebar -->
-<button id="toggle-sidebar" style="background: black">Mở Menu</button>
-
-<!-- Add Button -->
-<button id="add-btn">Add Concession Type</button>
-
-<!-- Add/Edit Form -->
-<div id="form-container">
-    <span class="close-btn" id="close-form">&times;</span>
-    <h2 id="form-title">Add Concession Type</h2>
-    <form id="concession-form" action="/admin/typeofconcession/type/save" method="post" style="margin-bottom: 60px">
-        <input type="hidden" id="concessionTypeId" name="concessionTypeId">
-        <input type="text" id="productType" name="productType" placeholder="Product Type" required>
-        <input type="number" id="quantity" name="quantity" placeholder="Quantity" required>
-        <input type="number" id="price" name="price" placeholder="Price" step="0.01" required>
-        <button type="submit">Save</button>
-    </form>
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="/admin/staff-management">QUẢN LÍ NHÂN VIÊN</a>
+    <a href="/admin/showtime-management">QUẢN LÍ SUẤT CHIẾU</a>
+    <a href="/admin/ad2_room_mana">QUẢN LÍ PHÒNG CHIẾU</a>
+    <a href="/admin/ad2_cus_mana">QUẢN LÍ KHÁCH HÀNG</a>
+    <a href="/admin/ad2_addcus">THÊM MỚI KHÁCH HÀNG</a>
+    <a href="/admin/tickets">QUẢN LÍ VÉ</a>
+    <a href="/admin/typeofconcession/types">QUẢN LÍ Đồ Ăn </a>
+    <a href="/admin/ad2_addtick">THÊM VÉ</a>
+    <a href="/admin/ad2_mv_mana">QUẢN LÍ PHIM</a>
+    <a href="/admin/ad2_addmovie">THÊM PHIM</a>
+    <a href="/admin/admin2">THÔNG TIN CÁ NHÂN</a>
 </div>
 
-<!-- Types Table -->
-<table>
-    <thead>
-    <tr>
-        <th>Product Type</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="type : ${types}">
-        <td th:text="${type.productType}"></td>
-        <td th:text="${type.quantity}"></td>
-        <td th:text="${type.price}"></td>
-        <td>
-            <span class="edit-btn"
-                  th:data-id="${type.concessionTypeId}"
-                  th:data-product="${type.productType}"
-                  th:data-quantity="${type.quantity}"
-                  th:data-price="${type.price}">Edit</span>
+<!-- Main Content -->
+<div class="main-content">
+    <h1>Concession Types Management</h1>
 
-            <form th:action="@{/admin/typeofconcession/type/delete/{id}(id=${type.concessionTypeId})}" method="post" style="display:inline;">
-                <button type="submit" class="delete-btn">Delete</button>
-            </form>
+    <!-- Add Concession Button -->
+    <button id="add-btn">Add Concession Type</button>
 
+    <!-- Form to add/edit Concession Type -->
+    <div id="form-container">
+        <span id="close-form">&times;</span>
+        <h2 id="form-title">Add Concession Type</h2>
+        <form id="concession-form" action="/admin/typeofconcession/type/save" method="post">
+            <input type="hidden" id="concessionTypeId" name="concessionTypeId">
+            <input type="text" id="productType" name="productType" placeholder="Product Type" required>
+            <input type="number" id="quantity" name="quantity" placeholder="Quantity" required>
+            <input type="number" id="price" name="price" placeholder="Price" step="0.01" required>
+            <button type="submit">Save</button>
+        </form>
+    </div>
 
-
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<!-- Pagination -->
-<ul class="pagination">
-    <li th:if="${currentPage > 0}">
-        <a th:href="@{/admin/typeofconcession/types(page=${currentPage - 1})}">&laquo; Previous</a>
-    </li>
-    <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:href="@{/admin/typeofconcession/types(page=${i})}" th:text="${i + 1}" th:classappend="${i == currentPage ? 'active' : ''}"></a>
-    </li>
-    <li th:if="${currentPage < totalPages - 1}">
-        <a th:href="@{/admin/typeofconcession/types(page=${currentPage + 1})}">Next &raquo;</a>
-    </li>
-</ul>
+    <!-- Table for Types -->
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Product Type</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Example rows (you can populate this dynamically) -->
+            <tr>
+                <td>Popcorn</td>
+                <td>100</td>
+                <td>50,000 VND</td>
+                <td>
+                    <span class="icon">🖊️</span>
+                    <span class="icon delete-btn">🗑️</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Coke</td>
+                <td>200</td>
+                <td>30,000 VND</td>
+                <td>
+                    <span class="icon">🖊️</span>
+                    <span class="icon delete-btn">🗑️</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Hot Dog</td>
+                <td>150</td>
+                <td>25,000 VND</td>
+                <td>
+                    <span class="icon">🖊️</span>
+                    <span class="icon delete-btn">🗑️</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <script>
     // Show form when Add button is clicked
@@ -340,40 +304,6 @@
     document.getElementById('close-form').addEventListener('click', function() {
         document.getElementById('form-container').style.display = 'none';
     });
-
-    // Show data in form when Edit button is clicked
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            document.getElementById('form-title').textContent = 'Edit Concession Type';
-            document.getElementById('concessionTypeId').value = this.dataset.id;
-            document.getElementById('productType').value = this.dataset.product;
-            document.getElementById('quantity').value = this.dataset.quantity;
-            document.getElementById('price').value = this.dataset.price;
-            document.getElementById('form-container').style.display = 'block';
-        });
-    });
-
-    // Toggle sidebar visibility
-    // document.getElementById('toggle-sidebar').addEventListener('click', function() {
-    //     const sidebar = document.getElementById('sidebar');
-    //     sidebar.style.transform = sidebar.style.transform === 'translateX(0%)' ? 'translateX(-100%)' : 'translateX(0%)';
-    // });
-    // Toggle sidebar visibility and button text
-    document.getElementById('toggle-sidebar').addEventListener('click', function() {
-        const sidebar = document.getElementById('sidebar');
-        const button = document.getElementById('toggle-sidebar');
-
-        // Check if sidebar is visible
-        if (sidebar.style.transform === 'translateX(0%)') {
-            sidebar.style.transform = 'translateX(-100%)';
-            button.textContent = 'Mở Menu'; // Change button text to "Mở Menu"
-        } else {
-            sidebar.style.transform = 'translateX(0%)';
-            button.textContent = 'Đóng Menu'; // Change button text to "Đóng Menu"
-
-        }
-    });
-
 </script>
 
 </body>
