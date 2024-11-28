@@ -55,33 +55,52 @@ public class MovieController {
                             Model model) {
         // Lấy danh sách phim với phân trang
         Page<MovieDTO> movieDTOPage = movieService.getMoviesPage(entriesPerPage, page);
+        model.addAttribute("movie", new MovieDTO());
 
         // Thêm dữ liệu vào model để hiển thị trên view
         model.addAttribute("movies", movieDTOPage.getContent());  // Danh sách các MovieDTO
         model.addAttribute("totalPages", movieDTOPage.getTotalPages());  // Tổng số trang
         model.addAttribute("currentPage", page);  // Trang hiện tại
 
-        return "moviemanagement";
+        return "movie_management";
     }
 
 
     // Hiển thị trang tạo phim mới
     @GetMapping("/addmovie")
-    public String showAddMovieForm(Model model) {
+    public String showAddMovieForm(@RequestParam(value = "entriesPerPage", defaultValue = "10") int entriesPerPage,
+                                   @RequestParam(value = "page", defaultValue = "1") int page,
+                                   Model model) {
         model.addAttribute("movie", new MovieDTO());
+        Page<MovieDTO> movieDTOPage = movieService.getMoviesPage(entriesPerPage, page);
+
+        // Thêm dữ liệu vào model để hiển thị trên view
+        model.addAttribute("movies", movieDTOPage.getContent());  // Danh sách các MovieDTO
+        model.addAttribute("totalPages", movieDTOPage.getTotalPages());  // Tổng số trang
+        model.addAttribute("currentPage", page);  // Trang hiện tại
         List<TypeEntity> movieTypes = movieService.getTypeMoVie();  // Lấy tất cả loại phim
         System.out.println(movieTypes);
         model.addAttribute("movieTypes", movieTypes);  // Thêm vào model để hiển thị trên form// Thêm đối tượng MovieDTO vào model
-        return "addmovie"; // Trả về view
+        return "movie_management"; // Trả về view
     }
 
     @PostMapping("/addmovie")
     public String createMovie(@RequestParam("movieImage") MultipartFile movieImage,
                               @Valid @ModelAttribute("movie") MovieDTO movieDTO,
                               BindingResult result,
-                              RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes,
+                              @RequestParam(value = "entriesPerPage", defaultValue = "10") int entriesPerPage,
+                              @RequestParam(value = "page", defaultValue = "1") int page,
+                              Model model) {
+
+        Page<MovieDTO> movieDTOPage = movieService.getMoviesPage(entriesPerPage, page);
+
+        // Thêm dữ liệu vào model để hiển thị trên view
+        model.addAttribute("movies", movieDTOPage.getContent());  // Danh sách các MovieDTO
+        model.addAttribute("totalPages", movieDTOPage.getTotalPages());  // Tổng số trang
+        model.addAttribute("currentPage", page);  // Trang hiện tại
         if (result.hasErrors()) {
-            return "addmovie";  // Nếu có lỗi, trả về lại form
+            return "movie_management";  // Nếu có lỗi, trả về lại form
         }
 
         // Xử lý upload hình ảnh và lưu
@@ -103,10 +122,17 @@ public class MovieController {
 
     // Hiển thị trang cập nhật thông tin phim
     @GetMapping("/update/{movieId}")
-    public String showUpdateMovieForm(@PathVariable int movieId, Model model) {
+    public String showUpdateMovieForm(@PathVariable int movieId, @RequestParam(value = "entriesPerPage", defaultValue = "10") int entriesPerPage,
+                                      @RequestParam(value = "page", defaultValue = "1") int page,Model model) {
+        Page<MovieDTO> movieDTOPage = movieService.getMoviesPage(entriesPerPage, page);
+
+        // Thêm dữ liệu vào model để hiển thị trên view
+        model.addAttribute("movies", movieDTOPage.getContent());  // Danh sách các MovieDTO
+        model.addAttribute("totalPages", movieDTOPage.getTotalPages());  // Tổng số trang
+        model.addAttribute("currentPage", page);  // Trang hiện tại
         MovieDTO movie = movieService.getById(movieId);
         model.addAttribute("movie", movie);
-        return "updatemovie";  // Trang cập nhật phim
+        return "movie_management";  // Trang cập nhật phim
     }
 
     // Cập nhật phim
@@ -117,7 +143,7 @@ public class MovieController {
                               BindingResult result,
                               RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "updatemovie";  // Nếu có lỗi, trả về lại form
+            return "movie_management";  // Nếu có lỗi, trả về lại form
         }
 
         // Nếu có ảnh mới, xử lý upload ảnh
@@ -146,9 +172,6 @@ public class MovieController {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // Nếu không tìm thấy phim
        }
    }
-
-
-
 
     // Xóa phim
     @GetMapping("/delete/{movieId}")
