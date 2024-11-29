@@ -261,7 +261,7 @@
     </div>
 
     <!-- Chọn số lượng sản phẩm mỗi trang -->
-    <label for="pageSize" style="color: black;">Số hóa đơn mỗi trang:</label>
+    <label for="pageSize" style="color: white;">Số hóa đơn mỗi trang:</label>
     <form action="/admin/tickets" method="get">
         <select name="size" id="pageSize" onchange="this.form.submit()" style="width: 50px;height: 35px;font-size: 30px">
             <option value="2" th:selected="${pageSize == 2}">2</option>
@@ -316,7 +316,7 @@
            th:href="@{'/admin/tickets?page=' + (${currentPage - 1}) + '&size=' + ${pageSize}}"
            class="button">Previous</a>
 
-        <span th:text="'Trang ' + (${currentPage + 1}) + ' / ' + ${totalPages}" style="color: black"></span>
+        <span th:text="'Trang ' + (${currentPage + 1}) + ' / ' + ${totalPages}" style="color: white"></span>
 
         <a th:if="${currentPage < totalPages - 1}"
            th:href="@{'/admin/tickets?page=' + (${currentPage + 1}) + '&size=' + ${pageSize}}"
