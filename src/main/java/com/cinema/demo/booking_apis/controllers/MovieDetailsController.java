@@ -3,6 +3,7 @@ package com.cinema.demo.booking_apis.controllers;
 import com.cinema.demo.booking_apis.dtos.MovieDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class MovieDetailsController {
      * @return Tên template Thymeleaf để hiển thị (movie-details.html)
      */
     @GetMapping
-    public String displayMovieDetailPage(@RequestParam Integer movieId, Model model) {
+    public String displayMovieDetailPage(@RequestParam Integer movieId, Model model, Authentication authentication) {
         // Tạo URL endpoint từ cấu hình base URL
         String urlTemplate = UriComponentsBuilder.fromHttpUrl(baseUrl + "/api/movies/details")
                 .queryParam("movieId", "{movieId}")
@@ -43,6 +44,12 @@ public class MovieDetailsController {
         // Gửi request đến backend để lấy thông tin phim
         ResponseEntity<MovieDTO> response = restTemplate.getForEntity(urlTemplate, MovieDTO.class, params);
         MovieDTO movie = response.getBody();
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("isLoggedIn", true);
+            model.addAttribute("username", authentication.getName());
+        } else {
+            model.addAttribute("isLoggedIn", false);
+        }
 
         // Truyền dữ liệu phim vào model để Thymeleaf render
         model.addAttribute("movie", movie);

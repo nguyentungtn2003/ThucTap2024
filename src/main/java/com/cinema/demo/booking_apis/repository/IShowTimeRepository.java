@@ -30,5 +30,4 @@ public interface IShowTimeRepository extends JpaRepository<ShowtimeEntity, Integ
     // Truy vấn các ngày chiếu (startDate) có sẵn cho bộ phim
     @Query("SELECT DISTINCT st.showDate.startDate FROM ShowtimeEntity st WHERE st.movie.movieId = :movieId ORDER BY st.showDate.startDate ASC")
     List<LocalDate> findAvailableDatesByMovieId(@Param("movieId") Integer movieId);
-
 }
