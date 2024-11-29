@@ -1,5 +1,6 @@
 package com.cinema.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,5 +26,6 @@ public class ShowtimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "showDateId")
+    @JsonManagedReference
     private ShowDateEntity showDate;
 }

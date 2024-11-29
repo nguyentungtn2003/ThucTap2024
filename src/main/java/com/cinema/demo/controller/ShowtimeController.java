@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,12 +44,14 @@ public class ShowtimeController {
 
     //Xem suất chiếu
     @GetMapping("/showtime")
-    public ResponseEntity<List<ShowtimeEntity>> getShowtimes(
+    public ResponseEntity<List<ShowtimeEntity>> getShowtime(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<ShowtimeEntity> showtimePage = showtimeRepository.findAll(pageable);
+
+        System.out.println("Total Showtimes: " + showtimePage.getTotalElements());
 
         return ResponseEntity.ok(showtimePage.getContent());
     }
@@ -58,8 +61,10 @@ public class ShowtimeController {
     public ResponseEntity<String> addShowtime(
             @RequestParam int movieId,
             @RequestParam int cinemaRoomId,
-            @RequestParam String showDates) {
+            @RequestParam String showDate, // Nhận ngày chiếu
+            @RequestParam String showTimes) {
 
+        // Tìm phòng chiếu và phim
         CinemaRoomEntity cinemaRoom = cinemaRoomRepository.findById(cinemaRoomId).orElse(null);
         MovieEntity movie = movieRepository.findById(movieId).orElse(null);
 
@@ -67,22 +72,46 @@ public class ShowtimeController {
             return ResponseEntity.badRequest().body("Phòng chiếu hoặc phim không tồn tại.");
         }
 
-        ShowtimeEntity showtime = new ShowtimeEntity();
-        showtime.setCinemaRoom(cinemaRoom);
-        showtime.setMovie(movie);
+        // Chuyển đổi chuỗi ngày chiếu thành LocalDate
+        LocalDate parsedDate;
+        try {
+            parsedDate = LocalDate.parse(showDate.trim());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Định dạng ngày chiếu không hợp lệ: " + showDate);
+        }
 
-        showtimeRepository.save(showtime);
+        // Tìm hoặc tạo mới ShowDateEntity
+        ShowDateEntity showDateEntity = showDateRepository.findByStartDate(parsedDate)
+                .orElseGet(() -> {
+                    ShowDateEntity newShowDate = new ShowDateEntity();
+                    newShowDate.setStartDate(parsedDate); // Gán giá trị startDate
+                    return showDateRepository.save(newShowDate);
+                });
 
-        String[] dates = showDates.split(",");
-        for (String date : dates) {
-            ShowDateEntity showDateEntity = new ShowDateEntity();
-            showDateEntity.setStartDate(LocalDate.parse(date.trim())); // Use LocalDate.parse
-            showDateEntity.setShowtime(List.of(showtime)); // Use List.of for single element
-            showDateRepository.save(showDateEntity);
+        // Xử lý showTimes
+        String[] times = showTimes.split(",");
+        for (String time : times) {
+            try {
+                LocalTime parsedTime = LocalTime.parse(time.trim()); // Chuyển chuỗi thành LocalTime
+
+                // Tạo mới ShowtimeEntity
+                ShowtimeEntity showtime = new ShowtimeEntity();
+                showtime.setCinemaRoom(cinemaRoom);
+                showtime.setMovie(movie);
+                showtime.setShowDate(showDateEntity); // Gán ngày chiếu
+                showtime.setStartTime(parsedTime);   // Gán giờ chiếu
+
+                // Lưu suất chiếu
+                showtimeRepository.save(showtime);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Định dạng thời gian không hợp lệ: " + time);
+            }
         }
 
         return ResponseEntity.ok("Thêm suất chiếu thành công.");
     }
+
+
 
 
     //Cập nhật suất chiếu
@@ -104,31 +133,20 @@ public class ShowtimeController {
         showtime.setCinemaRoom(cinemaRoom);
         showtime.setMovie(movie);
 
-        showtimeRepository.save(showtime);
-
-        // Delete old show dates
-        showDateRepository.deleteByShowtime_ShowtimeId(id);
-
-        // Add new show dates
-        for (String showDate : showtimeDTO.getShowDates()) {
-            if (showDate == null || showDate.trim().isEmpty()) {
-                throw new IllegalArgumentException("Ngày chiếu không hợp lệ.");
-            }
-
-            try {
-                LocalDate parsedDate = LocalDate.parse(showDate.trim());
-                ShowDateEntity showDateEntity = new ShowDateEntity();
-                showDateEntity.setStartDate(parsedDate); // Use setStartDate
-                showDateEntity.setShowtime(List.of(showtime)); // Use List.of for single element
-                showDateRepository.save(showDateEntity);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Định dạng ngày chiếu không đúng: " + showDate);
-            }
+        // Cập nhật thời gian chiếu (startTime)
+        if (showtimeDTO.getStartTime() == null || showtimeDTO.getStartTime().isEmpty()) {
+            return ResponseEntity.badRequest().body("Thời gian chiếu không hợp lệ.");
+        }
+        try {
+            LocalTime parsedTime = LocalTime.parse(showtimeDTO.getStartTime());
+            showtime.setStartTime(parsedTime);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Định dạng giờ chiếu không đúng.");
         }
 
+        showtimeRepository.save(showtime);
         return ResponseEntity.ok("Cập nhật suất chiếu thành công.");
     }
-
     //Xóa suất chiếu
     @DeleteMapping("/showtime/{id}")
     public ResponseEntity<String> deleteShowtime(@PathVariable int id) {

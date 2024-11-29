@@ -143,6 +143,7 @@
         /* Table */
         .table-container {
             overflow-x: auto;
+            margin-left: 70px;
         }
 
         table {
@@ -164,11 +165,11 @@
 
         /* Row colors */
         tr:nth-child(odd) {
-            background-color: #d9a5a5; /* Red color for odd rows */
+            background-color: gray; /* Red color for odd rows */
         }
 
         tr:nth-child(even) {
-            background-color: #c3d0d9; /* Blue color for even rows */
+            background-color: darkgray; /* Blue color for even rows */
         }
 
         /* Icons */
@@ -360,11 +361,17 @@
                 <span class="error-message" id="cinemaRoomError"></span>
             </div>
             <div class="form-group">
-                <label for="showDates">Ngày Chiếu (có thể chọn nhiều ngày)</label>
-                <input type="text" id="showDates" name="showDates" placeholder="Nhập ngày chiếu, cách nhau bởi dấu phẩy (yyyy-mm-dd)" required />
-                <span class="error-message" id="showDatesError"></span>
+            <label for="showDate">Ngày chiếu:</label>
+            <input type="date" id="showDate" />
+            <span id="showDateError" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="showTimes">Giờ Chiếu (có thể chọn nhiều giờ)</label>
+                <input type="text" id="showTimes" name="showTimes" placeholder="Nhập giờ chiếu, cách nhau bởi dấu phẩy (hh:mm)" required />
+                <span class="error-message" id="showTimesError"></span>
             </div>
             <button type="submit">Thêm Suất Chiếu</button>
+
 
             <!-- Thông báo thành công -->
             <div id="messageContainer" style="display: none; font-size: 16px; margin: 10px 0;"></div>
@@ -381,7 +388,8 @@
             <tr>
                 <th>Phim</th>
                 <th>Phòng Chiếu</th>
-                <th>Ngày Chiếu</th>
+                <th>Ngày chiếu</th>
+                <th>Giờ chiếu</th>
                 <th>Thao Tác</th>
             </tr>
             </thead>
@@ -414,8 +422,8 @@
                 </select>
             </div>
             <div>
-                <label for="editShowDates">Ngày Chiếu (YYYY-MM-DD, phân cách bằng dấu phẩy):</label>
-                <input type="text" id="editShowDates">
+                <label for="editShowTime">Giờ Chiếu:</label>
+                <input type="text" id="editShowTime" />
             </div>
             <div>
                 <button type="button" onclick="updateShowtime()">Lưu</button>
@@ -436,11 +444,13 @@
         // Lấy các giá trị từ form
         const movieId = document.getElementById("movie").value;
         const cinemaRoomId = document.getElementById("cinemaRoom").value;
-        const showDates = document.getElementById("showDates").value.split(',').map(date => date.trim());
+        const showTimes = document.getElementById("showTimes").value.split(',').map(time => time.trim());
+        const showDate = document.getElementById("showDate").value;
 
         console.log("movieId:", movieId); // Log giá trị movieId
         console.log("cinemaRoomId:", cinemaRoomId); // Log giá trị cinemaRoomId
-        console.log("showDates:", showDates); // Log giá trị showDates
+        console.log("showDate:", showDate);
+        console.log("showTimes:", showTimes); // Log giá trị showTimes
 
         let isValid = true; // Biến kiểm tra tính hợp lệ của form
 
@@ -456,16 +466,20 @@
             document.getElementById("cinemaRoomError").textContent = "Phòng chiếu không được để trống.";
             isValid = false;
         }
-        if (!showDates || showDates.length === 0) {
-            document.getElementById("showDatesError").textContent = "Ngày chiếu không được để trống.";
+        if (!showDate) {
+            document.getElementById("showDateError").textContent = "Ngày chiếu không được để trống.";
+            isValid = false;
+        }
+        if (!showTimes || showTimes.length === 0) {
+            document.getElementById("showTimesError").textContent = "Giờ chiếu không được để trống.";
             isValid = false;
         }
 
-        // Kiểm tra ngày chiếu hợp lệ
-        showDates.forEach((date, index) => {
-            const dateRegex = /^\d{4}-\d{2}-\d{2}$/; // Kiểm tra định dạng yyyy-mm-dd
-            if (!dateRegex.test(date)) {
-                document.getElementById("showDatesError").textContent = `Ngày chiếu thứ ${index + 1} không hợp lệ (yyyy-mm-dd).`;
+        // Kiểm tra giờ chiếu hợp lệ
+        showTimes.forEach((time, index) => {
+            const timeRegex = /^\d{2}:\d{2}$/; // Kiểm tra định dạng HH:mm
+            if (!timeRegex.test(time)) {
+                document.getElementById("showTimesError").textContent = `Giờ chiếu thứ ${index + 1} không hợp lệ (HH:mm).`;
                 isValid = false;
             }
         });
@@ -483,7 +497,7 @@
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: new URLSearchParams({
-                movieId, cinemaRoomId, showDates: showDates.join(',')
+                movieId, cinemaRoomId,showDate, showTimes: showTimes.join(',')
             })
         })
             .then(response => {
@@ -520,31 +534,34 @@
             });
     });
 
-
     function fetchShowtimes() {
         fetch('/admin/showtime-management/showtime')
             .then(response => response.json())
             .then(data => {
+                console.log("Số lượng suất chiếu:", data.length);  // Kiểm tra số lượng
+                console.log(data); // Kiểm tra dữ liệu nhận được
+
                 const tbody = document.getElementById('showtimeTableBody');
                 tbody.innerHTML = ''; // Xóa nội dung cũ trong bảng
 
+                // Kiểm tra và hiển thị từng suất chiếu
                 data.forEach(showtime => {
                     const row = document.createElement('tr');
 
-                    // Kiểm tra showDates trước khi xử lý
-
-                    let showDatesDisplay = 'Không có ngày chiếu';
-                    if (Array.isArray(showtime.showDates) && showtime.showDates.length > 0) {
-                        showDatesDisplay = showtime.showDates.map(date => {
-                            const dateObj = new Date(date.date);
-                            return dateObj.toISOString().split('T')[0]; // Lấy phần ngày từ ISO string
-                        }).join(', ');
+                    // Xử lý giờ chiếu
+                    let showTimeDisplay = 'Không có suất chiếu';
+                    if (showtime.startTime) {
+                        showTimeDisplay = showtime.startTime;
                     }
 
+                    // Truy xuất ngày chiếu từ showDate
+                    const showDateDisplay = showtime.showDate ? showtime.showDate.startDate : 'Không có ngày chiếu';
+
                     row.innerHTML = `
-                    <td>${showtime.movie.movieName}</td>
+                    <td>${showtime.movie.title}</td>
                     <td>${showtime.cinemaRoom.cinemaRoomNum}</td>
-                    <td>${showDatesDisplay}</td>
+                    <td>${showDateDisplay}</td>
+                    <td>${showTimeDisplay}</td>
                     <td>
                         <button class="icon" onclick="editShowtime(${showtime.showtimeId})">Sửa</button>
                         <button class="icon" onclick="deleteShowtime(${showtime.showtimeId})">Xóa</button>
@@ -554,36 +571,30 @@
                 });
             })
             .catch(error => {
-                console.error("Có lỗi xảy ra khi lấy danh sách suất chiếu:", error); // Log lỗi nếu có
+                console.error("Có lỗi xảy ra khi lấy danh sách suất chiếu:", error);
             });
     }
-
 
     // Hàm để mở modal sửa suất chiếu
     function editShowtime(id) {
         fetch(`/admin/showtime-management/showtime/${id}`)
             .then(response => response.json())
             .then(data => {
+                console.log(data); // Kiểm tra dữ liệu trả về từ API
                 // Cập nhật các trường trong modal với dữ liệu từ backend
                 document.getElementById('editShowtimeId').value = data.showtimeId;
-                document.getElementById('editMovie').value = data.movie.movieId;
-                document.getElementById('editCinemaRoom').value = data.cinemaRoom.cinemaRoomId;
+            loadCinemaRoomsForEdit();
+            loadMoviesForEdit();
 
-                // Định dạng ngày chiếu giống `fetchShowtimes`
-                let showDatesDisplay = 'Không có ngày chiếu';
-                if (Array.isArray(data.showDates) && data.showDates.length > 0) {
-                    showDatesDisplay = data.showDates.map(dateObj => {
-                        const date = new Date(dateObj.date); // Lấy ngày từ `dateObj.date`
-                        return date.toISOString().split('T')[0]; // Định dạng thành YYYY-MM-DD
-                    }).join(', ');
+                // Định dạng giờ chiếu
+                let showTimeDisplay = 'Không có giờ chiếu';
+                if (data.startTime) {
+                    showTimeDisplay = data.startTime; // Lấy giá trị trực tiếp từ `startTime`
                 }
-                document.getElementById('editShowDates').value = showDatesDisplay;
+                document.getElementById('editShowTime').value = showTimeDisplay;
 
                 // Hiển thị modal
                 document.getElementById('editShowtimeModal').style.display = 'flex';
-
-                // Tải dữ liệu vào modal (phim và phòng chiếu)
-                loadDataToModal();
             })
             .catch(error => console.error('Error loading showtime details:', error));
     }
@@ -693,7 +704,7 @@
                 data.forEach(movie => {
                     const option = document.createElement('option');
                     option.value = movie.movieId;
-                    option.textContent = movie.movieName;
+                    option.textContent = movie.title;
                     movieSelect.appendChild(option);
                 });
             })
@@ -708,9 +719,10 @@
                 const movieSelect = document.getElementById('editMovie');
                 movieSelect.innerHTML = '';
                 data.forEach(movie => {
+                    console.log(movie);
                     const option = document.createElement('option');
                     option.value = movie.movieId;
-                    option.textContent = movie.movieName;
+                    option.textContent = movie.title;
                     movieSelect.appendChild(option);
                 });
             })

@@ -139,6 +139,7 @@
       /* Table */
       .table-container {
         overflow-x: auto;
+        margin-left: 70px;
       }
 
       table {
@@ -160,11 +161,11 @@
 
       /* Row colors */
       tr:nth-child(odd) {
-        background-color: #d9a5a5; /* Red color for odd rows */
+        background-color: gray; /* Red color for odd rows */
       }
 
       tr:nth-child(even) {
-        background-color: #c3d0d9; /* Blue color for even rows */
+        background-color: darkgray; /* Blue color for even rows */
       }
 
       /* Icons */
@@ -277,6 +278,7 @@
       #editStaffModal .button-container button:hover {
         opacity: 0.8; /* Hiệu ứng khi hover */
       }
+
     </style>
   </head>
   <body>
@@ -365,7 +367,7 @@
       <button type="button" onclick="addStaff()">Thêm Nhân Viên</button>
     </form>
   </div>
-  <div id="successMessage" style="display: none; color: green; font-size: 16px; padding: 10px; margin-top: 10px;">
+  <div id="successMessage" style="display: none; color: green; font-size: 16px; padding: 10px; margin-top: 10px; margin-left: 70px">
     Cập nhật thành công!
   </div>
   <!-- Danh sách Nhân Viên -->
@@ -592,7 +594,7 @@
             .then(response => response.text())
             .then(data => {
               const successMessage = document.getElementById("successMessage");
-              successMessage.textContent = "Xóa nhân viên thành công!";
+                successMessage.textContent = "Xóa nhân viên thành công!";
               successMessage.style.display = "block"; // Hiển thị thông báo
 
               // Ẩn thông báo sau 3 giây

@@ -17,6 +17,7 @@ import java.util.Date;
 public class MovieEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "movie_Id")
     private int movieId;
     private String movieName;
     private String description;

@@ -16,6 +16,8 @@ import java.util.List;
 public class ShowtimeDTO {
     private int movieId;
     private int cinemaRoomId;
-    private List<String> showDates;  // Danh sách các ngày chiếu
+    private List<String> showDates;
+    private String startTime;
+    // Danh sách các ngày chiếu
 
 }
