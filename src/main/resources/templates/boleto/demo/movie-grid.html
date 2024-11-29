@@ -56,128 +56,33 @@
                 </div>
                 <ul class="menu">
                     <li>
-                        <a href="#0">Home</a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="index.html">Home One</a>
-                            </li>
-                            <li>
-                                <a href="index-2.html">Home Two</a>
-                            </li>
-                        </ul>
+                        <a href="home">Home</a>
                     </li>
                     <li>
-                        <a href="#0" class="active">movies</a>
-                        <ul class="submenu">
-                            <li>
-                                <a th:href="@{'/list-movies'}" type="button" class="active">Movie Grid</a>
-                            </li>
-                            <li>
-                                <a href="movie-list.html">Movie List</a>
-                            </li>
-                            <li>
-                                <a href="movie-details.html">Movie Details</a>
-                            </li>
-                            <li>
-                                <a href="movie-details-2.html">Movie Details 2</a>
-                            </li>
-                            <li>
-                                <a href="movie-ticket-plan.html">Movie Ticket Plan</a>
-                            </li>
-                            <li>
-                                <a href="movie-seat-plan.html">Movie Seat Plan</a>
-                            </li>
-                            <li>
-                                <a href="movie-checkout.html">Movie Checkout</a>
-                            </li>
-                            <li>
-                                <a href="popcorn.html">Movie Food</a>
-                            </li>
-                        </ul>
+                        <a th:href="@{'/list-movies'}">Movies</a>
                     </li>
                     <li>
-                        <a href="#0">events</a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="events.html">Events</a>
-                            </li>
-                            <li>
-                                <a href="event-details.html">Event Details</a>
-                            </li>
-                            <li>
-                                <a href="event-speaker.html">Event Speaker</a>
-                            </li>
-                            <li>
-                                <a href="event-ticket.html">Event Ticket</a>
-                            </li>
-                            <li>
-                                <a href="event-checkout.html">Event Checkout</a>
-                            </li>
-                        </ul>
+                        <a href="contact.html">Contact</a>
                     </li>
-                    <li>
-                        <a href="#0">sports</a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="sports.html">Sports</a>
-                            </li>
-                            <li>
-                                <a href="sport-details.html">Sport Details</a>
-                            </li>
-                            <li>
-                                <a href="sports-ticket.html">Sport Ticket</a>
-                            </li>
-                            <li>
-                                <a href="sports-checkout.html">Sport Checkout</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#0">pages</a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="about.html">About Us</a>
-                            </li>
-                            <li>
-                                <a href="apps-download.html">Apps Download</a>
-                            </li>
-                            <li>
-                                <a href="sign-in.html">Sign In</a>
-                            </li>
-                            <li>
-                                <a href="sign-up.html">Sign Up</a>
-                            </li>
-                            <li>
-                                <a href="404.html">404</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#0">blog</a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="blog.html">Blog</a>
-                            </li>
-                            <li>
-                                <a href="blog-details.html">Blog Single</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="contact.html">contact</a>
+                    <!-- Display username if logged in -->
+                    <li th:if="${isLoggedIn}">
+                        <span>Welcome, <span th:text="${username}"></span>!</span>
                     </li>
                     <li class="header-button pr-0">
-                        <a href="sign-up.html">join us</a>
+                        <!-- Check if the user is logged in -->
+                        <a th:if="${isLoggedIn}" th:href= "@{'/do-logout'}">Logout</a>
+                        <a th:if="${!isLoggedIn}" href="login">Join Us</a>
                     </li>
                 </ul>
                 <div class="header-bar d-lg-none">
-					<span></span>
-					<span></span>
-					<span></span>
-				</div>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
     </header>
+
     <!-- ==========Header-Section========== -->
 
     <!-- ==========Banner-Section========== -->
@@ -395,93 +300,93 @@
                             </a>
                         </div>
                     </div>
-                    <div class="widget-1 widget-check">
-                        <div class="widget-header">
-                            <h5 class="m-title">Filter By</h5> <a href="#0" class="clear-check">Clear All</a>
-                        </div>
-                        <div class="widget-1-body">
-                            <h6 class="subtitle">Language</h6>
-                            <div class="check-area">
-                                <div class="form-group">
-                                    <input type="checkbox" name="lang" id="lang1"><label for="lang1">Tamil</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="lang" id="lang2"><label for="lang2">Telegu</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="lang" id="lang3"><label for="lang3">Hindi</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="lang" id="lang4"><label for="lang4">English</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="lang" id="lang5"><label for="lang5">Multiple Language</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="lang" id="lang6"><label for="lang6">Gujrati</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="lang" id="lang7"><label for="lang7">Bangla</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="widget-1 widget-check">
-                        <div class="widget-1-body">
-                            <h6 class="subtitle">experience</h6>
-                            <div class="check-area">
-                                <div class="form-group">
-                                    <input type="checkbox" name="mode" id="mode1"><label for="mode1">2d</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="mode" id="mode2"><label for="mode2">3d</label>
-                                </div>
-                            </div>
-                            <div class="add-check-area">
-                                <a href="#0">view more <i class="plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="widget-1 widget-check">
-                        <div class="widget-1-body">
-                            <h6 class="subtitle">genre</h6>
-                            <div class="check-area">
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre1"><label for="genre1">thriller</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre2"><label for="genre2">horror</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre3"><label for="genre3">drama</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre4"><label for="genre4">romance</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre5"><label for="genre5">action</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre6"><label for="genre6">comedy</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre7"><label for="genre7">romantic</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre8"><label for="genre8">animation</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre9"><label for="genre9">sci-fi</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" name="genre" id="genre10"><label for="genre10">adventure</label>
-                                </div>
-                            </div>
-                            <div class="add-check-area">
-                                <a href="#0">view more <i class="plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="widget-1 widget-check">-->
+<!--                        <div class="widget-header">-->
+<!--                            <h5 class="m-title">Filter By</h5> <a href="#0" class="clear-check">Clear All</a>-->
+<!--                        </div>-->
+<!--                        <div class="widget-1-body">-->
+<!--                            <h6 class="subtitle">Language</h6>-->
+<!--                            <div class="check-area">-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="lang" id="lang1"><label for="lang1">Tamil</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="lang" id="lang2"><label for="lang2">Telegu</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="lang" id="lang3"><label for="lang3">Hindi</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="lang" id="lang4"><label for="lang4">English</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="lang" id="lang5"><label for="lang5">Multiple Language</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="lang" id="lang6"><label for="lang6">Gujrati</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="lang" id="lang7"><label for="lang7">Bangla</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="widget-1 widget-check">-->
+<!--                        <div class="widget-1-body">-->
+<!--                            <h6 class="subtitle">experience</h6>-->
+<!--                            <div class="check-area">-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="mode" id="mode1"><label for="mode1">2d</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="mode" id="mode2"><label for="mode2">3d</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="add-check-area">-->
+<!--                                <a href="#0">view more <i class="plus"></i></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="widget-1 widget-check">-->
+<!--                        <div class="widget-1-body">-->
+<!--                            <h6 class="subtitle">genre</h6>-->
+<!--                            <div class="check-area">-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre1"><label for="genre1">thriller</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre2"><label for="genre2">horror</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre3"><label for="genre3">drama</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre4"><label for="genre4">romance</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre5"><label for="genre5">action</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre6"><label for="genre6">comedy</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre7"><label for="genre7">romantic</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre8"><label for="genre8">animation</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre9"><label for="genre9">sci-fi</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="checkbox" name="genre" id="genre10"><label for="genre10">adventure</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="add-check-area">-->
+<!--                                <a href="#0">view more <i class="plus"></i></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="widget-1 widget-banner">
                         <div class="widget-1-body">
                             <a href="#0">
@@ -534,7 +439,7 @@
                                         <div class="movie-grid">
                                             <div class="movie-thumb c-thumb">
                                                 <a th:href="@{'/movie-details?movieId=' + ${movie.movieId}}">
-                                                    <img th:src="@{/{movie.smallImageURl}}" alt="movie">
+                                                    <img th:src="@{${movie.image}}" alt="movie">
                                                 </a>
                                             </div>
                                             <div class="movie-content bg-one">
@@ -565,14 +470,14 @@
                                     <div class="movie-list">
                                         <div class="movie-thumb c-thumb">
                                             <a th:href="@{'/movie-details?movieId=' + ${movie.movieId}}" class="w-100 bg_img h-100" data-background="assets/images/movie/movie01.jpg">
-                                                <img class="d-sm-none" th:src="@{/{movie.smallImageURl}}" alt="movie">
+                                                <img class="d-sm-none" th:src="@{${movie.image}}" alt="movie">
                                             </a>
                                         </div>
                                         <div class="movie-content bg-one">
                                             <h5 class="title">
                                                 <a th:href="@{'/movie-details?movieId=' + ${movie.movieId}}" th:text="${movie.title}"></a>
                                             </h5>
-                                            <p class="duration" th:src="@{/{movie.runningTime}}"></p>
+                                            <p class="duration" th:src="@{${movie.runningTime}}"></p>
                                             <div class="movie-tags">
                                                 <a href="#0">action</a>
                                                 <a href="#0">adventure</a>

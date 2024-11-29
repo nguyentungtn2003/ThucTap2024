@@ -1,5 +1,6 @@
 package com.cinema.demo.service.impl;
 
+import com.cinema.demo.repository.ShowtimeRepository;
 import com.cinema.demo.dto.MovieDTO;
 import com.cinema.demo.entity.MovieEntity;
 import com.cinema.demo.entity.MovieTypeEntity;
@@ -39,6 +40,9 @@ public class MovieServiceImpl implements IMovieService {
 
     @Autowired
     private MovieTypeRepository movieTypeRepository;
+
+    @Autowired
+    private ShowtimeRepository showtimeRepository;
 
     private static String UPLOAD_DIR = "D:\\java\\ProjectOJT\\ThucTap2024\\upload/";
     private final String DIR = "upload/";
@@ -194,6 +198,7 @@ public class MovieServiceImpl implements IMovieService {
         if (!movieRepository.existsById(movieId)) {
             throw new EntityNotFoundException("Movie with ID " + movieId + " not found");
         }
+        showtimeRepository.deleteByMovieId(movieId);
         movieRepository.deleteById(movieId);
     }
 

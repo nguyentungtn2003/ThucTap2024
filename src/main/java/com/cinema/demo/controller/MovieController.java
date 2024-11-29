@@ -55,6 +55,7 @@ public class MovieController {
 
         // Thêm dữ liệu vào model để hiển thị trên view
         model.addAttribute("movies", movieDTOPage.getContent());  // Danh sách các MovieDTO
+        System.out.println( movieDTOPage.getContent());
         model.addAttribute("totalPages", movieDTOPage.getTotalPages());  // Tổng số trang
         model.addAttribute("currentPage", page);  // Trang hiện tại
 
@@ -128,7 +129,7 @@ public class MovieController {
         model.addAttribute("currentPage", page);  // Trang hiện tại
         MovieDTO movie = movieService.getById(movieId);
         model.addAttribute("movie", movie);
-        return "movie_management";  // Trang cập nhật phim
+        return "admin/movie_management";  // Trang cập nhật phim
     }
 
     // Cập nhật phim
@@ -139,7 +140,7 @@ public class MovieController {
                               BindingResult result,
                               RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "movie_management";  // Nếu có lỗi, trả về lại form
+            return "admin/movie_management";  // Nếu có lỗi, trả về lại form
         }
 
         // Nếu có ảnh mới, xử lý upload ảnh
@@ -173,9 +174,11 @@ public class MovieController {
     @GetMapping("/delete/{movieId}")
     public String deleteMovie(@PathVariable int movieId, RedirectAttributes redirectAttributes) {
         try {
+
             movieService.deleteMovie(movieId);
             redirectAttributes.addFlashAttribute("message", "Phim đã được xóa thành công!");
         } catch (Exception e) {
+            System.out.println(movieId);
             redirectAttributes.addFlashAttribute("error", "Không tìm thấy phim để xóa.");
         }
         return "redirect:/movies/moviemanagement";  // Chuyển hướng đến danh sách phim
