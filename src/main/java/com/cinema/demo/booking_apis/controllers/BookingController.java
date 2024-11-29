@@ -336,57 +336,57 @@ public class BookingController {
 //    }
 
 
-    @PostMapping("/order")
-    public String orderConcession(@RequestParam("concessionTypeId") int concessionTypeId,
-                                  @RequestParam("quantity") int quantity,
-                                  @RequestParam("invoiceId") int invoiceId,
-                                  Model model) {
-        // Lấy InvoiceEntity từ InvoiceService
-        Optional<InvoiceEntity> invoiceEntityOpt = invoiceService.getInvoiceById(invoiceId);
-        if (invoiceEntityOpt.isEmpty()) {
-            model.addAttribute("error", "Invoice không tồn tại");
-            return "boleto/demo/popcorn";
-        }
-
-        InvoiceEntity invoiceEntity = invoiceEntityOpt.get();
-
-        Optional<TypeOfConcessionEntity> concessionTypeOpt = typeOfConcessionService.getAllConcessions().stream()
-                .filter(type -> type.getConcessionTypeId() == concessionTypeId)
-                .findFirst();
-
-        if (concessionTypeOpt.isEmpty()) {
-            model.addAttribute("error", "Loại đồ ăn không tồn tại");
-            return "boleto/demo/popcorn";
-        }
-
-        TypeOfConcessionEntity concessionType = concessionTypeOpt.get();
-
-        ConcessionOrderEntity concessionOrderEntity = new ConcessionOrderEntity();
-        concessionOrderEntity.setQuantity(quantity);
-        concessionOrderEntity.setPrice(concessionType.getPrice());
-        concessionOrderEntity.setConcessionType(concessionType);
-        concessionOrderEntity.setInvoice(invoiceEntity);
-
-        concessionOrderService.saveConcessionOrder(concessionOrderEntity);
-
-        List<ConcessionOrderEntity> cart = (List<ConcessionOrderEntity>) model.getAttribute("cart");
-        if (cart == null) {
-            cart = new ArrayList<>();
-        }
-
-        cart.add(concessionOrderEntity);
-
-        BigDecimal totalAmount = cart.stream()
-                .map(order -> order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal totalPriceWithVAT = totalAmount.add(BigDecimal.valueOf(15));
-
-        model.addAttribute("invoiceId", invoiceId);
-        model.addAttribute("cart", cart);
-        model.addAttribute("totalAmount", totalAmount);
-        model.addAttribute("totalPriceWithVAT", totalPriceWithVAT);
-        model.addAttribute("success", "Đặt hàng thành công");
-        return "boleto/demo/popcorn";
-    }
+//    @PostMapping("/order")
+//    public String orderConcession(@RequestParam("concessionTypeId") int concessionTypeId,
+//                                  @RequestParam("quantity") int quantity,
+//                                  @RequestParam("invoiceId") int invoiceId,
+//                                  Model model) {
+//        // Lấy InvoiceEntity từ InvoiceService
+//        Optional<InvoiceEntity> invoiceEntityOpt = invoiceService.getInvoiceById(invoiceId);
+//        if (invoiceEntityOpt.isEmpty()) {
+//            model.addAttribute("error", "Invoice không tồn tại");
+//            return "boleto/demo/popcorn";
+//        }
+//
+//        InvoiceEntity invoiceEntity = invoiceEntityOpt.get();
+//
+//        Optional<TypeOfConcessionEntity> concessionTypeOpt = typeOfConcessionService.getAllConcessions().stream()
+//                .filter(type -> type.getConcessionTypeId() == concessionTypeId)
+//                .findFirst();
+//
+//        if (concessionTypeOpt.isEmpty()) {
+//            model.addAttribute("error", "Loại đồ ăn không tồn tại");
+//            return "boleto/demo/popcorn";
+//        }
+//
+//        TypeOfConcessionEntity concessionType = concessionTypeOpt.get();
+//
+//        ConcessionOrderEntity concessionOrderEntity = new ConcessionOrderEntity();
+//        concessionOrderEntity.setQuantity(quantity);
+//        concessionOrderEntity.setPrice(concessionType.getPrice());
+//        concessionOrderEntity.setConcessionType(concessionType);
+//        concessionOrderEntity.setInvoice(invoiceEntity);
+//
+//        concessionOrderService.saveConcessionOrder(concessionOrderEntity);
+//
+//        List<ConcessionOrderEntity> cart = (List<ConcessionOrderEntity>) model.getAttribute("cart");
+//        if (cart == null) {
+//            cart = new ArrayList<>();
+//        }
+//
+//        cart.add(concessionOrderEntity);
+//
+//        BigDecimal totalAmount = cart.stream()
+//                .map(order -> order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity())))
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//
+//        BigDecimal totalPriceWithVAT = totalAmount.add(BigDecimal.valueOf(15));
+//
+//        model.addAttribute("invoiceId", invoiceId);
+//        model.addAttribute("cart", cart);
+//        model.addAttribute("totalAmount", totalAmount);
+//        model.addAttribute("totalPriceWithVAT", totalPriceWithVAT);
+//        model.addAttribute("success", "Đặt hàng thành công");
+//        return "boleto/demo/popcorn";
+//    }
 }

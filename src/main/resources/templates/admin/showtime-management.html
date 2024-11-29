@@ -388,7 +388,6 @@
             <tr>
                 <th>Phim</th>
                 <th>Phòng Chiếu</th>
-                <th>Ngày chiếu</th>
                 <th>Giờ chiếu</th>
                 <th>Thao Tác</th>
             </tr>
@@ -560,7 +559,6 @@
                     row.innerHTML = `
                     <td>${showtime.movie.title}</td>
                     <td>${showtime.cinemaRoom.cinemaRoomNum}</td>
-                    <td>${showDateDisplay}</td>
                     <td>${showTimeDisplay}</td>
                     <td>
                         <button class="icon" onclick="editShowtime(${showtime.showtimeId})">Sửa</button>
