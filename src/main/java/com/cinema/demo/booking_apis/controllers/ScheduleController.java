@@ -85,7 +85,6 @@ public class ScheduleController {
     private static final String API_GET_START_TIMES = "/api/schedule/start-times";
 //    private static final String API_GET_SHOW_TIMES = "/api/schedule/schedule-times";
 
-    // Hiển thị trang kế hoạch chọn vé
     @GetMapping
     public String showTicketPlanPage(@RequestParam Integer movieId,
                                      @RequestParam(required = false) String startDate,
@@ -103,17 +102,14 @@ public class ScheduleController {
             return "boleto/demo/movie-ticket-plan";
         }
 
-        // Lấy danh sách thời gian bắt đầu (suất chiếu) từ API
         String startTimesUrl = baseUrl + API_GET_START_TIMES + "?movieId=" + movieId + "&startDate=" + startDate;
         ResponseEntity<String[]> startTimesResponse = restTemplate.exchange(startTimesUrl, HttpMethod.GET, null, String[].class);
         String[] startTimes = startTimesResponse.getBody();
 
-//        // Lấy danh sách phòng chiếu từ API
 //        String showtimesUrl = baseUrl + API_GET_SHOW_TIMES + "?movieId=" + movieId + "&startDate=" + startDate;
 //        ResponseEntity<List<ShowtimeDTO>> showtimesResponse = restTemplate.exchange(showtimesUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<ShowtimeDTO>>() {});
 //        List<ShowtimeDTO> showtimes = showtimesResponse.getBody();
 
-        // Truyền dữ liệu vào model
         model.addAttribute("movieId", movieId);
         model.addAttribute("startDate", startDate);
         model.addAttribute("startTimes", startTimes);
@@ -122,7 +118,6 @@ public class ScheduleController {
         return "boleto/demo/movie-ticket-plan";
     }
 
-    // Khi người dùng đã chọn thông tin vé, chuyển đến trang chọn ghế
     @PostMapping("/select-seat")
     public String selectSeat(@RequestParam Integer movieId, @RequestParam String startDate,
                              @RequestParam String startTime, @RequestParam Integer roomId, Model model) {

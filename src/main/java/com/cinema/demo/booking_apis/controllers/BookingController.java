@@ -154,7 +154,7 @@ public class BookingController {
                 return "boleto/demo/404";
             }
 
-            if (seat.getIsOccupied() != 0) {
+            if (seat.getIsOccupied() == 2) {
                 model.addAttribute("error", "Seat " + seat.getSeatPosition() + " is no longer available.");
                 model.addAttribute("movie_Id", movie_Id);
                 model.addAttribute("start_Date", start_Date);
@@ -271,6 +271,56 @@ public class BookingController {
     }
 
 
+    @PostMapping("/payment")
+    public String payment(@RequestParam("ticketId[]") List<Integer> tickets, HttpServletRequest request,Model model) {
+        HttpSession session = request.getSession();
+        Integer movie_Id = (Integer) session.getAttribute("movie_Id");
+        String start_Date = (String) session.getAttribute("start_Date");
+        String start_Time = (String) session.getAttribute("start_Time");
+        Integer room_Id = (Integer) session.getAttribute("room_Id");
+        if (tickets == null || tickets.isEmpty()) {
+            model.addAttribute("error", "Ticket IDs are required.");
+            return "boleto/demo/404";
+        }
+
+        for (Integer ticketId : tickets) {
+            TicketDTO ticketDTO = ticketService.getTicketById(ticketId);
+
+            if (ticketDTO == null) {
+                model.addAttribute("error", "Booking not found for ticket ID " + ticketId);
+                return "boleto/demo/404";
+            }
+
+            if ("Canceled".equals(ticketDTO.getStatus())) {
+                model.addAttribute("error", "This ticket has already been canceled.");
+                return "boleto/demo/404";
+            }
+            if (ticketDTO.getSeat().getIsOccupied() == 2) {
+                model.addAttribute("error", "Seat " + ticketDTO.getSeat().getSeatPosition() + " is no longer available.");
+                model.addAttribute("movie_Id", movie_Id);
+                model.addAttribute("start_Date", start_Date);
+                model.addAttribute("start_Time", start_Time);
+                model.addAttribute("room_Id", room_Id);
+                return "boleto/demo/404";
+            }
+
+            SeatDTO seat = ticketDTO.getSeat();
+            seat.setIsOccupied(2);
+            seatService.updateSeatStatus(seat);
+
+            ticketDTO.setStatus("Can use");
+            ticketService.saveTicket(ticketDTO);
+        }
+
+        model.addAttribute("ticketIds", tickets);
+        model.addAttribute("movie_Id", movie_Id);
+        model.addAttribute("start_Date", start_Date);
+        model.addAttribute("start_Time", start_Time);
+        model.addAttribute("room_Id", room_Id);
+        model.addAttribute("message", "Your booking(s) have been canceled, and the seats are now available.");
+        return "redirect:/invoices";
+//        return "boleto/demo/movie-checkout";
+    }
 
 //    @GetMapping("/food")
 //    public String showFoodPage(Model model) {
@@ -286,63 +336,57 @@ public class BookingController {
 //    }
 
 
-    // Xử lý đơn hàng và hiển thị giỏ hàng
-//    @PostMapping("/order")
-//    public String orderConcession(@RequestParam("concessionTypeId") int concessionTypeId,
-//                                  @RequestParam("quantity") int quantity,
-//                                  @RequestParam("invoiceId") int invoiceId,
-//                                  Model model) {
-//        // Lấy InvoiceEntity từ InvoiceService
-//        Optional<InvoiceEntity> invoiceEntityOpt = invoiceService.getInvoiceById(invoiceId);
-//        if (invoiceEntityOpt.isEmpty()) {
-//            model.addAttribute("error", "Invoice không tồn tại");
-//            return "boleto/demo/popcorn"; // Quay lại trang food với thông báo lỗi
-//        }
-//
-//        InvoiceEntity invoiceEntity = invoiceEntityOpt.get();
-//
-//        // Lấy TypeOfConcessionEntity từ ID món ăn
-//        Optional<TypeOfConcessionEntity> concessionTypeOpt = typeOfConcessionService.getAllConcessions().stream()
-//                .filter(type -> type.getConcessionTypeId() == concessionTypeId)
-//                .findFirst();
-//
-//        if (concessionTypeOpt.isEmpty()) {
-//            model.addAttribute("error", "Loại đồ ăn không tồn tại");
-//            return "boleto/demo/popcorn";
-//        }
-//
-//        TypeOfConcessionEntity concessionType = concessionTypeOpt.get();
-//
-//        // Tạo mới đơn hàng và lưu vào CSDL
-//        ConcessionOrderEntity concessionOrderEntity = new ConcessionOrderEntity();
-//        concessionOrderEntity.setQuantity(quantity);
-//        concessionOrderEntity.setPrice(concessionType.getPrice());
-//        concessionOrderEntity.setConcessionType(concessionType);
-//        concessionOrderEntity.setInvoice(invoiceEntity);
-//
-//        concessionOrderService.saveConcessionOrder(concessionOrderEntity);
-//
-//        // Thêm vào giỏ hàng (session hoặc cơ sở dữ liệu)
-//        List<ConcessionOrderEntity> cart = (List<ConcessionOrderEntity>) model.getAttribute("cart");
-//        if (cart == null) {
-//            cart = new ArrayList<>();
-//        }
-//
-//        cart.add(concessionOrderEntity);
-//
-//        // Tính tổng tiền
-//        BigDecimal totalAmount = cart.stream()
-//                .map(order -> order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity())))
-//                .reduce(BigDecimal.ZERO, BigDecimal::add);
-//
-//        BigDecimal totalPriceWithVAT = totalAmount.add(BigDecimal.valueOf(15)); // Ví dụ thêm phí VAT 15
-//
-//        // Hiển thị thông tin giỏ hàng và tổng tiền
-//        model.addAttribute("invoiceId", invoiceId);
-//        model.addAttribute("cart", cart);
-//        model.addAttribute("totalAmount", totalAmount);
-//        model.addAttribute("totalPriceWithVAT", totalPriceWithVAT);
-//        model.addAttribute("success", "Đặt hàng thành công");
-//        return "boleto/demo/popcorn"; // Chuyển tới trang giỏ hàng với thông tin
-//    }
+    @PostMapping("/order")
+    public String orderConcession(@RequestParam("concessionTypeId") int concessionTypeId,
+                                  @RequestParam("quantity") int quantity,
+                                  @RequestParam("invoiceId") int invoiceId,
+                                  Model model) {
+        // Lấy InvoiceEntity từ InvoiceService
+        Optional<InvoiceEntity> invoiceEntityOpt = invoiceService.getInvoiceById(invoiceId);
+        if (invoiceEntityOpt.isEmpty()) {
+            model.addAttribute("error", "Invoice không tồn tại");
+            return "boleto/demo/popcorn";
+        }
+
+        InvoiceEntity invoiceEntity = invoiceEntityOpt.get();
+
+        Optional<TypeOfConcessionEntity> concessionTypeOpt = typeOfConcessionService.getAllConcessions().stream()
+                .filter(type -> type.getConcessionTypeId() == concessionTypeId)
+                .findFirst();
+
+        if (concessionTypeOpt.isEmpty()) {
+            model.addAttribute("error", "Loại đồ ăn không tồn tại");
+            return "boleto/demo/popcorn";
+        }
+
+        TypeOfConcessionEntity concessionType = concessionTypeOpt.get();
+
+        ConcessionOrderEntity concessionOrderEntity = new ConcessionOrderEntity();
+        concessionOrderEntity.setQuantity(quantity);
+        concessionOrderEntity.setPrice(concessionType.getPrice());
+        concessionOrderEntity.setConcessionType(concessionType);
+        concessionOrderEntity.setInvoice(invoiceEntity);
+
+        concessionOrderService.saveConcessionOrder(concessionOrderEntity);
+
+        List<ConcessionOrderEntity> cart = (List<ConcessionOrderEntity>) model.getAttribute("cart");
+        if (cart == null) {
+            cart = new ArrayList<>();
+        }
+
+        cart.add(concessionOrderEntity);
+
+        BigDecimal totalAmount = cart.stream()
+                .map(order -> order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal totalPriceWithVAT = totalAmount.add(BigDecimal.valueOf(15));
+
+        model.addAttribute("invoiceId", invoiceId);
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalAmount", totalAmount);
+        model.addAttribute("totalPriceWithVAT", totalPriceWithVAT);
+        model.addAttribute("success", "Đặt hàng thành công");
+        return "boleto/demo/popcorn";
+    }
 }

@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -37,6 +38,8 @@ public class UserForm {
     private String address;
 
     @NotNull(message = "Date of birth should not be empty")
+//    @Past(message = "Date of birth cannot be in the future")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
 
     private String status;
